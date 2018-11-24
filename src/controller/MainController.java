@@ -18,20 +18,13 @@ public class MainController {
     private ListView<String> lstViewFeed;
     
     
-
     @FXML
     void initialize() {
     	System.out.println("Controller initialize");
     	if(dataModel == null)
     		initModel();
     	
-    	dataModel.addToList("Test item 1");
-    	dataModel.addToList("Test item 2");
-    	dataModel.addToList("Test item 3");
-    	dataModel.addToList("Test item 4");
-    	dataModel.addToList("Test item 5");
-    	dataModel.addToList("Test item 6");
-    	
+    	dataModel.parseRSSFeed("http://feeds.bbci.co.uk/news/rss.xml");
     	lstViewFeed.setItems(dataModel.getRSSList());
     }
     
