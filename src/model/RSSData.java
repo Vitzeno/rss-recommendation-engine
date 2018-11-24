@@ -16,7 +16,7 @@ public class RSSData {
 	private Feed feed;
 	private RSSParser parser;
 	//ObservableList used to ensure compatibility with list view
-	private final ObservableList<String> RSSList = FXCollections.observableArrayList();
+	private final ObservableList<FeedItem> RSSList = FXCollections.observableArrayList();
 	
 	/**
 	 * This method uses the RSSParser class to parse a RSS feed from the provided URL
@@ -30,24 +30,16 @@ public class RSSData {
         for (FeedItem item : feed.getMessages()) {
             System.out.println(item);
             //RSSList.add(item.getTitle() + " | " + item.getDescription());
-            RSSList.add(item.toString());
+            RSSList.add(item);
         }
-	}
-	
-	/**
-	 * This method add items to the RSS list
-	 * @param item
-	 */
-	public void addToList(String item) {
-		RSSList.add(item);
 	}
 	
 	/**
 	 * This method returns the RSS list once it has been parsed
 	 * @return
 	 */
-	public ObservableList<String> getRSSList() {
-        return RSSList ;
+	public ObservableList<FeedItem> getRSSList() {
+        return RSSList;
     }
 
 }

@@ -1,5 +1,8 @@
 package controller;
 
+import feed.FeedItem;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -16,6 +19,7 @@ public class MainController {
 	
 	private RSSData RSSDataModel;
 	private String RSSURL = "http://feeds.bbci.co.uk/news/rss.xml";
+	private ObservableList<FeedItem> RSSList = FXCollections.observableArrayList();
 	
     @FXML
     private Label lblNews;
@@ -24,6 +28,10 @@ public class MainController {
     @FXML
     private ListView<String> lstViewFeed;
    
+    /**
+     * On click method when item in list is clicked on
+     * @param event
+     */
     @FXML
     void handleMouseClick(MouseEvent event) {
         System.out.println("Clicked on " + lstViewFeed.getSelectionModel().getSelectedItem());
@@ -36,12 +44,16 @@ public class MainController {
      */
     @FXML
     void initialize() {
-    	System.out.println("Controller initialize");
+    	System.out.println("Controller initialise");
     	if(RSSDataModel == null)
     		initModel();
     	
     	RSSDataModel.parseRSSFeed(RSSURL);
-    	lstViewFeed.setItems(RSSDataModel.getRSSList());
+    	RSSList = RSSDataModel.getRSSList();
+    	
+    	for (FeedItem item : RSSList) {
+    		lstViewFeed.getItems().add(item.toString());
+        }
     }
     
     /*
