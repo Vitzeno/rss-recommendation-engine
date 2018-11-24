@@ -1,5 +1,10 @@
 package feed;
 
+/**
+ * This class represents each item in the feed with a set of attributes, mostly consists of self explanatory setters and getters
+ * @author Mohamed
+ *
+ */
 public class FeedItem {
 	
 	String title;
@@ -47,9 +52,13 @@ public class FeedItem {
 	public void setGuid(String guid) {
 		this.guid = guid;
 	}
-
+	
+	/**
+     * This method determines what to return when the toString method is invoked on the feed item object
+     */
 	@Override
     public String toString() {
-        return "FeedMessage [title=" + title + ", description=" + description + ", link=" + link + ", author=" + author + ", guid=" + guid + "]";
+        //return "FeedMessage [title=" + title + ", description=" + description + ", link=" + link + ", author=" + author + ", guid=" + guid + "]";
+		return title + " | " + description;
     }
 }

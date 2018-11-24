@@ -28,7 +28,7 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
                         </Button>
-                        <ListView fx:id="lstViewFeed" layoutX="540.0" layoutY="246.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="100.0" />
+                        <ListView fx:id="lstViewFeed" layoutX="540.0" layoutY="246.0" onMousePressed="#handleMouseClick" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="100.0" />
                      </children>
                   </AnchorPane>
                </content>

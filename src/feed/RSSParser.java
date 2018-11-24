@@ -11,6 +11,11 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.XMLEvent;
 
+/**
+ * This class handles all parsing of RSS
+ * @author Mohamed
+ *
+ */
 public class RSSParser {
 	
 	static final String TITLE = "title";
@@ -26,6 +31,10 @@ public class RSSParser {
 
     final URL url;
 
+    /**
+     * The constructor take a URL to parse
+     * @param feedUrl
+     */
     public RSSParser(String feedUrl) {
         try {
             this.url = new URL(feedUrl);
@@ -34,6 +43,11 @@ public class RSSParser {
         }
     }
 
+    /**
+     * This method parses the RSS from the provided URL, it uses the Streaming API for XML (StAX) API to parse the RSS
+     * feed which is in XML format
+     * @return a feed object which contains a list of feed items or null
+     */
     public Feed readFeed() {
         Feed feed = null;
         try {
@@ -118,7 +132,15 @@ public class RSSParser {
         }
         return feed;
     }
-
+    
+    /**
+     * This helper method server to read character data from provided 
+     * XML events
+     * @param event
+     * @param eventReader
+     * @return the data in String form
+     * @throws XMLStreamException
+     */
     private String getCharacterData(XMLEvent event, XMLEventReader eventReader) throws XMLStreamException {
         String result = "";
         event = eventReader.nextEvent();
@@ -127,7 +149,11 @@ public class RSSParser {
         }
         return result;
     }
-
+    
+    /** 
+     * This helper method servers to open a URL stream
+     * @return an open URL stream
+     */
     private InputStream read() {
         try {
             return url.openStream();
