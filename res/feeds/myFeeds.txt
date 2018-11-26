@@ -1,0 +1,3 @@
+http://feeds.bbci.co.uk/news/rss.xml
+https://www.wired.com/feed/rss
+http://www.espn.com/espn/rss/news

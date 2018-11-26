@@ -28,7 +28,7 @@ public class RSSData {
         System.out.println(feed);
         
         for (FeedItem item : feed.getMessages()) {
-            System.out.println(item);
+            //System.out.println(item);
             //RSSList.add(item.getTitle() + " | " + item.getDescription());
             RSSList.add(item);
         }

@@ -26,6 +26,7 @@ public class RSSParser {
     static final String LINK = "link";
     static final String AUTHOR = "author";
     static final String ITEM = "item";
+    static final String ENTRY = "entry";
     static final String PUB_DATE = "pubDate";
     static final String GUID = "guid";
 
@@ -74,7 +75,7 @@ public class RSSParser {
             		case XMLStreamConstants.START_ELEMENT:
             			String name = event.asStartElement().getName().getLocalPart();
             			//Deals with the feed header
-            			if(name.equalsIgnoreCase(ITEM)) {
+            			if(name.equalsIgnoreCase(ITEM) || name.equalsIgnoreCase(ENTRY)) {
             				if (isFeedHeader) {
                                 isFeedHeader = false;
                                 feed = new Feed(title, link, description, language, copyright, pubdate);
