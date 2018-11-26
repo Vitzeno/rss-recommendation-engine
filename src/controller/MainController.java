@@ -1,5 +1,9 @@
 package controller;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import feed.FeedItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,7 +30,7 @@ public class MainController {
     @FXML
     private Button btnAdd;
     @FXML
-    private ListView<String> lstViewFeed;
+    private ListView<FeedItem> lstViewFeed;
    
     /**
      * On click method when item in list is clicked on
@@ -34,7 +38,18 @@ public class MainController {
      */
     @FXML
     void handleMouseClick(MouseEvent event) {
-        System.out.println("Clicked on " + lstViewFeed.getSelectionModel().getSelectedItem());
+    	String link = lstViewFeed.getSelectionModel().getSelectedItem().getLink();
+        System.out.println("Clicked on " + link);
+        Desktop desktop = Desktop.getDesktop();
+        try {
+			desktop.browse(new URI(link));
+		} catch (IOException e) {
+			System.err.println("IO Error");
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			System.err.println("Invalid URI syntax");
+			e.printStackTrace();
+		}
     }
     
     
@@ -52,8 +67,9 @@ public class MainController {
     	RSSList = RSSDataModel.getRSSList();
     	
     	for (FeedItem item : RSSList) {
-    		lstViewFeed.getItems().add(item.toString());
+    		lstViewFeed.getItems().add(item);
         }
+        
     }
     
     /*
