@@ -29,7 +29,6 @@ public class MainController {
 	private RSSData RSSDataModel;
 	private ArrayList<String> feedsURL = new ArrayList<String>();
 	private ObservableList<FeedItem> RSSList = FXCollections.observableArrayList();
-	
 	private Reader reader = new Reader();
 	
     @FXML
@@ -42,7 +41,8 @@ public class MainController {
     private ListView<FeedItem> lstViewFeed;
    
     /**
-     * On click method when item in list is clicked on
+     * On click method when item in list is clicked on, this then opens item in
+     * browser window
      * @param event
      */
     @FXML
