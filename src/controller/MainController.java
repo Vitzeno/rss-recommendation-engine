@@ -94,7 +94,7 @@ public class MainController {
         	
         	//access the controller and call a method
             BrowserController controller = loader.getController();
-            System.out.println("Link passed: " + link);
+            //System.out.println("Link passed: " + link);
             controller.load(link);
         	
         	Scene browserViewScene = new Scene(browserViewParent);
@@ -147,6 +147,7 @@ public class MainController {
     void initialize() {
     	System.out.println("Controller initialise");
     	initFeed();
+    	//initFeed(recommended);
     }
     
     

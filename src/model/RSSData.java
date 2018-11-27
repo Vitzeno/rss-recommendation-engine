@@ -25,7 +25,7 @@ public class RSSData {
 		parser = new RSSParser(url);
         feed = parser.readFeed();
         
-        System.out.println(feed);
+        //System.out.println(feed);
         
         return feed;
 	}
