@@ -14,10 +14,10 @@ public class Main extends Application {
 		try {
 			primaryStage.setTitle("RSS Reader");
 			//primaryStage.setResizable(false);
-			primaryStage.setMinWidth(1024);
-			primaryStage.setMinHeight(576);
+			primaryStage.setMinWidth(1280);
+			primaryStage.setMinHeight(750);
 			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,1280, 720);
+			Scene scene = new Scene(root, 1280, 720);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			
 			//Don't forget this boiler plate code again, always a pain to remember 

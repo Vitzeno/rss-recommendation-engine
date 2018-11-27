@@ -6,9 +6,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import feed.Feed;
 import feed.FeedItem;
 import feed.Reader;
@@ -35,7 +32,7 @@ public class MainController {
 	private ObservableList<Feed> RSSFeedList = FXCollections.observableArrayList();
 	private Reader reader = new Reader();
 	
-	private HashMap<Feed, List<FeedItem>> feedToList = new HashMap<Feed, List<FeedItem>>();
+	//private HashMap<Feed, List<FeedItem>> feedToList = new HashMap<Feed, List<FeedItem>>();
 	
     @FXML
     private Label lblNews;
