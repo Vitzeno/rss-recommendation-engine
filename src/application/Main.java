@@ -17,6 +17,7 @@ public class Main extends Application {
 			primaryStage.setMinWidth(1280);
 			primaryStage.setMinHeight(750);
 			BorderPane root = new BorderPane();
+			
 			Scene scene = new Scene(root, 1280, 720);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			

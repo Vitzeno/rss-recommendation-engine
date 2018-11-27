@@ -12,12 +12,18 @@ import feed.Reader;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import model.RSSData;
+import javafx.scene.Node;
 
 /**
  * This class servers as the main view controller
@@ -44,6 +50,8 @@ public class MainController {
     private ListView<Feed> lstViewFeedTitles;
     @FXML
     private ListView<FeedItem> lstViewFeed;
+    @FXML
+    private CheckBox chkOpenInBrowse;
     
     
     /**
@@ -59,21 +67,42 @@ public class MainController {
      * On click method when item in feed items list is clicked on, this then opens item in
      * browser window
      * @param event
+     * @throws IOException 
      */
     @FXML
-    void handleMouseClickFI(MouseEvent event) {
+    void handleMouseClickFI(MouseEvent event) throws IOException {  	   
     	String link = lstViewFeed.getSelectionModel().getSelectedItem().getLink();
-        System.out.println("Clicked on " + link);
-        Desktop desktop = Desktop.getDesktop();
-        try {
-			desktop.browse(new URI(link));
-		} catch (IOException e) {
-			System.err.println("IO Error");
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			System.err.println("Invalid URI syntax");
-			e.printStackTrace();
-		}
+    	if(chkOpenInBrowse.isSelected()) {
+        	
+            System.out.println("Clicked on " + link);
+            Desktop desktop = Desktop.getDesktop();
+            try {
+    			desktop.browse(new URI(link));
+    		} catch (IOException e) {
+    			System.err.println("IO Error");
+    			e.printStackTrace();
+    		} catch (URISyntaxException e) {
+    			System.err.println("Invalid URI syntax");
+    			e.printStackTrace();
+    		}
+        }
+        else {
+        	FXMLLoader loader = new FXMLLoader();
+        	loader.setLocation(getClass().getClassLoader().getResource("BrowserView.fxml"));
+        	
+        	Parent browserViewParent = loader.load();
+        	
+        	//access the controller and call a method
+            BrowserController controller = loader.getController();
+            System.out.println("Link passed: " + link);
+            controller.load(link);
+        	
+        	Scene browserViewScene = new Scene(browserViewParent);
+        	Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        	
+        	window.setScene(browserViewScene);
+            window.show();
+        }
     }
     
     /**
