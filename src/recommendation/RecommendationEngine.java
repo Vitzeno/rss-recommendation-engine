@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
 import feed.Feed;
 import feed.FeedItem;
 import feed.Reader;
@@ -49,7 +48,9 @@ public class RecommendationEngine {
 	private boolean useLikedAuthorWeighting = false;
 	
 	private int totalWeights = 0;
-	private int thresholdValue = 20;
+	//This is the value that determines if a item should be entered into the feed
+	//TODO: Think about exposing this value in the UI to allow for some altering
+	private float thresholdValue = 20;
 
 	
 	
@@ -99,30 +100,54 @@ public class RecommendationEngine {
 				Date date = dateFormat.parse(item.getPubDate());
 				//If date within number of hours of date range
 				if(currentDate.getTime() - date.getTime() <= dateRange * hour) {
-					System.out.println("Date within 24: " + item.getPubDate());
-					itemValue = generateScoreForDateRange(currentDate.getTime() - date.getTime());
-					System.out.println("Item value after date calc: " + itemValue);
+					//System.out.println("Date within 24: " + item.getPubDate());
+					itemValue += generateScoreForDateRange(currentDate.getTime() - date.getTime());
 					itemValue *= dateWeighting;
+					System.out.println("Item value after date calc: " + itemValue);
 				}
 				
+				if(containsName(LikedFeedItemList, item.getGuid())) {
+					//System.out.println("Contained: " + item);
+					itemValue += 100f * likedFeedWeighting;
+					System.out.println("Item value after feed calc: " + itemValue);
+				}
+					
 				
 				
 				itemValue /= totalWeights;
 				System.out.println("Final Item value: " + itemValue);
+				System.out.println();
 				if(itemValue >= thresholdValue)
 					recFeed.addToFeed(item);
 			}
 		}
 		
 		System.out.println("Total weigths: " + totalWeights);
+		System.out.println("Threshold value: " + thresholdValue);
+		//TODO: Sort items by score value before adding them to recommended feed
 		return recFeed;
 	}
 	
 	/**
+	 * This method uses a lambda expression to find if a string is contained
+	 * within the getGuid method of the a function within a list.
+	 * I this case the guid acts a unique identifier and the list is
+	 * of liked feeds
+	 * @param list List to search
+	 * @param name GUID to search for
+	 * @return returns true if found
+	 */
+	public boolean containsName(final ObservableList<FeedItem> list, final String name){
+	    return list.stream().filter(o -> o.getGuid().equals(name)).findFirst().isPresent();
+	}
+	
+	
+	/**
 	 * This method essentially returns a percentage value representing the time difference between
-	 * the current time and the the publication time
-	 * @param timeGap
-	 * @return
+	 * the current time and the the publication time. All time calculations performed in
+	 * milliseconds 
+	 * @param timeGap this is the difference in time between the pubDate and current time
+	 * @return returns a percentage value representing the time difference
 	 */
 	public float generateScoreForDateRange(long timeGap) {
 		return Math.abs((timeGap/(dateRange * hour) * 100) -100);
@@ -144,19 +169,7 @@ public class RecommendationEngine {
 			totalWeights++;
 		}
 	}
-	
-	
-	public void printDate(FeedItem feedItem) {
-		try {
-			Date date = dateFormat.parse(feedItem.getPubDate());
-			System.out.println("Parsed date is: " + date);
-			System.out.println("Current date is: " + currentDate);
-			
-		} catch (ParseException e) {
-			System.err.println("Error parse failed");
-			e.printStackTrace();
-		}
-	}
+
 	
     /*
      * This method only servers to initialise the RSSDataModel object

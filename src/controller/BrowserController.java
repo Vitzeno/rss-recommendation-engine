@@ -12,6 +12,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
+/**
+ * This class servers as a controller for the in built browser view
+ * @author Mohamed
+ *
+ */
 public class BrowserController {
 
     @FXML

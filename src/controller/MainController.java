@@ -93,9 +93,10 @@ public class MainController {
     @FXML
     void handleMouseClickFI(MouseEvent event) throws IOException {  	   
     	String link = lstViewFeed.getSelectionModel().getSelectedItem().getLink();
+    	String pubDate = lstViewFeed.getSelectionModel().getSelectedItem().getPubDate();
     	if(chkOpenInBrowse.isSelected()) {
         	
-            System.out.println("Clicked on " + link);
+            System.out.println("Clicked on " + link + pubDate);
             Desktop desktop = Desktop.getDesktop();
             try {
     			desktop.browse(new URI(link));
