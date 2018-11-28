@@ -121,6 +121,7 @@ public class RSSParser {
                             message.setGuid(guid);
                             message.setLink(link);
                             message.setTitle(title);
+                            message.setPubDate(pubdate);
                             feed.getMessages().add(message);
                             //event = eventReader.nextEvent();
                             //continue;

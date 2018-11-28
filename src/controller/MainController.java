@@ -23,6 +23,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import model.RSSData;
+import recommendation.RecommendationEngine;
 import javafx.scene.Node;
 
 /**
@@ -32,11 +33,13 @@ import javafx.scene.Node;
  */
 public class MainController {
 	
-	private String RSSFileName = "myFeeds";
+	private String RSSFileName = "standardFeeds";
 	private RSSData RSSDataModel;
 	private ArrayList<String> feedsURL = new ArrayList<String>();
 	private ObservableList<Feed> RSSFeedList = FXCollections.observableArrayList();
 	private Reader reader = new Reader();
+	
+	private RecommendationEngine recEngine;
 	
 	//private HashMap<Feed, List<FeedItem>> feedToList = new HashMap<Feed, List<FeedItem>>();
 	
@@ -182,9 +185,11 @@ public class MainController {
     		//feedToList.put(feed, feed.getMessages());
     		lstViewFeedTitles.getItems().add(feed);
         } 
+    	
+    	recEngine = new RecommendationEngine(RSSFeedList);
+    	lstViewFeedTitles.getItems().add(recEngine.generateRecommendations());
     }
-    
-    
+  
     /*
      * This method only servers to initialise the RSSDataModel object
      */

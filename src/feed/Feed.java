@@ -46,6 +46,15 @@ public class Feed {
         return items;
     }
     
+    /**
+     * This method adds a feed item to the list of feed items
+     * within the current feed
+     * @param feedItem
+     */
+    public void addToFeed(FeedItem feedItem) {
+    	items.add(feedItem);
+    }
+    
     /** 
      * This method returns the title of the feed
      * @return Feed Title
