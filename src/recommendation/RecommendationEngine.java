@@ -37,6 +37,17 @@ public class RecommendationEngine {
 	private ObservableList<Feed> StandardFeedList = FXCollections.observableArrayList();
 	private ObservableList<Feed> LikedFeedList = FXCollections.observableArrayList();
 	
+	//Date range is in hours
+	private int dateRange = 24;
+	private double dateWeighting = 0.5f; 
+	private double likedFeedWeighting = 0.8f;
+	private double likedAuthorWeighting = 0.5f;
+	
+	private boolean useDateWeighting = true;
+	private boolean useLikedFeedWeighting = true;
+	private boolean useLikedAuthorWeighting = true;
+
+	
 	
 	
 	public RecommendationEngine(ObservableList<Feed> RSSFeedList) {
@@ -104,4 +115,59 @@ public class RecommendationEngine {
     	RSSDataModel = new RSSData();
     }
 
+	public int getDateRange() {
+		return dateRange;
+	}
+
+	public void setDateRange(int dateRange) {
+		this.dateRange = dateRange;
+	}
+
+	public double getDateWeighting() {
+		return dateWeighting;
+	}
+
+	public void setDateWeighting(double dateWeighting) {
+		this.dateWeighting = dateWeighting;
+	}
+
+	public double getLikedFeedWeighting() {
+		return likedFeedWeighting;
+	}
+
+	public void setLikedFeedWeighting(double likedFeedWeighting) {
+		this.likedFeedWeighting = likedFeedWeighting;
+	}
+
+	public double getLikedAuthorWeighting() {
+		return likedAuthorWeighting;
+	}
+
+	public void setLikedAuthorWeighting(double likedAuthorWeighting) {
+		this.likedAuthorWeighting = likedAuthorWeighting;
+	}
+
+	public boolean isUseDateWeighting() {
+		return useDateWeighting;
+	}
+
+	public void setUseDateWeighting(boolean useDateWeighting) {
+		this.useDateWeighting = useDateWeighting;
+	}
+
+	public boolean isUseLikedFeedWeighting() {
+		return useLikedFeedWeighting;
+	}
+
+	public void setUseLikedFeedWeighting(boolean useLikedFeedWeighting) {
+		this.useLikedFeedWeighting = useLikedFeedWeighting;
+	}
+
+	public boolean isUseLikedAuthorWeighting() {
+		return useLikedAuthorWeighting;
+	}
+
+	public void setUseLikedAuthorWeighting(boolean useLikedAuthorWeighting) {
+		this.useLikedAuthorWeighting = useLikedAuthorWeighting;
+	}
 }

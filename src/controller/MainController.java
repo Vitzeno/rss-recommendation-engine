@@ -19,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -55,6 +56,22 @@ public class MainController {
     private ListView<FeedItem> lstViewFeed;
     @FXML
     private CheckBox chkOpenInBrowse;
+    @FXML
+    private CheckBox chkFeedDate;
+    @FXML
+    private CheckBox chkLikedFeeds;
+    @FXML
+    private CheckBox chkLikedAuthors;
+    @FXML
+    private Slider sldDateRange;
+    @FXML
+    private Slider sldLikedFeeds;
+    @FXML
+    private Slider sldLikedAuthors;
+    @FXML
+    private TextField txtDateRange;
+    @FXML
+    private Button btnSave;
     
     
     /**
@@ -149,8 +166,52 @@ public class MainController {
     @FXML
     void initialize() {
     	System.out.println("Controller initialise");
+    	chkOpenInBrowse.setSelected(true);
     	initFeed();
+    	setUpSettingsValues();
+    	
     	//initFeed(recommended);
+    }
+    
+    /**
+     * This method uses the recEngine object, therefore it must called
+     * after that object is initialised to avoid errors. In this case it 
+     * must be called after initFeed()
+     */
+    public void setUpSettingsValues() {
+    	sldDateRange.setMax(1);
+    	sldDateRange.setMin(0);
+    	sldDateRange.setValue(recEngine.getDateWeighting());
+    	
+    	sldLikedFeeds.setMax(1);
+    	sldLikedFeeds.setMin(0);
+    	sldLikedFeeds.setValue(recEngine.getLikedFeedWeighting());
+    	
+    	sldLikedAuthors.setMax(1);
+    	sldLikedAuthors.setMin(0);
+    	sldLikedAuthors.setValue(recEngine.getLikedAuthorWeighting());
+    	
+    	chkFeedDate.setSelected(recEngine.isUseDateWeighting());
+    	chkLikedFeeds.setSelected(recEngine.isUseLikedFeedWeighting());
+    	chkLikedAuthors.setSelected(recEngine.isUseLikedAuthorWeighting());
+    }
+    
+    /**
+     * This method gets the data from the settings view and passes it 
+     * to the recommendation object
+     * @param event
+     */
+    @FXML
+    void saveRecommendationSettings(MouseEvent event) {
+    	recEngine.setUseDateWeighting(chkFeedDate.isSelected());
+    	recEngine.setDateWeighting(sldDateRange.getValue());
+    	recEngine.setDateRange(Integer.parseInt(txtDateRange.getText()));
+    	
+    	recEngine.setUseLikedFeedWeighting(chkLikedFeeds.isSelected());
+    	recEngine.setLikedFeedWeighting(sldLikedFeeds.getValue());
+    	
+    	recEngine.setUseLikedAuthorWeighting(chkLikedAuthors.isSelected());
+    	recEngine.setLikedAuthorWeighting(sldLikedAuthors.getValue());
     }
     
     
