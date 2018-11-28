@@ -1,4 +1,3 @@
 http://feeds.bbci.co.uk/news/rss.xml
 https://xkcd.com/rss.xml
-http://kotaku.com/rss
-https://gizmodo.com/rss
+http://feeds.macrumors.com/MacRumors-All

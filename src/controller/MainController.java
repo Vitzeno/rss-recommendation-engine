@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.ArrayList;
 import feed.Feed;
 import feed.FeedItem;
@@ -107,6 +108,7 @@ public class MainController {
     		}
         }
         else {
+
         	FXMLLoader loader = new FXMLLoader();
         	loader.setLocation(getClass().getClassLoader().getResource("BrowserView.fxml"));
         	
@@ -122,6 +124,7 @@ public class MainController {
         	
         	window.setScene(browserViewScene);
             window.show();
+
         }
     }
     
@@ -183,6 +186,8 @@ public class MainController {
     	sldDateRange.setMin(0);
     	sldDateRange.setValue(recEngine.getDateWeighting());
     	
+    	txtDateRange.setText(String.valueOf(recEngine.getDateRange()));
+    	
     	sldLikedFeeds.setMax(1);
     	sldLikedFeeds.setMin(0);
     	sldLikedFeeds.setValue(recEngine.getLikedFeedWeighting());
@@ -212,6 +217,7 @@ public class MainController {
     	
     	recEngine.setUseLikedAuthorWeighting(chkLikedAuthors.isSelected());
     	recEngine.setLikedAuthorWeighting(sldLikedAuthors.getValue());
+    	initFeed();
     }
     
     
@@ -247,8 +253,22 @@ public class MainController {
     		lstViewFeedTitles.getItems().add(feed);
         } 
     	
+    	if(recEngine == null)
+    		initRecEngine();
+    	
+    	try {
+			lstViewFeedTitles.getItems().add(recEngine.generateRecommendations());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    /**
+     * This method only serves to  initialise the RecommendationEngine object
+     */
+    public void initRecEngine() {
+    	System.out.println("Initialising recEngine model");
     	recEngine = new RecommendationEngine(RSSFeedList);
-    	lstViewFeedTitles.getItems().add(recEngine.generateRecommendations());
     }
   
     /*

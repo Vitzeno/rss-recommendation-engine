@@ -64,6 +64,7 @@ public class BrowserController {
             return false; 
         } 
     }
+    
    
     /*
     public void setURL(String URL) {

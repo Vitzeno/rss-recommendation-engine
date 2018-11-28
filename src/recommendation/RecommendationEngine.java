@@ -23,7 +23,7 @@ public class RecommendationEngine {
 	String pattern = "EEE, dd MMM yyyy HH:mm:ss";
 	SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
 	//One hour in milliseconds
-	private long hour = 3600;
+	private long hour = 3600000;
 	Date currentDate = new Date();
 	
 	
@@ -33,19 +33,23 @@ public class RecommendationEngine {
 	private Reader reader = new Reader();
 	
 	
-	private Feed recFeed = new Feed("Recommended Feed", null, "Auto generated feed of recommended items", "en-gb", null, null);
+	private Feed recFeed;
 	private ObservableList<Feed> StandardFeedList = FXCollections.observableArrayList();
-	private ObservableList<Feed> LikedFeedList = FXCollections.observableArrayList();
+	private ObservableList<FeedItem> LikedFeedItemList = FXCollections.observableArrayList();
+	
 	
 	//Date range is in hours
-	private int dateRange = 24;
+	private float dateRange = 24f;
 	private double dateWeighting = 0.5f; 
 	private double likedFeedWeighting = 0.8f;
 	private double likedAuthorWeighting = 0.5f;
 	
 	private boolean useDateWeighting = true;
 	private boolean useLikedFeedWeighting = true;
-	private boolean useLikedAuthorWeighting = true;
+	private boolean useLikedAuthorWeighting = false;
+	
+	private int totalWeights = 0;
+	private int thresholdValue = 20;
 
 	
 	
@@ -53,13 +57,6 @@ public class RecommendationEngine {
 	public RecommendationEngine(ObservableList<Feed> RSSFeedList) {
 		this.StandardFeedList = RSSFeedList;
 		initLikedFeeds();
-		for(Feed feed : LikedFeedList) {
-			System.out.println("Liked feeds: " + feed);
-		}
-		
-		for(Feed feed : StandardFeedList) {
-			System.out.println("Standaerd feeds: " + feed);
-		}
 	}
 	
 	/**
@@ -67,32 +64,86 @@ public class RecommendationEngine {
 	 * feeds file
 	 */
 	public void initLikedFeeds() {
+		ObservableList<Feed> LikedFeedList = FXCollections.observableArrayList();
+		
     	if(RSSDataModel == null)
     		initModel();
     	
+    	//TODO: Optimise to avoid iterating over list twice
     	feedsURL = reader.readFile(LikedRSSFileName);
     	for (String URL : feedsURL) {
     		LikedFeedList.add(RSSDataModel.parseRSSFeed(URL));
+    	}
+    	
+    	for (Feed feed : LikedFeedList) {
+    		for(FeedItem item : feed.getMessages()) {
+    			LikedFeedItemList.add(item);
+			}
     	}
 	}
 	
 	/**
 	 * This is the main recommendation method which returns a list 
 	 * of recommended feeds based on various metrics
-	 * @return
+	 * @return a feed object containing recommended feed items
+	 * @throws ParseException 
 	 */
-	public Feed generateRecommendations() {
+	public Feed generateRecommendations() throws ParseException {
+		recFeed = new Feed("Recommended Feed", null, "Auto generated feed of recommended items", "en-gb", null, null);
+		//float itemValue = 1f;
+		setTotalWeights();
 		
-		for(Feed feed : LikedFeedList) {
+		for(Feed feed : StandardFeedList) {
 			for(FeedItem item : feed.getMessages()) {
-				recFeed.addToFeed(item);
+				float itemValue = 1f;
+				Date date = dateFormat.parse(item.getPubDate());
+				//If date within number of hours of date range
+				if(currentDate.getTime() - date.getTime() <= dateRange * hour) {
+					System.out.println("Date within 24: " + item.getPubDate());
+					itemValue = generateScoreForDateRange(currentDate.getTime() - date.getTime());
+					System.out.println("Item value after date calc: " + itemValue);
+					itemValue *= dateWeighting;
+				}
+				
+				
+				
+				itemValue /= totalWeights;
+				System.out.println("Final Item value: " + itemValue);
+				if(itemValue >= thresholdValue)
+					recFeed.addToFeed(item);
 			}
 		}
-
+		
+		System.out.println("Total weigths: " + totalWeights);
 		return recFeed;
 	}
 	
+	/**
+	 * This method essentially returns a percentage value representing the time difference between
+	 * the current time and the the publication time
+	 * @param timeGap
+	 * @return
+	 */
+	public float generateScoreForDateRange(long timeGap) {
+		return Math.abs((timeGap/(dateRange * hour) * 100) -100);
+	}
 	
+	/**
+	 * This helper function simply set the value of totalWeights
+	 * to use in the calculations
+	 */
+	public void setTotalWeights() {
+		totalWeights = 0;
+		if(useDateWeighting) {
+			totalWeights++;
+		}
+		if(useLikedFeedWeighting) {
+			totalWeights++;
+		}
+		if(useLikedAuthorWeighting) {
+			totalWeights++;
+		}
+	}
 	
 	
 	public void printDate(FeedItem feedItem) {
@@ -111,15 +162,15 @@ public class RecommendationEngine {
      * This method only servers to initialise the RSSDataModel object
      */
     public void initModel() {
-    	System.out.println("Initialising data model");
+    	System.out.println("Initialising recEngine data model");
     	RSSDataModel = new RSSData();
     }
 
-	public int getDateRange() {
+	public float getDateRange() {
 		return dateRange;
 	}
 
-	public void setDateRange(int dateRange) {
+	public void setDateRange(float dateRange) {
 		this.dateRange = dateRange;
 	}
 

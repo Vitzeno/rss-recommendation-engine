@@ -78,10 +78,10 @@
                                     <CheckBox fx:id="chkLikedAuthors" layoutX="114.0" layoutY="247.0" mnemonicParsing="false" text="CheckBox" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="453.0" />
                                     <Slider fx:id="sldDateRange" layoutX="384.0" layoutY="120.0" AnchorPane.rightAnchor="100.0" />
                                     <Slider fx:id="sldLikedFeeds" layoutX="139.0" layoutY="207.0" AnchorPane.leftAnchor="139.0" AnchorPane.rightAnchor="361.0" />
-                                    <Label layoutX="44.0" layoutY="117.0" text="Date Range" AnchorPane.leftAnchor="44.0" />
+                                    <Label layoutX="28.0" layoutY="114.0" text="Date Range(hr)" AnchorPane.leftAnchor="28.0" />
                                     <Label layoutX="306.0" layoutY="118.0" text="Weighting" AnchorPane.leftAnchor="306.0" AnchorPane.topAnchor="118.0" />
-                                    <Label layoutX="40.0" layoutY="206.0" text="Weighting" AnchorPane.leftAnchor="44.0" />
-                                    <Label layoutX="40.0" layoutY="300.0" text="Weighting" AnchorPane.leftAnchor="44.0" />
+                                    <Label layoutX="28.0" layoutY="203.0" text="Weighting" AnchorPane.leftAnchor="28.0" />
+                                    <Label layoutX="28.0" layoutY="297.0" text="Weighting" AnchorPane.leftAnchor="28.0" />
                                     <Slider fx:id="sldLikedAuthors" layoutX="139.0" layoutY="301.0" AnchorPane.leftAnchor="139.0" AnchorPane.rightAnchor="361.0" />
                                     <TextField fx:id="txtDateRange" layoutX="113.0" layoutY="113.0" promptText="Range in hours" />
                                     <Button fx:id="btnSave" layoutX="15.0" layoutY="592.0" mnemonicParsing="false" onMouseClicked="#saveRecommendationSettings" text="Save" />
