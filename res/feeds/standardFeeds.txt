@@ -2,6 +2,6 @@ http://feeds.bbci.co.uk/news/rss.xml
 https://www.wired.com/feed/rss
 http://www.espn.com/espn/rss/news
 https://xkcd.com/rss.xml
-http://kotaku.com/rss
 https://gizmodo.com/rss
 http://feeds.macrumors.com/MacRumors-All
+https://store.steampowered.com/feeds/news.xml
