@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import feed.Feed;
 import feed.FeedItem;
+import feed.HTMLParser;
 import feed.Reader;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -51,6 +52,13 @@ public class RecommendationEngine {
 	//This is the value that determines if a item should be entered into the feed
 	//TODO: Think about exposing this value in the UI to allow for some altering
 	private float thresholdValue = 20;
+	
+
+	
+	public void testHTMLParser(FeedItem item) {
+    	HTMLParser htmlpar = new HTMLParser();
+    	htmlpar.parseHTML(item);
+	}
 
 	
 	
@@ -119,12 +127,16 @@ public class RecommendationEngine {
 				System.out.println();
 				if(itemValue >= thresholdValue)
 					recFeed.addToFeed(item);
+				
+				
+				testHTMLParser(item);
 			}
 		}
 		
 		System.out.println("Total weigths: " + totalWeights);
 		System.out.println("Threshold value: " + thresholdValue);
 		//TODO: Sort items by score value before adding them to recommended feed
+		
 		return recFeed;
 	}
 	

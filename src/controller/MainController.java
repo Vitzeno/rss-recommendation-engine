@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import feed.Feed;
 import feed.FeedItem;
+import feed.HTMLParser;
 import feed.Reader;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -173,7 +174,7 @@ public class MainController {
     	chkOpenInBrowse.setSelected(true);
     	initFeed();
     	setUpSettingsValues();
-    	
+
     	//initFeed(recommended);
     }
     
