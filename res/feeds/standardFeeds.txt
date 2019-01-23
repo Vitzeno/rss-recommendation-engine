@@ -5,3 +5,5 @@ https://xkcd.com/rss.xml
 https://gizmodo.com/rss
 http://feeds.macrumors.com/MacRumors-All
 https://store.steampowered.com/feeds/news.xml
+http://feeds.bbci.co.uk/news/uk/rss.xml
+http://m.highwaysengland.co.uk/feeds/rss/UnplannedEvents.xml
