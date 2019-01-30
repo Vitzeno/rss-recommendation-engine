@@ -4,11 +4,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import feed.Feed;
 import feed.FeedItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.RSSData;
+import textClassification.TFIDFCalculator;
 import textClassification.Tokeniser;
 import utilities.HTMLParser;
 import utilities.Reader;
@@ -65,8 +68,24 @@ public class RecommendationEngine {
 		Tokeniser tokeniser = new Tokeniser();
 		System.out.println(tokeniser.getTokens(item.getTitle()));
 	}
-
 	
+	public void testTFIDFCalculator(Feed feed) {
+		List<List<String>> documents = new ArrayList<List<String>>();
+		List<String> document = new ArrayList<String>();
+		
+		Tokeniser tokeniser = new Tokeniser();
+		for(FeedItem item : feed.getMessages()) {	
+			document.addAll(tokeniser.getTokens(item.getTitle()));
+			documents.add(tokeniser.getTokens(item.getTitle()));
+		}
+		
+		TFIDFCalculator tfidfCalc = new TFIDFCalculator();
+		
+		
+		
+		System.out.println(tfidfCalc.tfidf(document, documents, "brexit"));
+	}
+
 	
 	
 	public RecommendationEngine(ObservableList<Feed> RSSFeedList) {
@@ -138,6 +157,8 @@ public class RecommendationEngine {
 				//testHTMLParser(item);
 				//testTokeniser(item);
 			}
+			
+			testTFIDFCalculator(feed);
 		}
 		
 		//System.out.println("Total weigths: " + totalWeights);

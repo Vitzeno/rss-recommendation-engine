@@ -43,7 +43,7 @@ public class Tokeniser {
 		List<String> tokens = new ArrayList<String>();
 		
 		for(String currentToken : rawTokens) {
-			String cleanToken = currentToken.trim().toLowerCase().replaceAll("[^A-Za-z]+", "");
+			String cleanToken = currentToken.trim().toLowerCase().replaceAll("[^A-Za-z0-9]+", "");
 			
 			if(cleanToken.length() > minTokenSize)
 				tokens.add(cleanToken);
