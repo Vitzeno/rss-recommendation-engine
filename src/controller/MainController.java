@@ -9,8 +9,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import feed.Feed;
 import feed.FeedItem;
-import feed.HTMLParser;
-import feed.Reader;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -27,6 +25,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import model.RSSData;
 import recommendation.RecommendationEngine;
+import utilities.HTMLParser;
+import utilities.Reader;
 import javafx.scene.Node;
 
 /**

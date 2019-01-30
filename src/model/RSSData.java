@@ -3,7 +3,7 @@ package model;
 import java.util.List;
 import feed.Feed;
 import feed.FeedItem;
-import feed.RSSParser;
+import utilities.RSSParser;
 
 /**
  * This class serves as the model, it handles all the data and parsing

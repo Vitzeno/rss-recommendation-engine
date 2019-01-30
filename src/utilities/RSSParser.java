@@ -1,4 +1,4 @@
-package feed;
+package utilities;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,6 +10,9 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.XMLEvent;
+
+import feed.Feed;
+import feed.FeedItem;
 
 /**
  * This class handles all parsing of RSS

@@ -1,4 +1,4 @@
-package feed;
+package utilities;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

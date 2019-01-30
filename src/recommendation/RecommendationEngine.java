@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import feed.Feed;
 import feed.FeedItem;
-import feed.HTMLParser;
-import feed.Reader;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.RSSData;
+import utilities.HTMLParser;
+import utilities.Reader;
 
 /**
  * This class handles all the recommendations produced
@@ -129,7 +129,7 @@ public class RecommendationEngine {
 					recFeed.addToFeed(item);
 				
 				
-				testHTMLParser(item);
+				//testHTMLParser(item);
 			}
 		}
 		
