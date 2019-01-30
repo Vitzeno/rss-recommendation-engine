@@ -9,6 +9,7 @@ import feed.FeedItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.RSSData;
+import textClassification.Tokeniser;
 import utilities.HTMLParser;
 import utilities.Reader;
 
@@ -59,6 +60,11 @@ public class RecommendationEngine {
     	HTMLParser htmlpar = new HTMLParser();
     	htmlpar.parseHTML(item);
 	}
+	
+	public void testTokeniser(FeedItem item) {
+		Tokeniser tokeniser = new Tokeniser();
+		System.out.println(tokeniser.getTokens(item.getTitle()));
+	}
 
 	
 	
@@ -106,35 +112,36 @@ public class RecommendationEngine {
 			for(FeedItem item : feed.getMessages()) {
 				float itemValue = 1f;
 				Date date = dateFormat.parse(item.getPubDate());
+				
 				//If date within number of hours of date range
 				if(currentDate.getTime() - date.getTime() <= dateRange * hour) {
 					//System.out.println("Date within 24: " + item.getPubDate());
 					itemValue += generateScoreForDateRange(currentDate.getTime() - date.getTime());
 					itemValue *= dateWeighting;
-					System.out.println("Item value after date calc: " + itemValue);
+					//System.out.println("Item value after date calc: " + itemValue);
 				}
 				
 				if(containsName(LikedFeedItemList, item.getGuid())) {
 					//System.out.println("Contained: " + item);
 					itemValue += 100f * likedFeedWeighting;
-					System.out.println("Item value after feed calc: " + itemValue);
+					//System.out.println("Item value after feed calc: " + itemValue);
 				}
 					
 				
-				
 				itemValue /= totalWeights;
-				System.out.println("Final Item value: " + itemValue);
-				System.out.println();
+				//System.out.println("Final Item value: " + itemValue);
+				//System.out.println();
 				if(itemValue >= thresholdValue)
 					recFeed.addToFeed(item);
 				
 				
 				//testHTMLParser(item);
+				//testTokeniser(item);
 			}
 		}
 		
-		System.out.println("Total weigths: " + totalWeights);
-		System.out.println("Threshold value: " + thresholdValue);
+		//System.out.println("Total weigths: " + totalWeights);
+		//System.out.println("Threshold value: " + thresholdValue);
 		//TODO: Sort items by score value before adding them to recommended feed
 		
 		return recFeed;
