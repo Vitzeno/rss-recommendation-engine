@@ -1,7 +1,7 @@
 package feed;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This class servers as a collection of feed items, each feed has a set of attributes which are
@@ -18,7 +18,7 @@ public class Feed {
     final String copyright;
     final String pubDate;
 
-    final List<FeedItem> items = new ArrayList<FeedItem>();
+    final Set<FeedItem> items = new HashSet<FeedItem>();
 
     /**
      * The constructor takes a set of feed attributes and sets them up
@@ -42,7 +42,7 @@ public class Feed {
      * This method returns an ArrayList of feed items
      * @return List of feed items
      */
-    public List<FeedItem> getMessages() {
+    public Set<FeedItem> getMessages() {
         return items;
     }
     
@@ -53,6 +53,17 @@ public class Feed {
      */
     public void addToFeed(FeedItem feedItem) {
     	items.add(feedItem);
+    }
+    
+    /**
+     * This method adds a list of feed items in the form
+     * of a feed object to the feed
+     * @param feed
+     */
+    public void addToFeed(Feed feed) {
+    	for(FeedItem item : feed.getMessages()) {
+    		items.add(item);
+    	}
     }
     
     /** 
@@ -111,5 +122,5 @@ public class Feed {
         //return "Feed [copyright=" + copyright + ", description=" + description + ", language=" + language + ", link=" + link + ", pubDate=" + pubDate + ", title=" + title + "]";
     	return title;
     }
-
+    
 }

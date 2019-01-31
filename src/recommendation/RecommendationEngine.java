@@ -40,6 +40,8 @@ public class RecommendationEngine {
 	private ObservableList<Feed> StandardFeedList = FXCollections.observableArrayList();
 	private ObservableList<FeedItem> LikedFeedItemList = FXCollections.observableArrayList();
 	
+	List<List<String>> documents = new ArrayList<List<String>>();
+	
 	
 	//Date range is in hours
 	private float dateRange = 24f;
@@ -56,13 +58,27 @@ public class RecommendationEngine {
 	//TODO: Think about exposing this value in the UI to allow for some altering
 	private float thresholdValue = 20;
 	
+	
+	
+	public void initDocumentsList() {
+		Tokeniser tokeniser = new Tokeniser();
+		
+		for(Feed feed : StandardFeedList) {
+			for(FeedItem item : feed.getMessages())
+				documents.add(tokeniser.getTokens(item.getTitle() + item.getDescription()));
+		}
+		
+		System.out.println(documents);
+		System.out.println("Feed size " + documents.size());
+	}
+	
 	/**
 	 * This method utilises the tokeniser and tfidf classes to
 	 * generate a numerical score for each feed based on user interests
 	 * as defined in the userTopics class.
 	 * @param feed
 	 */
-	public void getTFIDFScores(Feed feed) {
+	public void getTFIDFScoresPerFeed(Feed feed) {
 		Tokeniser tokeniser = new Tokeniser();
 		TFIDFCalculator tfidfCalc = new TFIDFCalculator();
 		UserTopics topics = UserTopics.getInstance();
@@ -70,11 +86,10 @@ public class RecommendationEngine {
 		String[] likedTerms = {"weather", "brexit", "deal", "apple", "facebook", "samsung", "steam", "traffic", "car", "congestion"};
 		topics.addTerms(likedTerms);
 			
-		List<List<String>> documents = new ArrayList<List<String>>();
+		
 		List<String> document = new ArrayList<String>();
 		
-		for(FeedItem item : feed.getMessages())
-			documents.add(tokeniser.getTokens(item.getTitle() + item.getDescription()));
+		
 		
 		for(FeedItem item : feed.getMessages()) {	
 			document = tokeniser.getTokens(item.getTitle() + item.getDescription());
@@ -87,12 +102,10 @@ public class RecommendationEngine {
 				if(tfidfScore > 0) {
 					System.out.print(item.getTitle() + " scored: " + tfidfScore);
 					System.err.println(" Beacuse your intrested in " + term);
+					recFeed.addToFeed(item);
 				}	
 			}			
 		}
-		
-//		System.out.println(documents);
-//		System.out.println("Feed size " + documents.size());
 	}
 
 	
@@ -100,6 +113,7 @@ public class RecommendationEngine {
 	public RecommendationEngine(ObservableList<Feed> RSSFeedList) {
 		this.StandardFeedList = RSSFeedList;
 		initLikedFeeds();
+		initDocumentsList();
 	}
 	
 	/**
@@ -159,12 +173,13 @@ public class RecommendationEngine {
 				itemValue /= totalWeights;
 				//System.out.println("Final Item value: " + itemValue);
 				//System.out.println();
-				if(itemValue >= thresholdValue)
-					recFeed.addToFeed(item);
+				
+//				if(itemValue >= thresholdValue)
+//					recFeed.addToFeed(item);
 				
 			}
 			
-			getTFIDFScores(feed);
+			getTFIDFScoresPerFeed(feed);
 		}
 		
 		//System.out.println("Total weigths: " + totalWeights);

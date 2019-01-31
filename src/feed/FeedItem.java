@@ -70,4 +70,22 @@ public class FeedItem {
         //return "FeedMessage [title=" + title + ", description=" + description + ", link=" + link + ", author=" + author + ", guid=" + guid + "]";
 		return title + " | " + description;
     }
+	
+	/**
+	 * This method overrides the equal method to be used when
+	 * comparing FeedItem objects. This is essential in ensuring 
+	 * the set data structure can compare objects meaningfully
+	 */
+    @Override
+    public boolean equals(Object obj) {
+    	if (this == obj)
+    		return true;
+    	if (obj == null)
+    		return false;
+    	FeedItem item = (FeedItem) obj;
+    	if (this.getGuid() != item.getGuid())
+    		return false;
+  
+    	return true;
+    }
 }

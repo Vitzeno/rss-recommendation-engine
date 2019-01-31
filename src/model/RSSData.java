@@ -1,6 +1,7 @@
 package model;
 
-import java.util.List;
+
+import java.util.Set;
 import feed.Feed;
 import feed.FeedItem;
 import utilities.RSSParser;
@@ -35,7 +36,7 @@ public class RSSData {
 	 * @param feed
 	 * @return
 	 */
-	public List<FeedItem> parseRSSFeedItems(Feed feed) {
+	public Set<FeedItem> parseRSSFeedItems(Feed feed) {
 		return feed.getMessages();
 	}
 	
