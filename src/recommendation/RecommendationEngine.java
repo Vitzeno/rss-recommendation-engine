@@ -23,11 +23,11 @@ import utilities.Reader;
 public class RecommendationEngine {
 	
 	//Format RSS provides pubDate in, to be used to parse into date object
-	String pattern = "EEE, dd MMM yyyy HH:mm:ss";
-	SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+	private String pattern = "EEE, dd MMM yyyy HH:mm:ss";
+	private SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
 	//One hour in milliseconds
 	private long hour = 3600000;
-	Date currentDate = new Date();
+	private Date currentDate = new Date();
 	
 	
 	private String LikedRSSFileName = "likedFeeds";
@@ -40,7 +40,8 @@ public class RecommendationEngine {
 	private ObservableList<Feed> StandardFeedList = FXCollections.observableArrayList();
 	private ObservableList<FeedItem> LikedFeedItemList = FXCollections.observableArrayList();
 	
-	List<List<String>> documents = new ArrayList<List<String>>();
+	//Used for tfidf calculations
+	private List<List<String>> documents = new ArrayList<List<String>>();
 	
 	
 	//Date range is in hours
@@ -83,14 +84,8 @@ public class RecommendationEngine {
 		TFIDFCalculator tfidfCalc = new TFIDFCalculator();
 		UserTopics topics = UserTopics.getInstance();
 		
-		String[] likedTerms = {"weather", "brexit", "deal", "apple", "facebook", "samsung", "steam", "traffic", "car", "congestion"};
-		topics.addTerms(likedTerms);
-			
-		
 		List<String> document = new ArrayList<String>();
-		
-		
-		
+			
 		for(FeedItem item : feed.getMessages()) {	
 			document = tokeniser.getTokens(item.getTitle() + item.getDescription());
 			

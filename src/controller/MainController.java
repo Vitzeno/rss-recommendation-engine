@@ -25,7 +25,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import model.RSSData;
 import recommendation.RecommendationEngine;
-import utilities.HTMLParser;
+import textClassification.UserTopics;
 import utilities.Reader;
 import javafx.scene.Node;
 
@@ -37,14 +37,13 @@ import javafx.scene.Node;
 public class MainController {
 	
 	private String RSSFileName = "standardFeeds";
+	private String topicsFileName = "topics";
 	private RSSData RSSDataModel;
 	private ArrayList<String> feedsURL = new ArrayList<String>();
 	private ObservableList<Feed> RSSFeedList = FXCollections.observableArrayList();
 	private Reader reader = new Reader();
 	
 	private RecommendationEngine recEngine;
-	
-	//private HashMap<Feed, List<FeedItem>> feedToList = new HashMap<Feed, List<FeedItem>>();
 	
     @FXML
     private Label lblNews;
@@ -174,6 +173,8 @@ public class MainController {
     	chkOpenInBrowse.setSelected(true);
     	initFeed();
     	setUpSettingsValues();
+    	
+    	
 
     	//initFeed(recommended);
     }
@@ -228,6 +229,8 @@ public class MainController {
      * @param feed
      */
     public void initFeedItems(Feed feed) {
+    	
+    	
     	//System.out.println(feedToList.get(feed));
     	lstViewFeed.getItems().clear();
     	for (FeedItem item : feed.getMessages()) {
@@ -240,6 +243,10 @@ public class MainController {
      * feed using the RSSDataModel class
      */
     public void initFeed() {
+    	UserTopics topics = UserTopics.getInstance();
+		topics.addTerms(reader.readFile(topicsFileName).toArray(new String[0]));
+    	
+    	
     	lstViewFeedTitles.getItems().clear();
     	RSSFeedList.clear();
     	if(RSSDataModel == null)

@@ -1,4 +1,11 @@
+weather
 brexit
+deal
 apple
+facebook
+samsung
 steam
-sales
+traffic
+car
+congestion
+sale
