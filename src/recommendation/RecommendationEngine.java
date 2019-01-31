@@ -60,7 +60,10 @@ public class RecommendationEngine {
 	private float thresholdValue = 20;
 	
 	
-	
+	/**
+	 * This method servers to set up the list of document tokens
+	 * to be used in tfidf calulations
+	 */
 	public void initDocumentsList() {
 		Tokeniser tokeniser = new Tokeniser();
 		

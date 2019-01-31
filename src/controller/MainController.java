@@ -173,10 +173,6 @@ public class MainController {
     	chkOpenInBrowse.setSelected(true);
     	initFeed();
     	setUpSettingsValues();
-    	
-    	
-
-    	//initFeed(recommended);
     }
     
     /**
@@ -229,9 +225,6 @@ public class MainController {
      * @param feed
      */
     public void initFeedItems(Feed feed) {
-    	
-    	
-    	//System.out.println(feedToList.get(feed));
     	lstViewFeed.getItems().clear();
     	for (FeedItem item : feed.getMessages()) {
     		lstViewFeed.getItems().add(item);
@@ -243,10 +236,11 @@ public class MainController {
      * feed using the RSSDataModel class
      */
     public void initFeed() {
+    	//add user topics to singleton class
     	UserTopics topics = UserTopics.getInstance();
 		topics.addTerms(reader.readFile(topicsFileName).toArray(new String[0]));
     	
-    	
+    	//clear lstView then add feeds
     	lstViewFeedTitles.getItems().clear();
     	RSSFeedList.clear();
     	if(RSSDataModel == null)
@@ -258,7 +252,6 @@ public class MainController {
     	}
     	
     	for (Feed feed : RSSFeedList) {
-    		//feedToList.put(feed, feed.getMessages());
     		lstViewFeedTitles.getItems().add(feed);
         } 
     	
