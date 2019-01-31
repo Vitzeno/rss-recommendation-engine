@@ -17,13 +17,17 @@ public class TFIDFCalculator {
 	 * tf = (Number of times term t appears document) / (Number of terms in the document)
 	 * @return
 	 */
-	public double tf(List<String> document, String term) {
+	private double tf(List<String> document, String term) {
 		double termCount = 0;
 		
 		for(String word : document) {
+//			System.out.println("Term " + term);
+//			System.out.println("Word " + word);
 			if(term.equalsIgnoreCase(word))
 				termCount++;
 		}
+		
+//		System.out.println("Term " + term + " count " + termCount);
 		
 		return termCount / document.size();
 	}
@@ -37,7 +41,7 @@ public class TFIDFCalculator {
 	 * idf = log((Number of documents) / (Number of documents with term t))
 	 * @return
 	 */
-	public double idf(List<List<String>> documents, String term) {
+	private double idf(List<List<String>> documents, String term) {
 		double termCount = 0;
 		
 		for(List<String> document : documents) {

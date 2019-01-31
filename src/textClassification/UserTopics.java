@@ -10,7 +10,7 @@ import java.util.Set;
  * @author Mohamed
  *
  */
-class UserTopics {
+public class UserTopics {
 	
 	private static UserTopics single_instance = null;
 	
@@ -56,10 +56,26 @@ class UserTopics {
 	}
 	
 	/**
+	 * This method returns the set of user topics
+	 * @return
+	 */
+	public Set<String> getTerms() {
+		return userTopics;
+	}
+	
+	/**
 	 * This method simply returns the size of the set 
 	 * @return
 	 */
 	public int getNumOfTerms() {
 		return userTopics.size();
 	}
+	
+	/**
+     * This method determines what to return when the toString method is invoked
+     */
+	@Override
+    public String toString() {
+        return userTopics.toString();
+    }
 }

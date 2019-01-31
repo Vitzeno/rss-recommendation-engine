@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import feed.Feed;
 import feed.FeedItem;
 import javafx.collections.FXCollections;
@@ -13,7 +12,7 @@ import javafx.collections.ObservableList;
 import model.RSSData;
 import textClassification.TFIDFCalculator;
 import textClassification.Tokeniser;
-import utilities.HTMLParser;
+import textClassification.UserTopics;
 import utilities.Reader;
 
 /**
@@ -57,33 +56,43 @@ public class RecommendationEngine {
 	//TODO: Think about exposing this value in the UI to allow for some altering
 	private float thresholdValue = 20;
 	
-
-	
-	public void testHTMLParser(FeedItem item) {
-    	HTMLParser htmlpar = new HTMLParser();
-    	htmlpar.parseHTML(item);
-	}
-	
-	public void testTokeniser(FeedItem item) {
+	/**
+	 * This method utilises the tokeniser and tfidf classes to
+	 * generate a numerical score for each feed based on user interests
+	 * as defined in the userTopics class.
+	 * @param feed
+	 */
+	public void getTFIDFScores(Feed feed) {
 		Tokeniser tokeniser = new Tokeniser();
-		System.out.println(tokeniser.getTokens(item.getTitle()));
-	}
-	
-	public void testTFIDFCalculator(Feed feed) {
+		TFIDFCalculator tfidfCalc = new TFIDFCalculator();
+		UserTopics topics = UserTopics.getInstance();
+		
+		String[] likedTerms = {"weather", "brexit", "deal", "apple", "facebook", "samsung", "steam", "traffic", "car", "congestion"};
+		topics.addTerms(likedTerms);
+			
 		List<List<String>> documents = new ArrayList<List<String>>();
 		List<String> document = new ArrayList<String>();
 		
-		Tokeniser tokeniser = new Tokeniser();
+		for(FeedItem item : feed.getMessages())
+			documents.add(tokeniser.getTokens(item.getTitle() + item.getDescription()));
+		
 		for(FeedItem item : feed.getMessages()) {	
-			document.addAll(tokeniser.getTokens(item.getTitle()));
-			documents.add(tokeniser.getTokens(item.getTitle()));
+			document = tokeniser.getTokens(item.getTitle() + item.getDescription());
+			
+			//System.out.println(document);
+						
+			for(String term : topics.getTerms()) {
+				double tfidfScore = tfidfCalc.tfidf(document, documents, term);
+				
+				if(tfidfScore > 0) {
+					System.out.print(item.getTitle() + " scored: " + tfidfScore);
+					System.err.println(" Beacuse your intrested in " + term);
+				}	
+			}			
 		}
 		
-		TFIDFCalculator tfidfCalc = new TFIDFCalculator();
-		
-		
-		
-		System.out.println(tfidfCalc.tfidf(document, documents, "brexit"));
+//		System.out.println(documents);
+//		System.out.println("Feed size " + documents.size());
 	}
 
 	
@@ -153,12 +162,9 @@ public class RecommendationEngine {
 				if(itemValue >= thresholdValue)
 					recFeed.addToFeed(item);
 				
-				
-				//testHTMLParser(item);
-				//testTokeniser(item);
 			}
 			
-			testTFIDFCalculator(feed);
+			getTFIDFScores(feed);
 		}
 		
 		//System.out.println("Total weigths: " + totalWeights);
