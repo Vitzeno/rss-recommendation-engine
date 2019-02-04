@@ -5,7 +5,7 @@ package feed;
  * @author Mohamed
  *
  */
-public class FeedItem {
+public class FeedItem implements Comparable<FeedItem> {
 	
 	String title;
     String description;
@@ -13,14 +13,20 @@ public class FeedItem {
     String author;
     String guid;
     String pubDate;
-    double score = 0.0;
+    double score;
 
 	public double getScore() {
 		return score;
 	}
-
+	
+	/**
+	 * Each feed item can have more than one tfidf score generated 
+	 * due to multiple user topics available therefore scores 
+	 * should be appended
+	 * @param score
+	 */
 	public void setScore(double score) {
-		this.score = score;
+		this.score += score;
 	}
 
 	public String getTitle() {
@@ -49,6 +55,10 @@ public class FeedItem {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public void appendDescription(String description) {
+		setDescription(this.getDescription() + description);
 	}
 
 	public void setLink(String link) {
@@ -97,4 +107,27 @@ public class FeedItem {
   
     	return true;
     }
+    
+    /**
+     * Tree-set comparison relies on this method, it it returns
+     * 0 the two items are the same. This relies on the equal method which 
+     * was previously overridden.
+     * 
+     * Criteria used by tree set: 
+     * 
+     * Positive:  Current instance is greater than Other.
+     * Zero:  Two instances are equal.
+     * Negative: Current instance is smaller than Other.
+     * 
+     * where: 
+     * 		current instance = item
+     * 		other = this
+     * 
+     */
+	@Override
+	public int compareTo(FeedItem item) {
+		if(this.equals(item))
+			return 0;
+		return this.getScore() < item.getScore() ? 1 : -1;
+	}
 }

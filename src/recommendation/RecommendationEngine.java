@@ -102,6 +102,7 @@ public class RecommendationEngine {
 					System.out.print(item.getTitle() + " scored: " + tfidfScore);
 					System.err.println(" Beacuse your intrested in " + term);
 					item.setScore(tfidfScore);
+					item.appendDescription(" | Generated Score: " + tfidfScore);
 					recFeed.addToFeed(item);
 				}	
 			}			
@@ -181,12 +182,10 @@ public class RecommendationEngine {
 //				if(itemValue >= thresholdValue)
 //					recFeed.addToFeed(item);
 				
-				
 			}
 			
-			
 		}
-		
+	
 		//System.out.println("Total weigths: " + totalWeights);
 		//System.out.println("Threshold value: " + thresholdValue);
 		//TODO: Sort items by score value before adding them to recommended feed

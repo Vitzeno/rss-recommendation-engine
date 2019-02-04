@@ -1,7 +1,6 @@
 package feed;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * This class servers as a collection of feed items, each feed has a set of attributes which are
@@ -18,7 +17,7 @@ public class Feed {
     final String copyright;
     final String pubDate;
 
-    final Set<FeedItem> items = new HashSet<FeedItem>();
+    final TreeSet<FeedItem> items = new TreeSet<FeedItem>();
 
     /**
      * The constructor takes a set of feed attributes and sets them up
@@ -42,7 +41,7 @@ public class Feed {
      * This method returns an ArrayList of feed items
      * @return List of feed items
      */
-    public Set<FeedItem> getMessages() {
+    public TreeSet<FeedItem> getMessages() {
         return items;
     }
     
