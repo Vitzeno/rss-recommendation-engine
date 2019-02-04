@@ -82,7 +82,7 @@ public class RecommendationEngine {
 	 * as defined in the userTopics class.
 	 * @param feed
 	 */
-	public void getTFIDFScoresPerFeed(Feed feed) {
+	public void setTFIDFScoresPerFeed(Feed feed) {
 		Tokeniser tokeniser = new Tokeniser();
 		TFIDFCalculator tfidfCalc = new TFIDFCalculator();
 		UserTopics topics = UserTopics.getInstance();
@@ -96,10 +96,12 @@ public class RecommendationEngine {
 						
 			for(String term : topics.getTerms()) {
 				double tfidfScore = tfidfCalc.tfidf(document, documents, term);
+						
 				
 				if(tfidfScore > 0) {
 					System.out.print(item.getTitle() + " scored: " + tfidfScore);
 					System.err.println(" Beacuse your intrested in " + term);
+					item.setScore(tfidfScore);
 					recFeed.addToFeed(item);
 				}	
 			}			
@@ -149,35 +151,40 @@ public class RecommendationEngine {
 		setTotalWeights();
 		
 		for(Feed feed : StandardFeedList) {
+			
+			setTFIDFScoresPerFeed(feed);
+			
 			for(FeedItem item : feed.getMessages()) {
-				float itemValue = 1f;
-				Date date = dateFormat.parse(item.getPubDate());
 				
-				//If date within number of hours of date range
-				if(currentDate.getTime() - date.getTime() <= dateRange * hour) {
-					//System.out.println("Date within 24: " + item.getPubDate());
-					itemValue += generateScoreForDateRange(currentDate.getTime() - date.getTime());
-					itemValue *= dateWeighting;
-					//System.out.println("Item value after date calc: " + itemValue);
-				}
-				
-				if(containsName(LikedFeedItemList, item.getGuid())) {
-					//System.out.println("Contained: " + item);
-					itemValue += 100f * likedFeedWeighting;
-					//System.out.println("Item value after feed calc: " + itemValue);
-				}
-					
-				
-				itemValue /= totalWeights;
-				//System.out.println("Final Item value: " + itemValue);
-				//System.out.println();
-				
+//				float itemValue = 1f;
+//				Date date = dateFormat.parse(item.getPubDate());
+//				
+//				//If date within number of hours of date range
+//				if(currentDate.getTime() - date.getTime() <= dateRange * hour) {
+//					//System.out.println("Date within 24: " + item.getPubDate());
+//					itemValue += generateScoreForDateRange(currentDate.getTime() - date.getTime());
+//					itemValue *= dateWeighting;
+//					//System.out.println("Item value after date calc: " + itemValue);
+//				}
+//				
+//				if(containsName(LikedFeedItemList, item.getGuid())) {
+//					//System.out.println("Contained: " + item);
+//					itemValue += 100f * likedFeedWeighting;
+//					//System.out.println("Item value after feed calc: " + itemValue);
+//				}
+//					
+//				
+//				itemValue /= totalWeights;
+//				System.out.println("Final Item value: " + itemValue);
+//				System.out.println();
+//				
 //				if(itemValue >= thresholdValue)
 //					recFeed.addToFeed(item);
 				
+				
 			}
 			
-			getTFIDFScoresPerFeed(feed);
+			
 		}
 		
 		//System.out.println("Total weigths: " + totalWeights);

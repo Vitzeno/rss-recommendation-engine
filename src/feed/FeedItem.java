@@ -13,6 +13,15 @@ public class FeedItem {
     String author;
     String guid;
     String pubDate;
+    double score = 0.0;
+
+	public double getScore() {
+		return score;
+	}
+
+	public void setScore(double score) {
+		this.score = score;
+	}
 
 	public String getTitle() {
 		return title;
