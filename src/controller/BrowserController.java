@@ -24,16 +24,7 @@ public class BrowserController {
     private TextArea txtArticle;
     @FXML
     private Button btnOpenInBrowse;
-    
-//    @FXML
-//    void goBack(MouseEvent event) throws IOException {
-//    	Parent browserViewParent = FXMLLoader.load(getClass().getClassLoader().getResource("ReaderView.fxml"));
-//    	Scene browserViewScene = new Scene(browserViewParent);
-//    	Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-//    	
-//    	window.setScene(browserViewScene);
-//        window.show();
-//    }
+
     
     @FXML
     void openInBrowser(MouseEvent event) {
@@ -65,8 +56,6 @@ public class BrowserController {
     		System.out.println("Link to open: " + URL);
     		
     		displayText(htmlParser.parseHTML(URL));
-    		
-    		//webView.getEngine().load(URL);
     	}	
     	else
     		System.out.println("Malformed URL passed: " + URL);

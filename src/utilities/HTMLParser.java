@@ -6,7 +6,12 @@ import org.jsoup.nodes.Document;
 
 public class HTMLParser {
 
-	
+	/**
+	 * This method returns a string representing a simplified version of the article provided
+	 * via URL
+	 * @param url of the article to parse 
+	 * @return a string of article text, filtering out irrelevant material
+	 */
 	public String parseHTML(String url) {
 		
 		StringBuilder result = new StringBuilder();

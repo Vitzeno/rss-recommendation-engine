@@ -118,7 +118,6 @@ public class MainController {
         	
         	//access the controller and call a method
             BrowserController controller = loader.getController();
-            //System.out.println("Link passed: " + link);
             controller.load(link);
         	
             Tab newTab = new Tab();
@@ -126,14 +125,6 @@ public class MainController {
             newTab.setContent(browserViewParent);
             newTab.setClosable(true);
             newTab.setText(lstViewFeed.getSelectionModel().getSelectedItem().getTitle());
-            
-            
-        	
-//        	Scene browserViewScene = new Scene(browserViewParent);
-//        	Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-//        	
-//        	window.setScene(browserViewScene);
-//            window.show();
         }
     }
     
