@@ -11,38 +11,30 @@ import feed.FeedItem;
 public class HTMLParser {
 
 	
-	public void parseHTML(FeedItem item) {
+	public String parseHTML(String url) {
 		
-		String url = item.getLink();
+		StringBuilder result = new StringBuilder();
 		
 		try {
 			Document doc = Jsoup.connect(url).get();
-			System.out.println(doc.title());
+			result.append(doc.title() + "\n");
+				
+			doc.body().getAllElements().stream()
+            .filter(element -> !element.className().toLowerCase().matches(".*(menu|header|footer|logo|nav|search|link|button|btn|ad).*"))
+            .filter(element -> element.tagName().equals("p") || element.tagName().equals("h") || element.tagName().equals("h1") || element.tagName().equals("h2") || element.tagName().equals("h3"))
+            .forEach(element -> {
+                if (element.hasText()) {
+                	result.append(element.text() + "\n");
+                }
+        });
 			
-			Elements ps = doc.getElementsByTag("p");
-			Elements h1s = doc.getElementsByTag("h1");
-			Elements h2s = doc.getElementsByTag("h2");
-			Elements h3s = doc.getElementsByTag("h3");
-			Elements h4s = doc.getElementsByTag("h4");
-			Elements h5s = doc.getElementsByTag("h5");
-			
-			for(Element p : ps) 
-				System.out.println(p);
-			for(Element h1 : h1s) 
-				System.out.println(h1);
-			for(Element h2 : h2s) 
-				System.out.println(h2);
-			for(Element h3 : h3s) 
-				System.out.println(h3);
-			for(Element h4 : h4s) 
-				System.out.println(h4);
-			for(Element h5 : h5s) 
-				System.out.println(h5);
 			
 		} catch (IOException e) {
 			System.err.println("JSOUP IO expection " + e.toString());
 			e.printStackTrace();
 		}	
+		
+		return result.toString();
 	}
 
 }

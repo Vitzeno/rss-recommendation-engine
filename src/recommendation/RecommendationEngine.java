@@ -99,8 +99,8 @@ public class RecommendationEngine {
 						
 				
 				if(tfidfScore > 0) {
-					System.out.print(item.getTitle() + " scored: " + tfidfScore);
-					System.err.println(" Beacuse your intrested in " + term);
+					//System.out.print(item.getTitle() + " scored: " + tfidfScore);
+					//System.err.println(" Beacuse your intrested in " + term);
 					item.setScore(tfidfScore);
 					//item.appendDescription(" | Beacuse your intrested in " + term);
 					item.appendDescription(" | Generated Score: " + tfidfScore);

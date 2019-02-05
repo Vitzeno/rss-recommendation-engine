@@ -22,10 +22,13 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import model.RSSData;
 import recommendation.RecommendationEngine;
 import textClassification.UserTopics;
+import utilities.HTMLParser;
 import utilities.Reader;
 import javafx.scene.Node;
 
@@ -109,7 +112,6 @@ public class MainController {
     		}
         }
         else {
-
         	FXMLLoader loader = new FXMLLoader();
         	loader.setLocation(getClass().getClassLoader().getResource("BrowserView.fxml"));
         	
@@ -120,12 +122,16 @@ public class MainController {
             //System.out.println("Link passed: " + link);
             controller.load(link);
         	
+        	
+//        	Stage stage = new Stage();
+//            stage.setScene(new Scene(browserViewParent));  
+//            stage.show();
+        	
         	Scene browserViewScene = new Scene(browserViewParent);
         	Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         	
         	window.setScene(browserViewScene);
             window.show();
-
         }
     }
     
@@ -170,7 +176,7 @@ public class MainController {
     @FXML
     void initialize() {
     	System.out.println("Controller initialise");
-    	chkOpenInBrowse.setSelected(true);
+    	//chkOpenInBrowse.setSelected(true);
     	initFeed();
     	setUpSettingsValues();
     }
