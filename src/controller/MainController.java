@@ -14,23 +14,21 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import model.RSSData;
 import recommendation.RecommendationEngine;
 import textClassification.UserTopics;
-import utilities.HTMLParser;
 import utilities.Reader;
-import javafx.scene.Node;
+
 
 /**
  * This class servers as the main view controller
@@ -76,7 +74,8 @@ public class MainController {
     private TextField txtDateRange;
     @FXML
     private Button btnSave;
-    
+    @FXML
+    private TabPane tabs;
     
     /**
      * On click method when item in feed list is selected
@@ -122,16 +121,19 @@ public class MainController {
             //System.out.println("Link passed: " + link);
             controller.load(link);
         	
+            Tab newTab = new Tab();
+            tabs.getTabs().add(newTab);
+            newTab.setContent(browserViewParent);
+            newTab.setClosable(true);
+            newTab.setText(lstViewFeed.getSelectionModel().getSelectedItem().getTitle());
+            
+            
         	
-//        	Stage stage = new Stage();
-//            stage.setScene(new Scene(browserViewParent));  
-//            stage.show();
-        	
-        	Scene browserViewScene = new Scene(browserViewParent);
-        	Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        	
-        	window.setScene(browserViewScene);
-            window.show();
+//        	Scene browserViewScene = new Scene(browserViewParent);
+//        	Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+//        	
+//        	window.setScene(browserViewScene);
+//            window.show();
         }
     }
     
@@ -177,6 +179,12 @@ public class MainController {
     void initialize() {
     	System.out.println("Controller initialise");
     	//chkOpenInBrowse.setSelected(true);
+    	
+    	tabs.setTabClosingPolicy(TabClosingPolicy.ALL_TABS);
+    	//Ensures default tabs are not closable
+    	for(Tab tabs : tabs.getTabs())
+    		tabs.setClosable(false);
+    	
     	initFeed();
     	setUpSettingsValues();
     }

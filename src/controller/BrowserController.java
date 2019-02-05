@@ -6,15 +6,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.web.WebView;
-import javafx.stage.Stage;
 import utilities.HTMLParser;
 
 /**
@@ -27,21 +21,19 @@ public class BrowserController {
 	private String URL;
 
     @FXML
-    private Button btnBack;
-    @FXML
     private TextArea txtArticle;
     @FXML
     private Button btnOpenInBrowse;
     
-    @FXML
-    void goBack(MouseEvent event) throws IOException {
-    	Parent browserViewParent = FXMLLoader.load(getClass().getClassLoader().getResource("ReaderView.fxml"));
-    	Scene browserViewScene = new Scene(browserViewParent);
-    	Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-    	
-    	window.setScene(browserViewScene);
-        window.show();
-    }
+//    @FXML
+//    void goBack(MouseEvent event) throws IOException {
+//    	Parent browserViewParent = FXMLLoader.load(getClass().getClassLoader().getResource("ReaderView.fxml"));
+//    	Scene browserViewScene = new Scene(browserViewParent);
+//    	Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+//    	
+//    	window.setScene(browserViewScene);
+//        window.show();
+//    }
     
     @FXML
     void openInBrowser(MouseEvent event) {
