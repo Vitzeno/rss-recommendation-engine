@@ -1,12 +1,11 @@
 weather
 brexit
-deal
 apple
 facebook
 samsung
-steam
 traffic
 car
 congestion
 sale
 EU
+sports

@@ -264,7 +264,7 @@ public class MainController {
     		initRecEngine();
     	
     	try {
-			lstViewFeedTitles.getItems().add(recEngine.generateRecommendations());
+			lstViewFeedTitles.getItems().add(0, recEngine.generateRecommendations());
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
