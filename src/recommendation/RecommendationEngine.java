@@ -5,6 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import Jama.Matrix;
+import Jama.SingularValueDecomposition;
 import feed.Feed;
 import feed.FeedItem;
 import javafx.collections.FXCollections;
@@ -55,14 +58,63 @@ public class RecommendationEngine {
 	private boolean useLikedAuthorWeighting = false;
 	
 	private int totalWeights = 0;
-	//This is the value that determines if a item should be entered into the feed
-	//TODO: Think about exposing this value in the UI to allow for some altering
 	private float thresholdValue = 20;
 	
 	
+	public void testSVDMatrix() {
+		
+		double[][] array = {
+				{1, 1, 1, 0, 0},
+				{3, 3, 3, 0, 0},
+				{4, 4, 4, 0, 0},
+				{5, 5, 5, 0, 0},
+				{0, 2, 0, 4, 4},
+				{0, 0, 0, 5, 5},
+				{0, 1, 0, 2, 2}
+		};
+		
+		Matrix A = new Matrix(array);
+		SingularValueDecomposition svd = A.svd();
+		Matrix U = svd.getU();
+		Matrix S = svd.getS();
+		Matrix V = svd.getV();
+		
+		/**
+		 * Get a submatrix.
+			Parameters:
+			i0 - Initial row index
+			i1 - Final row index
+			c - Array of column indices.
+		 */
+		Matrix Up = U.getMatrix(0, U.getRowDimension() - 1,  new int[] {0, 1});
+		Matrix Sp = S.getMatrix(0, S.getRowDimension() - 1,  new int[] {0, 1});
+		Matrix Vp = V.getMatrix(0, V.getRowDimension() - 1,  new int[] {0, 1});
+		
+		Matrix query = A.getMatrix(new int[] {4}, 0, A.getColumnDimension() - 1);
+		Matrix query2 = A.getMatrix(new int[] {1}, 0, A.getColumnDimension() - 1);
+
+		
+		Matrix vector = query.times(Vp);
+		Matrix vector2 = query2.times(Vp);
+		
+		for(int i = 0;i < vector.getRowDimension();i++) {
+			for(int j = 0;j < vector.getColumnDimension();j++) {
+				System.out.print(vector.get(i, j) + " ");
+			}
+			System.out.println();
+		}
+		
+		for(int i = 0;i < vector2.getRowDimension();i++) {
+			for(int j = 0;j < vector2.getColumnDimension();j++) {
+				System.out.print(vector2.get(i, j) + " ");
+			}
+			System.out.println();
+		}
+	}
+	
 	/**
 	 * This method servers to set up the list of document tokens
-	 * to be used in tfidf calulations
+	 * to be used in tfidf calculations
 	 */
 	public void initDocumentsList() {
 		Tokeniser tokeniser = new Tokeniser();
@@ -70,7 +122,7 @@ public class RecommendationEngine {
 		for(Feed feed : StandardFeedList) {
 			for(FeedItem item : feed.getMessages()) {
 				item.setTokens(tokeniser.getTokens(item.getTitle() + item.getDescription()));
-				documents.add(tokeniser.getTokens(item.getTitle() + item.getDescription()));
+				documents.add(item.getTokens());
 			}
 		}
 		
@@ -94,8 +146,8 @@ public class RecommendationEngine {
 				double tfidfScore = tfidfCalc.tfidf(item.getTokens(), documents, term);					
 				
 				if(tfidfScore > 0) {
-					System.out.print(item.getTitle() + " scored: " + tfidfScore);
-					System.err.println(" Beacuse your intrested in " + term);
+					//System.out.print(item.getTitle() + " scored: " + tfidfScore);
+					//System.err.println(" Because your interested in " + term);
 					item.setScore(tfidfScore);
 					item.appendDescription(" | Generated Score: " + tfidfScore);
 					recFeed.addToFeed(item);
@@ -146,12 +198,15 @@ public class RecommendationEngine {
 		//float itemValue = 1f;
 		setTotalWeights();
 		
+		
+		testSVDMatrix();
+		
 		for(Feed feed : StandardFeedList) {
 			
 			setTFIDFScoresPerFeed(feed);
 			
-			for(FeedItem item : feed.getMessages()) {
-				
+//			for(FeedItem item : feed.getMessages()) {
+//				
 //				float itemValue = 1f;
 //				Date date = dateFormat.parse(item.getPubDate());
 //				
@@ -176,8 +231,8 @@ public class RecommendationEngine {
 //				
 //				if(itemValue >= thresholdValue)
 //					recFeed.addToFeed(item);
-				
-			}
+//				
+//			}
 			
 		}
 	
