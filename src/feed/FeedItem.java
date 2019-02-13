@@ -1,5 +1,8 @@
 package feed;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This class represents each item in the feed with a set of attributes, mostly consists of self explanatory setters and getters
  * @author Mohamed
@@ -14,6 +17,20 @@ public class FeedItem implements Comparable<FeedItem> {
     String guid;
     String pubDate;
     double score;
+    
+    List<String> tokens = new ArrayList<String>();
+
+	public List<String> getTokens() {
+		return tokens;
+	}
+	
+	public void addToken(String token) {
+		tokens.add(token);
+	}
+
+	public void setTokens(List<String> tokens) {
+		this.tokens = tokens;
+	}
 
 	public double getScore() {
 		return score;

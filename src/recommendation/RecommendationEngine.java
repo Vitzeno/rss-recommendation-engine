@@ -68,8 +68,10 @@ public class RecommendationEngine {
 		Tokeniser tokeniser = new Tokeniser();
 		
 		for(Feed feed : StandardFeedList) {
-			for(FeedItem item : feed.getMessages())
+			for(FeedItem item : feed.getMessages()) {
+				item.setTokens(tokeniser.getTokens(item.getTitle() + item.getDescription()));
 				documents.add(tokeniser.getTokens(item.getTitle() + item.getDescription()));
+			}
 		}
 		
 		System.out.println(documents);
@@ -77,32 +79,24 @@ public class RecommendationEngine {
 	}
 	
 	/**
-	 * This method utilises the tokeniser and tfidf classes to
+	 * This method utilises the tfidf class to
 	 * generate a numerical score for each feed based on user interests
 	 * as defined in the userTopics class.
 	 * @param feed
 	 */
 	public void setTFIDFScoresPerFeed(Feed feed) {
-		Tokeniser tokeniser = new Tokeniser();
 		TFIDFCalculator tfidfCalc = new TFIDFCalculator();
 		UserTopics topics = UserTopics.getInstance();
-		
-		List<String> document = new ArrayList<String>();
 			
 		for(FeedItem item : feed.getMessages()) {	
-			document = tokeniser.getTokens(item.getTitle() + item.getDescription());
-			
-			//System.out.println(document);
-						
+								
 			for(String term : topics.getTerms()) {
-				double tfidfScore = tfidfCalc.tfidf(document, documents, term);
-						
+				double tfidfScore = tfidfCalc.tfidf(item.getTokens(), documents, term);					
 				
 				if(tfidfScore > 0) {
 					System.out.print(item.getTitle() + " scored: " + tfidfScore);
 					System.err.println(" Beacuse your intrested in " + term);
 					item.setScore(tfidfScore);
-					//item.appendDescription(" | Beacuse your intrested in " + term);
 					item.appendDescription(" | Generated Score: " + tfidfScore);
 					recFeed.addToFeed(item);
 				}	
