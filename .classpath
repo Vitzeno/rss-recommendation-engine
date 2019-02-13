@@ -8,5 +8,6 @@
 		</accessrules>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/jar/jsoup-1.11.3.jar"/>
+	<classpathentry kind="lib" path="lib/jar/Jama-1.0.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
