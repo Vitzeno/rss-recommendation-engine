@@ -17,8 +17,17 @@ public class FeedItem implements Comparable<FeedItem> {
     String guid;
     String pubDate;
     double score;
+    int matrixIndex;
     
     List<String> tokens = new ArrayList<String>();
+    
+    public int getMatrixIndex() {
+		return matrixIndex;
+	}
+
+	public void setMatrixIndex(int matrixIndex) {
+		this.matrixIndex = matrixIndex;
+	}
 
 	public List<String> getTokens() {
 		return tokens;

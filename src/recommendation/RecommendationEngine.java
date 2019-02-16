@@ -17,6 +17,7 @@ import textClassification.TFIDFCalculator;
 import textClassification.Tokeniser;
 import textClassification.UserTopics;
 import utilities.Reader;
+import utilities.ToolBox;
 
 /**
  * This class handles all the recommendations produced
@@ -61,8 +62,27 @@ public class RecommendationEngine {
 	private float thresholdValue = 20;
 	
 	
-	public void testSVDMatrix() {
+	public void testSVDMatrix(Feed feed) {
 		
+		double[][] array = new double[50][50];
+		int i = 0;
+		
+		for(FeedItem item : feed.getMessages()) {
+			item.setMatrixIndex(i);
+			for(int j = 0;j < 50;j++) {
+				array[i][j] = item.getMatrixIndex();
+			}
+			i++;
+		}
+		
+		Matrix test = new Matrix(array);
+		test = test.getMatrix(new int[] {feed.getMessages().first().getMatrixIndex()}, 0, test.getColumnDimension() - 1);
+		ToolBox.getInstance().printMatrix(test);
+		
+		
+		
+		
+		/*
 		double[][] array = {
 				{1, 1, 1, 0, 0},
 				{3, 3, 3, 0, 0},
@@ -86,6 +106,7 @@ public class RecommendationEngine {
 			i1 - Final row index
 			c - Array of column indices.
 		 */
+		/*
 		Matrix Up = U.getMatrix(0, U.getRowDimension() - 1,  new int[] {0, 1});
 		Matrix Sp = S.getMatrix(0, S.getRowDimension() - 1,  new int[] {0, 1});
 		Matrix Vp = V.getMatrix(0, V.getRowDimension() - 1,  new int[] {0, 1});
@@ -110,6 +131,7 @@ public class RecommendationEngine {
 			}
 			System.out.println();
 		}
+		*/
 	}
 	
 	/**
@@ -199,7 +221,7 @@ public class RecommendationEngine {
 		setTotalWeights();
 		
 		
-		testSVDMatrix();
+		testSVDMatrix(StandardFeedList.get(0));
 		
 		for(Feed feed : StandardFeedList) {
 			
