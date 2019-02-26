@@ -1,6 +1,9 @@
 package utilities;
 
+import java.util.List;
 import Jama.Matrix;
+import feed.Feed;
+import feed.FeedItem;
 
 /**
  * This class contains various helper methods used in multiple
@@ -9,27 +12,6 @@ import Jama.Matrix;
  *
  */
 public class ToolBox {
-	
-	private static ToolBox single_instance = null;
-	
-	/**
-	 * private constructor ensures singleton nature of class
-	 */
-	private ToolBox() {
-		
-	}
-	
-	/**
-	 * This method servers to provide an instance of the class
-	 * and ensure that only one instance exists
-	 * @return
-	 */
-	public static ToolBox getInstance() {
-		if(single_instance == null)
-			single_instance = new ToolBox();
-		
-		return single_instance;
-	}
 
 	/**
 	 * This method simply prints a matrix to be displayed
@@ -44,5 +26,27 @@ public class ToolBox {
 			System.out.println();
 		}
 		System.out.println();
+	}
+	
+	public void printMatrixData(Matrix m) {
+		System.out.println("Matrix row dimension " + m.getRowDimension());
+		System.out.println("Matrix col dimension " + m.getColumnDimension());
+	}
+	
+	public void printTokens(List<String> tokens) {
+		System.out.println(tokens);
+		System.out.println("Feed size " + tokens.size());
+	}
+	
+	public void printDocuments(List<List<String>> documents) {
+		System.out.println(documents);
+		System.out.println("Feed size " + documents.size());
+	}
+	
+	public void printFeeds(List<Feed> feeds) {
+		for(Feed feed : feeds) {
+			for(FeedItem items : feed.getMessages())
+				System.out.println(items);
+		}
 	}
 }

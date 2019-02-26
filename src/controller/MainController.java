@@ -6,7 +6,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.ParseException;
-import java.util.ArrayList;
 import feed.Feed;
 import feed.FeedItem;
 import javafx.collections.FXCollections;
@@ -40,7 +39,6 @@ public class MainController {
 	private String RSSFileName = "standardFeeds";
 	private String topicsFileName = "topics";
 	private RSSData RSSDataModel;
-	private ArrayList<String> feedsURL = new ArrayList<String>();
 	private ObservableList<Feed> RSSFeedList = FXCollections.observableArrayList();
 	private Reader reader = new Reader();
 	
@@ -251,15 +249,12 @@ public class MainController {
     	if(RSSDataModel == null)
     		initModel();
     	
-    	feedsURL = reader.readFile(RSSFileName);
-    	for (String URL : feedsURL) {
-    		RSSFeedList.add(RSSDataModel.parseRSSFeed(URL));
-    	}
+    	RSSFeedList = RSSDataModel.parseRSSFeeds(RSSFileName);
     	
     	for (Feed feed : RSSFeedList) {
     		lstViewFeedTitles.getItems().add(feed);
         } 
-    	
+    	 	
     	if(recEngine == null)
     		initRecEngine();
     	
@@ -283,6 +278,6 @@ public class MainController {
      */
     public void initModel() {
     	System.out.println("Initialising data model");
-    	RSSDataModel = new RSSData();
+    	RSSDataModel = RSSData.getInstance();
     }
 }
