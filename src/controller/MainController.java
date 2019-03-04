@@ -249,7 +249,7 @@ public class MainController {
     	if(RSSDataModel == null)
     		initModel();
     	
-    	RSSFeedList = RSSDataModel.parseRSSFeeds(RSSFileName);
+    	RSSFeedList = RSSDataModel.parseRSSFeeds();
     	
     	for (Feed feed : RSSFeedList) {
     		lstViewFeedTitles.getItems().add(feed);

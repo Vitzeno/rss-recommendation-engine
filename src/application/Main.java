@@ -3,14 +3,25 @@ package application;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
+import model.RSSData;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
 
 public class Main extends Application {
+	
+	private String RSSFileName = "standardFeeds";
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+			
+			/**
+			 * First initialisation of RSSData singleton class
+			 * contains data to be used by most classes in this 
+			 * project and must "live" for the project lifetime
+			 */
+			RSSData.getInstance(RSSFileName);
 			
 			primaryStage.setTitle("RSS Reader");
 			primaryStage.setMinWidth(640);

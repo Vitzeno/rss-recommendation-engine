@@ -29,6 +29,8 @@ public class RSSData {
 	private ObservableList<Feed> Feeds = FXCollections.observableArrayList();
 	private ArrayList<String> feedsURL = new ArrayList<String>();
 	
+	private String feedURLs;
+	
 	private List<List<String>> documents = new ArrayList<List<String>>();
 	
 	//All tokens in all feeds
@@ -44,6 +46,14 @@ public class RSSData {
 	}
 	
 	/**
+	 * Alternate Constructor to pass feeds url
+	 * @param url
+	 */
+	private RSSData(String url) {
+		this.feedURLs = url;
+	}
+	
+	/**
 	 * This method servers to provide an instance of the class
 	 * and ensure that only one instance exists
 	 * @return
@@ -56,13 +66,27 @@ public class RSSData {
 	}
 	
 	/**
+	 * This method servers to provide an instance of the class
+	 * and ensure that only one instance exists, also servers
+	 * as an alternate constructor for singleton nature
+	 * of this class
+	 * @return
+	 */
+	public static RSSData getInstance(String url) {
+		if(single_instance == null)
+			single_instance = new RSSData(url);
+		
+		return single_instance;
+	}
+	
+	/**
 	 * This method uses the RSSParser class to parse a list of RSS feeds from the provided URL
 	 * containing a list of RSS url's
 	 * @param url
 	 */
-	public ObservableList<Feed> parseRSSFeeds(String url) {
+	public ObservableList<Feed> parseRSSFeeds() {
 		
-		feedsURL = reader.readFile(url);
+		feedsURL = reader.readFile(feedURLs);
     	for (String URL : feedsURL) {
     		Feeds.add(parseRSSFeed(URL));
     	}
@@ -155,4 +179,5 @@ public class RSSData {
 	public Set<FeedItem> parseRSSFeedItems(Feed feed) {
 		return feed.getMessages();
 	}
+	
 }
