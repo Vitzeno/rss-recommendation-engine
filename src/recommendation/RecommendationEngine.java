@@ -3,7 +3,6 @@ package recommendation;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import Jama.Matrix;
 import feed.Feed;
 import feed.FeedItem;
 import javafx.collections.FXCollections;
@@ -49,24 +48,6 @@ public class RecommendationEngine {
 	
 	ToolBox toolBox = new ToolBox();
 	
-	
-	public void testSVDMatrix(Feed feed) {
-		
-		double[][] array = new double[50][50];
-		int i = 0;
-		
-		for(FeedItem item : feed.getMessages()) {
-			item.setMatrixIndex(i);
-			for(int j = 0;j < 50;j++) {
-				array[i][j] = item.getMatrixIndex();
-			}
-			i++;
-		}
-		
-		Matrix test = new Matrix(array);
-		test = test.getMatrix(new int[] {feed.getMessages().first().getMatrixIndex()}, 0, test.getColumnDimension() - 1);
-		toolBox.printMatrix(test);
-	}
 	
 	/**
 	 * This method utilises the tfidf class to
@@ -117,10 +98,7 @@ public class RecommendationEngine {
 		recFeed = new Feed("Recommended Feed", null, "Auto generated feed of recommended items", "en-gb", null, null);
 		
 		RSSDataModel.initialiseFeedsMatrix();
-		
-		//testSVDMatrix(StandardFeedList.get(0));
-		//FeedsMatrix matrix = new FeedsMatrix();
-		//matrix.printMatrixData();
+		RSSDataModel.reduceMatrix();
 		
 		for(Feed feed : StandardFeedList) {
 			setTFIDFScoresPerFeed(feed);	

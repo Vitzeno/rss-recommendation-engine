@@ -8,6 +8,11 @@
 		</accessrules>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/jar/jsoup-1.11.3.jar"/>
-	<classpathentry kind="lib" path="lib/jar/Jama-1.0.3.jar"/>
+	<classpathentry kind="lib" path="lib/jar/commons-math3-3.6.1-javadoc.jar"/>
+	<classpathentry kind="lib" path="lib/jar/commons-math3-3.6.1-sources.jar"/>
+	<classpathentry kind="lib" path="lib/jar/commons-math3-3.6.1-test-sources.jar"/>
+	<classpathentry kind="lib" path="lib/jar/commons-math3-3.6.1-tests.jar"/>
+	<classpathentry kind="lib" path="lib/jar/commons-math3-3.6.1-tools.jar"/>
+	<classpathentry kind="lib" path="lib/jar/commons-math3-3.6.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

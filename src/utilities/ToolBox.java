@@ -1,7 +1,7 @@
 package utilities;
 
 import java.util.List;
-import Jama.Matrix;
+import org.apache.commons.math3.linear.RealMatrix;
 import feed.Feed;
 import feed.FeedItem;
 
@@ -18,17 +18,17 @@ public class ToolBox {
 	 * for ease of use and visualisation purposes
 	 * @param m
 	 */
-	public void printMatrix(Matrix m) {
+	public void printMatrix(RealMatrix m) {
 		for(int i = 0;i < m.getRowDimension();i++) {
 			for(int j = 0;j < m.getColumnDimension();j++) {
-				System.out.print(m.get(i, j) + " ");
+				//System.out.print(m.get(i, j) + " ");
 			}
 			System.out.println();
 		}
 		System.out.println();
 	}
 	
-	public void printMatrixData(Matrix m) {
+	public void printMatrixData(RealMatrix m) {
 		System.out.println("Matrix row dimension " + m.getRowDimension());
 		System.out.println("Matrix col dimension " + m.getColumnDimension());
 	}

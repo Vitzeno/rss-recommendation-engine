@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
-import Jama.Matrix;
+import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.linear.SingularValueDecomposition;
+
 import feed.Feed;
 import feed.FeedItem;
 import javafx.collections.FXCollections;
@@ -210,18 +213,22 @@ public class RSSData {
 		if(feedsParsed && feedsTokenised) {
 			feedsMatrix = new FeedsMatrix();
 			feedsMatrix.printMatrixData();
-			feedsMatrix.printMatrix();
+			//feedsMatrix.printMatrix();
 		}
 		else {
 			System.err.println("ERROR: Cannot initialise feeds matrix until all feeds have been parsed and tokenised.");
 		}
-		
+	}
+	
+	public void reduceMatrix() {
+		feedsMatrix.reduceMatrix();
 	}
 	
 	
 	private class FeedsMatrix {
 		
-		public Matrix matrix;
+		public RealMatrix matrix;
+	
 		
 		int rowSize;
 		int columnSize;
@@ -231,6 +238,7 @@ public class RSSData {
 		}
 		
 		public void setUpMatrix() {
+			System.out.println("Initialising matrix");
 			TFIDFCalculator tfidfCalc = new TFIDFCalculator();
 			
 			rowSize = feedItems.size();
@@ -242,13 +250,73 @@ public class RSSData {
 				FeedItem currentFeedItem = feedItems.get(i);
 				for(int j = 0;j < columnSize;j++) {
 					String currentToken = tokens.get(j);
-					double tfidfScore = tfidfCalc.tfidf(currentFeedItem.getTokens(), documents, currentToken);
+					double tfidfScore = tfidfCalc.tf(currentFeedItem.getTokens(), currentToken);
 					array[i][j] = tfidfScore;
 				}
 			}
 			
-			matrix = new Matrix(array);
+			matrix = MatrixUtils.createRealMatrix(array);
 		}
+		
+		public void reduceMatrix() {
+			System.out.println("Performing SVD calulations on matrix");
+			SingularValueDecomposition SVD = new SingularValueDecomposition(matrix);
+			
+			RealMatrix U = SVD.getU();
+			RealMatrix S = SVD.getS();
+			RealMatrix V = SVD.getV();
+		}
+		
+		/*
+		double[][] array = {
+				{1, 1, 1, 0, 0},
+				{3, 3, 3, 0, 0},
+				{4, 4, 4, 0, 0},
+				{5, 5, 5, 0, 0},
+				{0, 2, 0, 4, 4},
+				{0, 0, 0, 5, 5},
+				{0, 1, 0, 2, 2}
+		};
+		
+		Matrix A = new Matrix(array);
+		SingularValueDecomposition svd = A.svd();
+		Matrix U = svd.getU();
+		Matrix S = svd.getS();
+		Matrix V = svd.getV();
+		
+		/**
+		 * Get a submatrix.
+			Parameters:
+			i0 - Initial row index
+			i1 - Final row index
+			c - Array of column indices.
+		 */
+		/*
+		Matrix Up = U.getMatrix(0, U.getRowDimension() - 1,  new int[] {0, 1});
+		Matrix Sp = S.getMatrix(0, S.getRowDimension() - 1,  new int[] {0, 1});
+		Matrix Vp = V.getMatrix(0, V.getRowDimension() - 1,  new int[] {0, 1});
+		
+		Matrix query = A.getMatrix(new int[] {4}, 0, A.getColumnDimension() - 1);
+		Matrix query2 = A.getMatrix(new int[] {1}, 0, A.getColumnDimension() - 1);
+
+		
+		Matrix vector = query.times(Vp);
+		Matrix vector2 = query2.times(Vp);
+		
+		for(int i = 0;i < vector.getRowDimension();i++) {
+			for(int j = 0;j < vector.getColumnDimension();j++) {
+				System.out.print(vector.get(i, j) + " ");
+			}
+			System.out.println();
+		}
+		
+		for(int i = 0;i < vector2.getRowDimension();i++) {
+			for(int j = 0;j < vector2.getColumnDimension();j++) {
+				System.out.print(vector2.get(i, j) + " ");
+			}
+			System.out.println();
+		}
+		*/
 		
 		
 		public void printMatrixData() {

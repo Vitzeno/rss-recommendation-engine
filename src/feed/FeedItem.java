@@ -16,18 +16,19 @@ public class FeedItem implements Comparable<FeedItem> {
     String author;
     String guid;
     String pubDate;
-    double score;
-    int matrixIndex;
+    double tfidfScore;
+    double[][] reducedMatrixValue = new double[2][1]; 
     
-    List<String> tokens = new ArrayList<String>();
-    
-    public int getMatrixIndex() {
-		return matrixIndex;
+    public double[][] getReducedMatrixValue() {
+		return reducedMatrixValue;
 	}
 
-	public void setMatrixIndex(int matrixIndex) {
-		this.matrixIndex = matrixIndex;
+	public void setReducedMatrixValue(double[][] reducedMatrixValue) {
+		this.reducedMatrixValue = reducedMatrixValue;
 	}
+
+	List<String> tokens = new ArrayList<String>();
+    
 
 	public List<String> getTokens() {
 		return tokens;
@@ -42,7 +43,7 @@ public class FeedItem implements Comparable<FeedItem> {
 	}
 
 	public double getScore() {
-		return score;
+		return tfidfScore;
 	}
 	
 	/**
@@ -52,7 +53,7 @@ public class FeedItem implements Comparable<FeedItem> {
 	 * @param score
 	 */
 	public void setScore(double score) {
-		this.score += score;
+		this.tfidfScore += score;
 	}
 
 	public String getTitle() {
