@@ -80,8 +80,8 @@ public class RecommendationEngine {
 	public RecommendationEngine(ObservableList<Feed> RSSFeedList) {
 		this.StandardFeedList = RSSFeedList;
 		initModel();
-		
 		documents = RSSDataModel.getAllDocumentTokens();
+		
 		//RSSDataModel.printTokens();
 		//RSSDataModel.printDocuments();	
 		//RSSDataModel.printFeeds();
@@ -99,6 +99,8 @@ public class RecommendationEngine {
 		
 		RSSDataModel.initialiseFeedsMatrix();
 		RSSDataModel.reduceMatrix();
+		
+		//toolBox.printMatrix(RSSDataModel.getFeedItems().get(5).getReducedMatrixValue());
 		
 		for(Feed feed : StandardFeedList) {
 			setTFIDFScoresPerFeed(feed);	

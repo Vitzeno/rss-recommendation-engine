@@ -3,6 +3,8 @@ package feed;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.math3.linear.RealMatrix;
+
 /**
  * This class represents each item in the feed with a set of attributes, mostly consists of self explanatory setters and getters
  * @author Mohamed
@@ -17,13 +19,14 @@ public class FeedItem implements Comparable<FeedItem> {
     String guid;
     String pubDate;
     double tfidfScore;
-    double[][] reducedMatrixValue = new double[2][1]; 
-    
-    public double[][] getReducedMatrixValue() {
+    RealMatrix reducedMatrixValue;
+
+
+	public RealMatrix getReducedMatrixValue() {
 		return reducedMatrixValue;
 	}
 
-	public void setReducedMatrixValue(double[][] reducedMatrixValue) {
+	public void setReducedMatrixValue(RealMatrix reducedMatrixValue) {
 		this.reducedMatrixValue = reducedMatrixValue;
 	}
 

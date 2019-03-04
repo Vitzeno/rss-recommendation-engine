@@ -2,13 +2,11 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.SingularValueDecomposition;
-
 import feed.Feed;
 import feed.FeedItem;
 import javafx.collections.FXCollections;
@@ -222,6 +220,7 @@ public class RSSData {
 	
 	public void reduceMatrix() {
 		feedsMatrix.reduceMatrix();
+		//feedsMatrix.testSVD();
 	}
 	
 	
@@ -250,8 +249,8 @@ public class RSSData {
 				FeedItem currentFeedItem = feedItems.get(i);
 				for(int j = 0;j < columnSize;j++) {
 					String currentToken = tokens.get(j);
-					double tfidfScore = tfidfCalc.tf(currentFeedItem.getTokens(), currentToken);
-					array[i][j] = tfidfScore;
+					double score = tfidfCalc.tf(currentFeedItem.getTokens(), currentToken);
+					array[i][j] = score;
 				}
 			}
 			
@@ -265,59 +264,66 @@ public class RSSData {
 			RealMatrix U = SVD.getU();
 			RealMatrix S = SVD.getS();
 			RealMatrix V = SVD.getV();
+			
+			RealMatrix Vp = V.getSubMatrix(0, matrix.getColumnDimension() - 1, 0, 1);
+			
+			int i = 0;
+			for(FeedItem item : feedItems) {
+				RealMatrix result = matrix.getRowMatrix(i).multiply(Vp);
+				item.setReducedMatrixValue(result);
+				toolBox.printMatrix(item.getReducedMatrixValue());
+				i++;
+			}
 		}
 		
-		/*
-		double[][] array = {
-				{1, 1, 1, 0, 0},
-				{3, 3, 3, 0, 0},
-				{4, 4, 4, 0, 0},
-				{5, 5, 5, 0, 0},
-				{0, 2, 0, 4, 4},
-				{0, 0, 0, 5, 5},
-				{0, 1, 0, 2, 2}
-		};
-		
-		Matrix A = new Matrix(array);
-		SingularValueDecomposition svd = A.svd();
-		Matrix U = svd.getU();
-		Matrix S = svd.getS();
-		Matrix V = svd.getV();
-		
-		/**
-		 * Get a submatrix.
-			Parameters:
-			i0 - Initial row index
-			i1 - Final row index
-			c - Array of column indices.
-		 */
-		/*
-		Matrix Up = U.getMatrix(0, U.getRowDimension() - 1,  new int[] {0, 1});
-		Matrix Sp = S.getMatrix(0, S.getRowDimension() - 1,  new int[] {0, 1});
-		Matrix Vp = V.getMatrix(0, V.getRowDimension() - 1,  new int[] {0, 1});
-		
-		Matrix query = A.getMatrix(new int[] {4}, 0, A.getColumnDimension() - 1);
-		Matrix query2 = A.getMatrix(new int[] {1}, 0, A.getColumnDimension() - 1);
+		public void testSVD() {
+			double[][] array = {
+					{1, 1, 1, 0, 0},
+					{3, 3, 3, 0, 0},
+					{4, 4, 4, 0, 0},
+					{5, 5, 5, 0, 0},
+					{0, 2, 0, 4, 4},
+					{0, 0, 0, 5, 5},
+					{0, 1, 0, 2, 2}
+			};
+			
+			RealMatrix A = MatrixUtils.createRealMatrix(array);
+			SingularValueDecomposition svd = new SingularValueDecomposition(A);
+			RealMatrix U = svd.getU();
+			RealMatrix S = svd.getS();
+			RealMatrix V = svd.getV();
+			
+			
+			RealMatrix Up = U.getSubMatrix(0, A.getRowDimension() - 1, 0, 1);
+			RealMatrix Sp = S.getSubMatrix(0, 1, 0, 1);
+			RealMatrix Vp = V.getSubMatrix(0, A.getColumnDimension() - 1, 0, 1);
+			
+			RealMatrix query = A.getRowMatrix(4);
+			RealMatrix query2 = A.getRowMatrix(1);
 
-		
-		Matrix vector = query.times(Vp);
-		Matrix vector2 = query2.times(Vp);
-		
-		for(int i = 0;i < vector.getRowDimension();i++) {
-			for(int j = 0;j < vector.getColumnDimension();j++) {
-				System.out.print(vector.get(i, j) + " ");
-			}
-			System.out.println();
+			
+			RealMatrix vector = query.multiply(Vp);
+			RealMatrix vector2 = query2.multiply(Vp);
+			
+			System.out.println("A");
+			toolBox.printMatrix(A);
+			
+			System.out.println("Up");
+			toolBox.printMatrix(Up);
+			
+			System.out.println("Sp");
+			toolBox.printMatrix(Sp);
+			
+			System.out.println("Vp");
+			toolBox.printMatrix(Vp);
+			
+			System.out.println("vector");
+			toolBox.printMatrix(vector);
+			
+			System.out.println("vector2");
+			toolBox.printMatrix(vector2);
+
 		}
-		
-		for(int i = 0;i < vector2.getRowDimension();i++) {
-			for(int j = 0;j < vector2.getColumnDimension();j++) {
-				System.out.print(vector2.get(i, j) + " ");
-			}
-			System.out.println();
-		}
-		*/
-		
 		
 		public void printMatrixData() {
 			toolBox.printMatrixData(matrix);
