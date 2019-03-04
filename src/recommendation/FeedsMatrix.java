@@ -8,7 +8,7 @@ import model.RSSData;
 import utilities.ToolBox;
 
 public class FeedsMatrix {
-	
+	/*
 	private RSSData RSSDataModel = RSSData.getInstance();
 	private List<FeedItem> feeds = new ArrayList<FeedItem>();
 	private List<String> tokens = new ArrayList<String>();

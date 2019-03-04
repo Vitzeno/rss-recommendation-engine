@@ -2,12 +2,15 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
+import Jama.Matrix;
 import feed.Feed;
 import feed.FeedItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import textClassification.TFIDFCalculator;
 import textClassification.Tokeniser;
 import utilities.RSSParser;
 import utilities.Reader;
@@ -36,6 +39,11 @@ public class RSSData {
 	//All tokens in all feeds
 	private List<String> tokens = new ArrayList<String>();
 	private List<FeedItem> feedItems = new ArrayList<FeedItem>();
+	
+	private boolean feedsParsed = false;
+	private boolean feedsTokenised = false;
+	
+	private FeedsMatrix feedsMatrix;
 	
 	
 	/**
@@ -92,6 +100,10 @@ public class RSSData {
     	}
     	
     	tokeniseDocuments();
+    	getFeedItems();
+    	
+    	feedsTokenised = true;
+    	feedsParsed = true;
     	
 		return Feeds;
 	}
@@ -180,4 +192,72 @@ public class RSSData {
 		return feed.getMessages();
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * This method initialises the inner matrix class, this should only
+	 * be done when all feeds and feeds items have been parsed and tokenised
+	 * otherwise matrix size will be incorrect
+	 */
+	public void initialiseFeedsMatrix() {
+		if(feedsParsed && feedsTokenised) {
+			feedsMatrix = new FeedsMatrix();
+			feedsMatrix.printMatrixData();
+			feedsMatrix.printMatrix();
+		}
+		else {
+			System.err.println("ERROR: Cannot initialise feeds matrix until all feeds have been parsed and tokenised.");
+		}
+		
+	}
+	
+	
+	private class FeedsMatrix {
+		
+		public Matrix matrix;
+		
+		int rowSize;
+		int columnSize;
+		
+		public FeedsMatrix() {
+			setUpMatrix();
+		}
+		
+		public void setUpMatrix() {
+			TFIDFCalculator tfidfCalc = new TFIDFCalculator();
+			
+			rowSize = feedItems.size();
+			columnSize = tokens.size();
+			
+			double[][] array = new double[rowSize][columnSize];
+			
+			for(int i = 0;i < rowSize;i++) {
+				FeedItem currentFeedItem = feedItems.get(i);
+				for(int j = 0;j < columnSize;j++) {
+					String currentToken = tokens.get(j);
+					double tfidfScore = tfidfCalc.tfidf(currentFeedItem.getTokens(), documents, currentToken);
+					array[i][j] = tfidfScore;
+				}
+			}
+			
+			matrix = new Matrix(array);
+		}
+		
+		
+		public void printMatrixData() {
+			toolBox.printMatrixData(matrix);
+		}
+		
+		public void printMatrix() {
+			toolBox.printMatrix(matrix);
+		}
+		
+	}
 }

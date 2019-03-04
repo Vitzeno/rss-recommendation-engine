@@ -116,9 +116,11 @@ public class RecommendationEngine {
 	public Feed generateRecommendations() throws ParseException {
 		recFeed = new Feed("Recommended Feed", null, "Auto generated feed of recommended items", "en-gb", null, null);
 		
+		RSSDataModel.initialiseFeedsMatrix();
+		
 		//testSVDMatrix(StandardFeedList.get(0));
-		FeedsMatrix matrix = new FeedsMatrix();
-		matrix.printMatrixData();
+		//FeedsMatrix matrix = new FeedsMatrix();
+		//matrix.printMatrixData();
 		
 		for(Feed feed : StandardFeedList) {
 			setTFIDFScoresPerFeed(feed);	

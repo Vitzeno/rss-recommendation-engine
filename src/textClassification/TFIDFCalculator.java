@@ -17,7 +17,7 @@ public class TFIDFCalculator {
 	 * tf = (Number of times term t appears document) / (Number of terms in the document)
 	 * @return
 	 */
-	private double tf(List<String> document, String term) {
+	public double tf(List<String> document, String term) {
 		double termCount = 0;
 		
 		for(String word : document) {
