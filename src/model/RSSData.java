@@ -218,15 +218,18 @@ public class RSSData {
 		}
 	}
 	
-	public void reduceMatrix() {
-		feedsMatrix.reduceMatrix();
+	public void reduceMatrix(String threadName) {
+		feedsMatrix.reduceMatrix(threadName);
 		//feedsMatrix.testSVD();
 	}
 	
 	
-	private class FeedsMatrix {
+	private class FeedsMatrix implements Runnable{
 		
 		public RealMatrix matrix;
+		
+		private Thread t;
+		private String threadName;
 	
 		
 		int rowSize;
@@ -257,23 +260,11 @@ public class RSSData {
 			matrix = MatrixUtils.createRealMatrix(array);
 		}
 		
-		public void reduceMatrix() {
-			System.out.println("Performing SVD calulations on matrix");
-			SingularValueDecomposition SVD = new SingularValueDecomposition(matrix);
+		public void reduceMatrix(String threadName) {
+			this.threadName = threadName;
+			System.out.println("Creating thread " + threadName);
+			this.start();
 			
-			RealMatrix U = SVD.getU();
-			RealMatrix S = SVD.getS();
-			RealMatrix V = SVD.getV();
-			
-			RealMatrix Vp = V.getSubMatrix(0, matrix.getColumnDimension() - 1, 0, 1);
-			
-			int i = 0;
-			for(FeedItem item : feedItems) {
-				RealMatrix result = matrix.getRowMatrix(i).multiply(Vp);
-				item.setReducedMatrixValue(result);
-				toolBox.printMatrix(item.getReducedMatrixValue());
-				i++;
-			}
 		}
 		
 		public void testSVD() {
@@ -331,6 +322,34 @@ public class RSSData {
 		
 		public void printMatrix() {
 			toolBox.printMatrix(matrix);
+		}
+		
+		public void start() {
+		      System.out.println("Starting thread: " + threadName);
+		      if (t == null) {
+		         t = new Thread (this, threadName);
+		         t.start ();
+		      }
+		   }
+
+		@Override
+		public void run() {
+			System.out.println("Performing SVD calulations on matrix");
+			SingularValueDecomposition SVD = new SingularValueDecomposition(matrix);
+			
+			RealMatrix U = SVD.getU();
+			RealMatrix S = SVD.getS();
+			RealMatrix V = SVD.getV();
+			
+			RealMatrix Vp = V.getSubMatrix(0, matrix.getColumnDimension() - 1, 0, 1);
+			
+			int i = 0;
+			for(FeedItem item : feedItems) {
+				RealMatrix result = matrix.getRowMatrix(i).multiply(Vp);
+				item.setReducedMatrixValue(result);
+				toolBox.printMatrix(item.getReducedMatrixValue());
+				i++;
+			}
 		}
 		
 	}
