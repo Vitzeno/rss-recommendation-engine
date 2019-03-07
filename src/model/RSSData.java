@@ -231,7 +231,6 @@ public class RSSData {
 		private Thread t;
 		private String threadName;
 	
-		
 		int rowSize;
 		int columnSize;
 		
@@ -325,20 +324,20 @@ public class RSSData {
 		}
 		
 		public void start() {
-		      System.out.println("Starting thread: " + threadName);
-		      if (t == null) {
-		         t = new Thread (this, threadName);
-		         t.start ();
-		      }
-		   }
+			System.out.println("Starting thread: " + threadName);
+			if (t == null) {
+				t = new Thread (this, threadName);
+				t.start ();
+			}
+		}
 
 		@Override
 		public void run() {
 			System.out.println("Performing SVD calulations on matrix");
 			SingularValueDecomposition SVD = new SingularValueDecomposition(matrix);
 			
-			RealMatrix U = SVD.getU();
-			RealMatrix S = SVD.getS();
+			//RealMatrix U = SVD.getU();
+			//RealMatrix S = SVD.getS();
 			RealMatrix V = SVD.getV();
 			
 			RealMatrix Vp = V.getSubMatrix(0, matrix.getColumnDimension() - 1, 0, 1);
@@ -347,9 +346,10 @@ public class RSSData {
 			for(FeedItem item : feedItems) {
 				RealMatrix result = matrix.getRowMatrix(i).multiply(Vp);
 				item.setReducedMatrixValue(result);
-				toolBox.printMatrix(item.getReducedMatrixValue());
+				//toolBox.printMatrix(item.getReducedMatrixValue());
 				i++;
 			}
+			System.out.println("Finishing thread " + t.getName());
 		}
 		
 	}

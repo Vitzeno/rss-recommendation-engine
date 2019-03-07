@@ -99,6 +99,7 @@ public class RecommendationEngine {
 		
 		RSSDataModel.initialiseFeedsMatrix();
 		RSSDataModel.reduceMatrix("Thread 1");
+		System.out.println("Continue on main");
 		
 		//toolBox.printMatrix(RSSDataModel.getFeedItems().get(5).getReducedMatrixValue());
 		
