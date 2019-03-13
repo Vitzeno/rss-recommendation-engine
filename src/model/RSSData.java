@@ -2,10 +2,12 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.SingularValueDecomposition;
@@ -305,8 +307,8 @@ public class RSSData {
 					else if(method == calculation.COSINE)
 						similarity = toolBox.cosineSimilarity(feedA.getReducedMatrixValue().getRow(0), feedB.getReducedMatrixValue().getRow(0));
 					
-					System.out.println("Feed A: " + feedA.getTitle() + " Feed B: " + feedB.getTitle());
-					System.out.println("Similarity score: " + similarity);
+					//System.out.println("Feed A: " + feedA.getTitle() + " Feed B: " + feedB.getTitle());
+					//System.out.println("Similarity score: " + similarity);
 					
 					array[i][j] = similarity;
 				}
@@ -345,6 +347,7 @@ public class RSSData {
 			System.out.println("Finishing thread " + t.getName());
 			
 			setUpSimilarityMatrix(calculation.EUCLIDEAN);		//TODO: consider parallelising this 
+			getSimilarItems(1, 15);
 		}
 		
 		/**
@@ -353,25 +356,37 @@ public class RSSData {
 		 * @param numOfItems number of similarities to get
 		 * @return list of feeds
 		 */
-/*		public List<FeedItem> getSimilarItems(int feedItemIndex, int numOfItems) {
-			List<FeedItem> feedItems = new ArrayList<FeedItem>();
+		public List<FeedItem> getSimilarItems(int feedItemIndex, int numOfItems) {
+			List<FeedItem> similarItems = new ArrayList<FeedItem>();
+			
+			List<Double> originalListOfScores = Arrays.stream(similarityMatrix.getRow(feedItemIndex)).boxed().collect(Collectors.toList());
+			List<Double> listOfScores = Arrays.stream(similarityMatrix.getRow(feedItemIndex)).boxed().collect(Collectors.toList());
 			
 			if(this.method == calculation.EUCLIDEAN) {
-				
+				listOfScores = listOfScores.stream().sorted().limit(numOfItems).collect(Collectors.toList());
+				//System.out.println(listOfScore);
 			}
 			if(this.method == calculation.COSINE) {
-				double[] listOfScore = similarityMatrix.getRow(feedItemIndex);
-				
-
-				
-				PriorityQueue<Double> PQ;
-				PQ = new PriorityQueue<>(listOfScore.length);
-				PQ.addAll(Arrays.asList(listOfScore));
-				
+				listOfScores = listOfScores.stream().sorted(Comparator.reverseOrder()).limit(numOfItems).collect(Collectors.toList());
+				//System.out.println(listOfScore);
 			}
 			
-			return feedItems;
-		}*/
+			
+			for(int i = 0;i < listOfScores.size();i++) {
+				int index = toolBox.getIndex(originalListOfScores, listOfScores.get(i));
+				
+				//System.out.println("score " + listOfScores.get(i) + " Index " + index);
+				similarItems.add(feedItems.get(index));
+			}
+			
+			System.out.println("Item provided " + feedItems.get(feedItemIndex).getTitle());
+			System.out.println();
+			for(int i = 0;i < similarItems.size();i++) {
+				System.out.println(similarItems.get(i).getTitle());
+			}
+			
+			return similarItems;
+		}
 		
 		
 		

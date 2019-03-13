@@ -1,9 +1,12 @@
 package utilities;
 
 import java.util.List;
+import java.util.stream.IntStream;
+
 import org.apache.commons.math3.linear.RealMatrix;
 import feed.Feed;
 import feed.FeedItem;
+import javafx.collections.ObservableList;
 
 /**
  * This class contains various helper methods used in multiple
@@ -107,5 +110,9 @@ public class ToolBox {
 			distance += Math.pow((A[i] - B[i]), 2);
 		
 		return Math.sqrt(distance);
+	}
+	
+	public int getIndex(final List<Double> list, final double score) {
+		return IntStream.range(0, list.size()).filter(i -> score == list.get(i)).findFirst().orElse(0);
 	}
 }
