@@ -49,4 +49,63 @@ public class ToolBox {
 				System.out.println(items);
 		}
 	}
+	
+	/**
+	 * Cosine similarity returns a range between -1 and 1 ranging from opposites to 
+	 * exactly the same. If the method returns any other value then there has been
+	 * an error, in this case method will return a value of 2.
+	 * 
+	 * In the case of this application all values are positive therefore the range
+	 * will only be between 0 and 1
+	 * 
+	 * Arrays must be of the same length.
+	 * @param A
+	 * @param B
+	 * @return
+	 */
+	public double cosineSimilarity(double[] A, double[] B) {
+		double dotProduct = 0;
+		double A_Magnitude = 0;
+		double B_Magnitude = 0;
+		
+		if(A.length != B.length) {
+			System.err.println("Array sizes must be the same.");
+			return 2;
+		}
+		
+		for(int i = 0;i < A.length;i++) {
+			dotProduct += A[i] * B[i];			//A.B
+			A_Magnitude += Math.pow(A[i], 2);	//A^2
+			B_Magnitude += Math.pow(B[i], 2);	//B^2
+		}
+
+		if(A_Magnitude == 0 || B_Magnitude == 0) 
+			return 2;
+	
+		return dotProduct / (Math.sqrt(A_Magnitude) * Math.sqrt(B_Magnitude));
+	}
+	
+	/**
+	 * This method calculates the euclidean distance between two points
+	 * represented as two arrays. The smaller the number the more similar 
+	 * items are.
+	 * 
+	 * Arrays must be of the same length.
+	 * @param A
+	 * @param B
+	 * @return
+	 */
+	public double euclideanDistance(double[] A, double[] B) {
+		double distance = 0;
+		
+		if(A.length != B.length) {
+			System.err.println("Array sizes must be the same.");
+			return 2;
+		}
+		
+		for(int i = 0;i < A.length;i++) 
+			distance += Math.pow((A[i] - B[i]), 2);
+		
+		return Math.sqrt(distance);
+	}
 }

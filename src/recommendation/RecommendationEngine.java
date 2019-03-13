@@ -98,7 +98,7 @@ public class RecommendationEngine {
 		recFeed = new Feed("Recommended Feed", null, "Auto generated feed of recommended items", "en-gb", null, null);
 		
 		RSSDataModel.initialiseFeedsMatrix();
-		RSSDataModel.reduceMatrix("Thread 1");
+		//RSSDataModel.setUpSimilarityMatrix();
 		System.out.println("Continue on main");
 		
 		//toolBox.printMatrix(RSSDataModel.getFeedItems().get(5).getReducedMatrixValue());

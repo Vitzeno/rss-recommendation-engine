@@ -1,7 +1,9 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.math3.linear.MatrixUtils;
@@ -24,6 +26,11 @@ import utilities.ToolBox;
  */
 public class RSSData {
 	
+	enum calculation {
+		  COSINE,
+		  EUCLIDEAN
+		}
+	
 	private static RSSData single_instance = null;
 	
 	private Reader reader = new Reader();
@@ -43,6 +50,7 @@ public class RSSData {
 	
 	private boolean feedsParsed = false;
 	private boolean feedsTokenised = false;
+	private boolean feedTokenMatrixInitialised = false;
 	
 	private FeedsMatrix feedsMatrix;
 	
@@ -196,12 +204,6 @@ public class RSSData {
 	
 	
 	
-	
-	
-	
-	
-	
-	
 	/**
 	 * This method initialises the inner matrix class, this should only
 	 * be done when all feeds and feeds items have been parsed and tokenised
@@ -211,39 +213,53 @@ public class RSSData {
 		if(feedsParsed && feedsTokenised) {
 			feedsMatrix = new FeedsMatrix();
 			feedsMatrix.printMatrixData();
+			feedsMatrix.reduceMatrix("Thread 1");
 			//feedsMatrix.printMatrix();
+			feedTokenMatrixInitialised = true;
 		}
 		else {
 			System.err.println("ERROR: Cannot initialise feeds matrix until all feeds have been parsed and tokenised.");
 		}
 	}
 	
-	public void reduceMatrix(String threadName) {
-		feedsMatrix.reduceMatrix(threadName);
-		//feedsMatrix.testSVD();
+	/**
+	 * 
+	 */
+	public void setUpSimilarityMatrix(calculation method) {
+		if(feedTokenMatrixInitialised) {
+			feedsMatrix.setUpSimilarityMatrix(method);
+		} else {
+			System.err.println("ERROR: Cannot initialise similarity matrix until feed token matrix has been set up.");
+		}
 	}
 	
 	
 	private class FeedsMatrix implements Runnable{
 		
-		public RealMatrix matrix;
+		public RealMatrix feedTokenMatrix;
+		public RealMatrix similarityMatrix;
 		
 		private Thread t;
 		private String threadName;
+		private int similarityCalculationMethod = 0; // (0 = cosine) (1 = euclidean)
+		
+		private calculation method;
 	
-		int rowSize;
-		int columnSize;
+		int rowSize;		//feeds
+		int columnSize;		//tokens
 		
 		public FeedsMatrix() {
+			rowSize = feedItems.size();
+			columnSize = tokens.size();
 			setUpMatrix();
 		}
 		
+		/**
+		 * This method 
+		 */
 		public void setUpMatrix() {
 			System.out.println("Initialising matrix");
 			TFIDFCalculator tfidfCalc = new TFIDFCalculator();
-			
-			rowSize = feedItems.size();
-			columnSize = tokens.size();
 			
 			double[][] array = new double[rowSize][columnSize];
 			
@@ -252,18 +268,122 @@ public class RSSData {
 				for(int j = 0;j < columnSize;j++) {
 					String currentToken = tokens.get(j);
 					double score = tfidfCalc.tf(currentFeedItem.getTokens(), currentToken);
+					//double score = tfidfCalc.tfidf(currentFeedItem.getTokens(), documents, currentToken);
 					array[i][j] = score;
 				}
 			}
 			
-			matrix = MatrixUtils.createRealMatrix(array);
+			feedTokenMatrix = MatrixUtils.createRealMatrix(array);
 		}
 		
 		public void reduceMatrix(String threadName) {
 			this.threadName = threadName;
 			System.out.println("Creating thread " + threadName);
 			this.start();
+		}
+		
+		/**
+		 * This method calculates the distance or similarity of feed items in order
+		 * to populate a similarity matrix. The method used for calculation can be defined.
+		 * 
+		 * EUCLIDEAN: This simply gets the distance between items, therefore the smaller the number the more similar the items
+		 * COSINE: This calculates the cosine similarity of items, this has a range of (0 - 1) 0 means no similarity at all 1 means identical items
+		 * @param method
+		 */
+		public void setUpSimilarityMatrix(calculation method) {
+			this.method = method;
+			double[][] array = new double[rowSize][rowSize];
+			double similarity = 0;
 			
+			for(int i = 0;i < rowSize;i++) {
+				FeedItem feedA = feedItems.get(i);
+				for(int j = 0;j < rowSize;j++) {
+					FeedItem feedB = feedItems.get(j);
+					
+					if(method == calculation.EUCLIDEAN)
+						similarity = toolBox.euclideanDistance(feedA.getReducedMatrixValue().getRow(0), feedB.getReducedMatrixValue().getRow(0));
+					else if(method == calculation.COSINE)
+						similarity = toolBox.cosineSimilarity(feedA.getReducedMatrixValue().getRow(0), feedB.getReducedMatrixValue().getRow(0));
+					
+					System.out.println("Feed A: " + feedA.getTitle() + " Feed B: " + feedB.getTitle());
+					System.out.println("Similarity score: " + similarity);
+					
+					array[i][j] = similarity;
+				}
+			}
+			
+			similarityMatrix = MatrixUtils.createRealMatrix(array);
+		}
+		
+		public void start() {
+			System.out.println("Starting thread: " + threadName);
+			if (t == null) {
+				t = new Thread (this, threadName);
+				t.start ();
+			}
+		}
+
+		@Override
+		public void run() {
+			System.out.println("Performing SVD calulations on matrix");
+			SingularValueDecomposition SVD = new SingularValueDecomposition(feedTokenMatrix);
+			
+			//RealMatrix U = SVD.getU();
+			//RealMatrix S = SVD.getS();
+			RealMatrix V = SVD.getV();
+			
+			RealMatrix Vp = V.getSubMatrix(0, feedTokenMatrix.getColumnDimension() - 1, 0, 1);
+			
+			int i = 0;
+			for(FeedItem item : feedItems) {
+				RealMatrix result = feedTokenMatrix.getRowMatrix(i).multiply(Vp);
+				item.setReducedMatrixValue(result);
+				//toolBox.printMatrix(item.getReducedMatrixValue());
+				//System.out.println(item.getTitle());
+				i++;
+			}
+			System.out.println("Finishing thread " + t.getName());
+			
+			setUpSimilarityMatrix(calculation.EUCLIDEAN);		//TODO: consider parallelising this 
+		}
+		
+		/**
+		 * 
+		 * @param feedItemIndex index of item to find similarities for
+		 * @param numOfItems number of similarities to get
+		 * @return list of feeds
+		 */
+/*		public List<FeedItem> getSimilarItems(int feedItemIndex, int numOfItems) {
+			List<FeedItem> feedItems = new ArrayList<FeedItem>();
+			
+			if(this.method == calculation.EUCLIDEAN) {
+				
+			}
+			if(this.method == calculation.COSINE) {
+				double[] listOfScore = similarityMatrix.getRow(feedItemIndex);
+				
+
+				
+				PriorityQueue<Double> PQ;
+				PQ = new PriorityQueue<>(listOfScore.length);
+				PQ.addAll(Arrays.asList(listOfScore));
+				
+			}
+			
+			return feedItems;
+		}*/
+		
+		
+		
+		
+		
+		
+		public void printMatrixData() {
+			toolBox.printMatrixData(feedTokenMatrix);
+		}
+		
+		public void printMatrix() {
+			toolBox.printMatrix(feedTokenMatrix);
 		}
 		
 		public void testSVD() {
@@ -313,43 +433,6 @@ public class RSSData {
 			System.out.println("vector2");
 			toolBox.printMatrix(vector2);
 
-		}
-		
-		public void printMatrixData() {
-			toolBox.printMatrixData(matrix);
-		}
-		
-		public void printMatrix() {
-			toolBox.printMatrix(matrix);
-		}
-		
-		public void start() {
-			System.out.println("Starting thread: " + threadName);
-			if (t == null) {
-				t = new Thread (this, threadName);
-				t.start ();
-			}
-		}
-
-		@Override
-		public void run() {
-			System.out.println("Performing SVD calulations on matrix");
-			SingularValueDecomposition SVD = new SingularValueDecomposition(matrix);
-			
-			//RealMatrix U = SVD.getU();
-			//RealMatrix S = SVD.getS();
-			RealMatrix V = SVD.getV();
-			
-			RealMatrix Vp = V.getSubMatrix(0, matrix.getColumnDimension() - 1, 0, 1);
-			
-			int i = 0;
-			for(FeedItem item : feedItems) {
-				RealMatrix result = matrix.getRowMatrix(i).multiply(Vp);
-				item.setReducedMatrixValue(result);
-				//toolBox.printMatrix(item.getReducedMatrixValue());
-				i++;
-			}
-			System.out.println("Finishing thread " + t.getName());
 		}
 		
 	}
