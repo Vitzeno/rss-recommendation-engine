@@ -72,7 +72,7 @@ public class ToolBox {
 		
 		if(A.length != B.length) {
 			System.err.println("Array sizes must be the same.");
-			return 2;
+			return 0;
 		}
 		
 		for(int i = 0;i < A.length;i++) {
@@ -82,7 +82,7 @@ public class ToolBox {
 		}
 
 		if(A_Magnitude == 0 || B_Magnitude == 0) 
-			return 2;
+			return 0;
 	
 		return dotProduct / (Math.sqrt(A_Magnitude) * Math.sqrt(B_Magnitude));
 	}
@@ -102,7 +102,7 @@ public class ToolBox {
 		
 		if(A.length != B.length) {
 			System.err.println("Array sizes must be the same.");
-			return 2;
+			return 10;
 		}
 		
 		for(int i = 0;i < A.length;i++) 

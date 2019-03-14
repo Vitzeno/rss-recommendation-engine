@@ -359,7 +359,7 @@ public class RSSData {
 			System.out.println("Finishing thread " + t.getName());
 			
 			setUpSimilarityMatrix(calculation.EUCLIDEAN);		//TODO: consider parallelising this 
-			getSimilarItems(2, 15);
+			getSimilarItems(4, 20);
 		}
 		
 		/**
@@ -375,19 +375,18 @@ public class RSSData {
 			List<Double> listOfScores = Arrays.stream(similarityMatrix.getRow(feedItemIndex)).boxed().collect(Collectors.toList());
 			
 			if(this.method == calculation.EUCLIDEAN) {
-				listOfScores = listOfScores.stream().sorted().limit(numOfItems).collect(Collectors.toList());
-				//System.out.println(listOfScore);
+				listOfScores = listOfScores.stream().sorted().limit(numOfItems).collect(Collectors.toList());	
 			}
 			if(this.method == calculation.COSINE) {
 				listOfScores = listOfScores.stream().sorted(Comparator.reverseOrder()).limit(numOfItems).collect(Collectors.toList());
-				//System.out.println(listOfScore);
 			}
 			
 			
 			for(int i = 0;i < listOfScores.size();i++) {
 				int index = toolBox.getIndex(originalListOfScores, listOfScores.get(i));
 				
-				//System.out.println("score " + listOfScores.get(i) + " Index " + index);
+				//System.out.println("score " + listOfScores.get(i) + " Index " + index + " item title " + feedItems.get(i));
+				//System.out.println(originalListOfScores.get(index) + " " + index);
 				similarItems.add(feedItems.get(index));
 			}
 			
@@ -401,6 +400,8 @@ public class RSSData {
 			
 			return similarItems;
 		}
+		
+		
 		
 		
 		
