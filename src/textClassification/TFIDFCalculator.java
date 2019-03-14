@@ -10,6 +10,8 @@ import java.util.Set;
  */
 public class TFIDFCalculator {
 	
+	private boolean performIDF;
+	
 	/**
 	 * The term frequency (tf) is the number of times a terms appears in a 
 	 * document relative to its size.
@@ -19,6 +21,7 @@ public class TFIDFCalculator {
 	 */
 	public double tf(Set<String> document, String term) {
 		double termCount = 0;
+		performIDF = false;
 		
 		for(String word : document) {
 //			System.out.println("Term " + term);
@@ -28,8 +31,13 @@ public class TFIDFCalculator {
 		}
 		
 //		System.out.println("Term " + term + " count " + termCount);
+		//normalise result
+		double result = termCount / document.size();
 		
-		return termCount / document.size();
+		if(result > 0)
+			performIDF = true;
+		
+		return result;
 	}
 	
 	/**
@@ -44,6 +52,9 @@ public class TFIDFCalculator {
 	private double idf(Set<Set<String>> documents, String term) {
 		double termCount = 0;
 		
+		if(!performIDF)
+			return 0;
+	
 		for(Set<String> document : documents) {
 			for(String word : document) {
 				if(term.equalsIgnoreCase(word)) {

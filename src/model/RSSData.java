@@ -394,7 +394,7 @@ public class RSSData {
 			System.out.println("Item provided " + feedItems.get(feedItemIndex).getTitle());
 			System.out.println();
 			for(int i = 0;i < similarItems.size();i++) {
-				System.out.println(similarItems.get(i).getTitle());
+				System.out.println(similarItems.get(i).getTitle() + "  |  " + similarItems.get(i).getScore());
 			}
 			
 			//printTokens();
