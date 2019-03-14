@@ -1,6 +1,7 @@
 package textClassification;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * This class performs term frequency and inverse domain frequency calculations.
@@ -17,7 +18,7 @@ public class TFIDFCalculator {
 	 * tf = (Number of times term t appears document) / (Number of terms in the document)
 	 * @return
 	 */
-	public double tf(List<String> document, String term) {
+	public double tf(Set<String> document, String term) {
 		double termCount = 0;
 		
 		for(String word : document) {
@@ -41,10 +42,10 @@ public class TFIDFCalculator {
 	 * idf = log((Number of documents) / (Number of documents with term t))
 	 * @return
 	 */
-	private double idf(List<List<String>> documents, String term) {
+	private double idf(Set<Set<String>> documents, String term) {
 		double termCount = 0;
 		
-		for(List<String> document : documents) {
+		for(Set<String> document : documents) {
 			for(String word : document) {
 				if(term.equalsIgnoreCase(word)) {
 					termCount++;
@@ -64,7 +65,7 @@ public class TFIDFCalculator {
 	 * tfidf = tf * idf
 	 * @return
 	 */
-	public double tfidf(List<String> document, List<List<String>> documents, String term) {
+	public double tfidf(Set<String> document, Set<Set<String>> documents, String term) {
 		return tf(document, term) * idf(documents, term);	
 	}
 }

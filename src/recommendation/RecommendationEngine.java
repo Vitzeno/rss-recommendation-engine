@@ -2,7 +2,10 @@ package recommendation;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import feed.Feed;
 import feed.FeedItem;
 import javafx.collections.FXCollections;
@@ -33,7 +36,7 @@ public class RecommendationEngine {
 	private ObservableList<Feed> StandardFeedList = FXCollections.observableArrayList();
 	
 	//Used for tfidf calculations
-	private List<List<String>> documents = new ArrayList<List<String>>();
+	private Set<Set<String>> documents = new HashSet<Set<String>>();
 	
 	
 	//Date range is in hours

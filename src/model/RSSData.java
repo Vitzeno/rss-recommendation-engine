@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
@@ -44,7 +45,8 @@ public class RSSData {
 	
 	private String feedURLs;
 	
-	private List<List<String>> documents = new ArrayList<List<String>>();
+	//private List<List<String>> documents = new ArrayList<List<String>>();
+	private Set<Set<String>> documents = new HashSet<Set<String>>(); 
 	
 	//All tokens in all feeds
 	private List<String> tokens = new ArrayList<String>();
@@ -173,7 +175,7 @@ public class RSSData {
 		toolBox.printFeeds(Feeds);
 	}
 	
-	public List<List<String>> getAllDocumentTokens() {
+	public Set<Set<String>> getAllDocumentTokens() {
 		return documents;
 	}
 	
@@ -243,7 +245,6 @@ public class RSSData {
 		
 		private Thread t;
 		private String threadName;
-		private int similarityCalculationMethod = 0; // (0 = cosine) (1 = euclidean)
 		
 		private calculation method;
 	
@@ -379,11 +380,13 @@ public class RSSData {
 				similarItems.add(feedItems.get(index));
 			}
 			
-			System.out.println("Item provided " + feedItems.get(feedItemIndex).getTitle());
+			/*System.out.println("Item provided " + feedItems.get(feedItemIndex).getTitle());
 			System.out.println();
 			for(int i = 0;i < similarItems.size();i++) {
 				System.out.println(similarItems.get(i).getTitle());
-			}
+			}*/
+			
+			printDocuments();
 			
 			return similarItems;
 		}

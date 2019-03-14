@@ -1,6 +1,7 @@
 package utilities;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.IntStream;
 
 import org.apache.commons.math3.linear.RealMatrix;
@@ -41,7 +42,7 @@ public class ToolBox {
 		System.out.println("Feed size " + tokens.size());
 	}
 	
-	public void printDocuments(List<List<String>> documents) {
+	public void printDocuments(Set<Set<String>> documents) {
 		System.out.println(documents);
 		System.out.println("Feed size " + documents.size());
 	}

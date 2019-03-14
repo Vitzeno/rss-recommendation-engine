@@ -1,7 +1,9 @@
 package feed;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.math3.linear.RealMatrix;
 
@@ -30,10 +32,10 @@ public class FeedItem implements Comparable<FeedItem> {
 		this.reducedMatrixValue = reducedMatrixValue;
 	}
 
-	List<String> tokens = new ArrayList<String>();
+	Set<String> tokens = new HashSet<String>();
     
 
-	public List<String> getTokens() {
+	public Set<String> getTokens() {
 		return tokens;
 	}
 	
@@ -41,7 +43,7 @@ public class FeedItem implements Comparable<FeedItem> {
 		tokens.add(token);
 	}
 
-	public void setTokens(List<String> tokens) {
+	public void setTokens(Set<String> tokens) {
 		this.tokens = tokens;
 	}
 
