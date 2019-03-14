@@ -359,7 +359,7 @@ public class RSSData {
 			System.out.println("Finishing thread " + t.getName());
 			
 			setUpSimilarityMatrix(calculation.EUCLIDEAN);		//TODO: consider parallelising this 
-			getSimilarItems(5, 15);
+			getSimilarItems(2, 15);
 		}
 		
 		/**

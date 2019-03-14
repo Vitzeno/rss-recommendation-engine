@@ -21,6 +21,7 @@ public class TFIDFCalculator {
 	 */
 	public double tf(Set<String> document, String term) {
 		double termCount = 0;
+		double result = 0;
 		performIDF = false;
 		
 		for(String word : document) {
@@ -32,7 +33,7 @@ public class TFIDFCalculator {
 		
 //		System.out.println("Term " + term + " count " + termCount);
 		//normalise result
-		double result = termCount / document.size();
+		result = termCount / document.size();
 		
 		if(result > 0)
 			performIDF = true;
