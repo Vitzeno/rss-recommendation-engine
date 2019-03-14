@@ -1,8 +1,6 @@
 package textClassification;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -33,7 +31,7 @@ public class Tokeniser {
 	}
 	
 	/**
-	 * This method returns a list of tokens given a 
+	 * This method returns a set of tokens given a 
 	 * document in string form
 	 * @param doc
 	 * @return

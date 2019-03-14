@@ -3,11 +3,9 @@ package utilities;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
-
 import org.apache.commons.math3.linear.RealMatrix;
 import feed.Feed;
 import feed.FeedItem;
-import javafx.collections.ObservableList;
 
 /**
  * This class contains various helper methods used in multiple
@@ -37,7 +35,7 @@ public class ToolBox {
 		System.out.println("Matrix col dimension " + m.getColumnDimension());
 	}
 	
-	public void printTokens(List<String> tokens) {
+	public void printTokens(Set<String> tokens) {
 		System.out.println(tokens);
 		System.out.println("Feed size " + tokens.size());
 	}

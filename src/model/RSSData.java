@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
-import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.SingularValueDecomposition;
@@ -49,7 +48,7 @@ public class RSSData {
 	private Set<Set<String>> documents = new HashSet<Set<String>>(); 
 	
 	//All tokens in all feeds
-	private List<String> tokens = new ArrayList<String>();
+	private Set<String> tokens = new HashSet<String>();
 	private List<FeedItem> feedItems = new ArrayList<FeedItem>();
 	
 	private boolean feedsParsed = false;
@@ -154,10 +153,10 @@ public class RSSData {
 	}
 	
 	/**
-	 * Creates a list of all tokens from the list of tokens in documents
+	 * Creates a set of all tokens from the set of tokens in documents set
 	 */
 	private void tokeniseAllTerms() {
-		tokens  = documents.stream().flatMap(x -> x.stream()).collect(Collectors.toList());
+		tokens = new HashSet<String>(documents.stream().flatMap(x -> x.stream()).collect(Collectors.toList()));
 	}
 	
 	public void printTokens() {
@@ -192,7 +191,7 @@ public class RSSData {
 		return Feeds;
 	}
 
-	public List<String> getTokens() {
+	public Set<String> getTokens() {
 		return tokens;
 	}
 	
@@ -264,12 +263,24 @@ public class RSSData {
 			System.out.println("Initialising matrix");
 			TFIDFCalculator tfidfCalc = new TFIDFCalculator();
 			
+
+			
 			double[][] array = new double[rowSize][columnSize];
+			int n = 0;
 			
 			for(int i = 0;i < rowSize;i++) {
 				FeedItem currentFeedItem = feedItems.get(i);
+				Iterator<String> itr = tokens.iterator();	//need to reset iterator so must be within outer loop
 				for(int j = 0;j < columnSize;j++) {
-					String currentToken = tokens.get(j);
+					String currentToken = "err" + n++;
+					
+					if(itr.hasNext()) {
+						currentToken = itr.next();
+					}
+					//System.out.println(currentToken);
+					
+					
+					
 					double score = tfidfCalc.tf(currentFeedItem.getTokens(), currentToken);
 					//double score = tfidfCalc.tfidf(currentFeedItem.getTokens(), documents, currentToken);
 					array[i][j] = score;
@@ -348,7 +359,7 @@ public class RSSData {
 			System.out.println("Finishing thread " + t.getName());
 			
 			setUpSimilarityMatrix(calculation.EUCLIDEAN);		//TODO: consider parallelising this 
-			getSimilarItems(1, 15);
+			getSimilarItems(5, 15);
 		}
 		
 		/**
@@ -380,13 +391,13 @@ public class RSSData {
 				similarItems.add(feedItems.get(index));
 			}
 			
-			/*System.out.println("Item provided " + feedItems.get(feedItemIndex).getTitle());
+			System.out.println("Item provided " + feedItems.get(feedItemIndex).getTitle());
 			System.out.println();
 			for(int i = 0;i < similarItems.size();i++) {
 				System.out.println(similarItems.get(i).getTitle());
-			}*/
+			}
 			
-			printDocuments();
+			//printTokens();
 			
 			return similarItems;
 		}
