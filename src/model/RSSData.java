@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
@@ -348,6 +349,14 @@ public class RSSData {
 			
 			RealMatrix Vp = V.getSubMatrix(0, feedTokenMatrix.getColumnDimension() - 1, 0, 1);
 			
+			
+			AtomicInteger index = new AtomicInteger();
+			feedItems.stream().forEachOrdered(item -> {
+				RealMatrix result = feedTokenMatrix.getRowMatrix(index.getAndIncrement()).multiply(Vp);
+				item.setReducedMatrixValue(result);
+			});
+			
+			/*
 			int i = 0;
 			for(FeedItem item : feedItems) {
 				RealMatrix result = feedTokenMatrix.getRowMatrix(i).multiply(Vp);
@@ -356,6 +365,8 @@ public class RSSData {
 				//System.out.println(item.getTitle());
 				i++;
 			}
+			*/
+			
 			System.out.println("Finishing thread " + t.getName());
 			
 			setUpSimilarityMatrix(calculation.EUCLIDEAN);		//TODO: consider parallelising this 
@@ -375,9 +386,11 @@ public class RSSData {
 			List<Double> listOfScores = Arrays.stream(similarityMatrix.getRow(feedItemIndex)).boxed().collect(Collectors.toList());
 			
 			if(this.method == calculation.EUCLIDEAN) {
+				//listOfScores = listOfScores.parallelStream().sorted().limit(numOfItems).collect(Collectors.toList());
 				listOfScores = listOfScores.stream().sorted().limit(numOfItems).collect(Collectors.toList());	
 			}
 			if(this.method == calculation.COSINE) {
+				//listOfScores = listOfScores.parallelStream().sorted(Comparator.reverseOrder()).limit(numOfItems).collect(Collectors.toList());
 				listOfScores = listOfScores.stream().sorted(Comparator.reverseOrder()).limit(numOfItems).collect(Collectors.toList());
 			}
 			
