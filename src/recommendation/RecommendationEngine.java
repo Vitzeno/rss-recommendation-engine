@@ -1,15 +1,10 @@
 package recommendation;
 
 import java.text.ParseException;
-import java.util.HashSet;
-import java.util.Set;
 import feed.Feed;
 import feed.FeedItem;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.RSSData;
-import textClassification.TFIDFCalculator;
-import textClassification.UserTopics;
 import utilities.ToolBox;
 
 /**
@@ -30,10 +25,6 @@ public class RecommendationEngine {
 	private RSSData RSSDataModel;
 	
 	private Feed recFeed;
-	private ObservableList<Feed> StandardFeedList = FXCollections.observableArrayList();
-	
-	//Used for tfidf calculations
-	private Set<Set<String>> documents = new HashSet<Set<String>>();
 	
 	
 	//Date range is in hours
@@ -49,42 +40,8 @@ public class RecommendationEngine {
 	ToolBox toolBox = new ToolBox();
 	
 	
-	/**
-	 * This method utilises the tfidf class to
-	 * generate a numerical score for each feed based on user interests
-	 * as defined in the userTopics class.
-	 * @param feed
-	 */
-	public void setTFIDFScoresPerFeed(Feed feed) {
-		TFIDFCalculator tfidfCalc = new TFIDFCalculator();
-		UserTopics topics = UserTopics.getInstance();
-			
-		for(FeedItem item : feed.getMessages()) {	
-								
-			for(String term : topics.getTerms()) {
-				double tfidfScore = tfidfCalc.tfidf(item.getTokens(), documents, term);					
-				
-				if(tfidfScore > 0) {
-					//System.out.print(item.getTitle() + " scored: " + tfidfScore);
-					//System.err.println(" Because your interested in " + term);
-					item.setScore(tfidfScore);
-					item.appendDescription(" | Generated Score: " + tfidfScore);
-					recFeed.addToFeed(item);
-				}	
-			}			
-		}
-	}
-
-	
-	
 	public RecommendationEngine(ObservableList<Feed> RSSFeedList) {
-		this.StandardFeedList = RSSFeedList;
 		initModel();
-		documents = RSSDataModel.getAllDocumentTokens();
-		
-		//RSSDataModel.printTokens();
-		//RSSDataModel.printDocuments();	
-		//RSSDataModel.printFeeds();
 	}
 	
 
@@ -95,17 +52,11 @@ public class RecommendationEngine {
 	 * @throws ParseException 
 	 */
 	public Feed generateRecommendations() throws ParseException {
-		recFeed = new Feed("Recommended Feed", null, "Auto generated feed of recommended items", "en-gb", null, null);
+		recFeed = new Feed("Recommended Feeds", null, "Auto generated feed of recommended items", "en-gb", null, null);
 		
 		RSSDataModel.initialiseFeedsMatrix();
-		//RSSDataModel.setUpSimilarityMatrix();
-		System.out.println("Continue on main");
 		
-		//toolBox.printMatrix(RSSDataModel.getFeedItems().get(5).getReducedMatrixValue());
-		
-		for(Feed feed : StandardFeedList) {
-			setTFIDFScoresPerFeed(feed);	
-		}
+		recFeed.addToFeed(RSSDataModel.setTFIDFScores());
 		
 		return recFeed;
 	}

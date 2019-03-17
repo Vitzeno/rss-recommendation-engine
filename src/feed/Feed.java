@@ -1,5 +1,6 @@
 package feed;
 
+import java.util.List;
 import java.util.TreeSet;
 
 /**
@@ -37,6 +38,15 @@ public class Feed {
         this.pubDate = pubDate;
     }
     
+    public Feed() {
+    	this.title = "";
+        this.link = "";
+        this.description = "";
+        this.language = "";
+        this.copyright = "";
+        this.pubDate = "";
+    }
+    
     /**
      * This method returns an ArrayList of feed items
      * @return List of feed items
@@ -51,7 +61,7 @@ public class Feed {
      * @param feedItem
      */
     public void addToFeed(FeedItem feedItem) {
-    	items.add(feedItem);
+    	this.items.add(feedItem);
     }
     
     /**
@@ -61,7 +71,17 @@ public class Feed {
      */
     public void addToFeed(Feed feed) {
     	for(FeedItem item : feed.getMessages()) {
-    		items.add(item);
+    		this.items.add(item);
+    	}
+    }
+    
+    /**
+     * Adds a list of feed items to the feed
+     * @param items
+     */
+    public void addToFeed(List<FeedItem> items) {
+    	for(FeedItem item : items) {
+    		this.items.add(item);
     	}
     }
     

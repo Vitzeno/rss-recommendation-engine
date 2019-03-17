@@ -5,7 +5,6 @@ facebook
 samsung
 traffic
 car
-congestion
 sale
 EU
 sports

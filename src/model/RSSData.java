@@ -18,6 +18,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import textClassification.TFIDFCalculator;
 import textClassification.Tokeniser;
+import textClassification.UserTopics;
 import utilities.RSSParser;
 import utilities.Reader;
 import utilities.ToolBox;
@@ -55,6 +56,7 @@ public class RSSData {
 	private boolean feedsParsed = false;
 	private boolean feedsTokenised = false;
 	private boolean feedTokenMatrixInitialised = false;
+	public boolean similarityMatrixInitialised = false;
 	
 	private FeedsMatrix feedsMatrix;
 	
@@ -206,8 +208,6 @@ public class RSSData {
 	}
 	
 	
-	
-	
 	/**
 	 * This method initialises the inner matrix class, this should only
 	 * be done when all feeds and feeds items have been parsed and tokenised
@@ -218,7 +218,6 @@ public class RSSData {
 			feedsMatrix = new FeedsMatrix();
 			feedsMatrix.printMatrixData();
 			feedsMatrix.reduceMatrix("Thread 1");
-			//feedsMatrix.printMatrix();
 			feedTokenMatrixInitialised = true;
 		}
 		else {
@@ -226,15 +225,12 @@ public class RSSData {
 		}
 	}
 	
-	/**
-	 * 
-	 */
-	public void setUpSimilarityMatrix(calculation method) {
-		if(feedTokenMatrixInitialised) {
-			feedsMatrix.setUpSimilarityMatrix(method);
-		} else {
-			System.err.println("ERROR: Cannot initialise similarity matrix until feed token matrix has been set up.");
-		}
+	public Feed setTFIDFScores() {
+		Feed recFeed = new Feed();
+		
+		recFeed.addToFeed(feedsMatrix.setTFIDFScoresPerFeed());
+		
+		return recFeed;
 	}
 	
 	
@@ -264,8 +260,6 @@ public class RSSData {
 			System.out.println("Initialising matrix...");
 			TFIDFCalculator tfidfCalc = new TFIDFCalculator();
 			
-
-			
 			double[][] array = new double[rowSize][columnSize];
 			int n = 0;
 			
@@ -279,9 +273,7 @@ public class RSSData {
 						currentToken = itr.next();
 					}
 					//System.out.println(currentToken);
-					
-					
-					
+
 					double score = tfidfCalc.tf(currentFeedItem.getTokens(), currentToken);
 					//double score = tfidfCalc.tfidf(currentFeedItem.getTokens(), documents, currentToken);
 					array[i][j] = score;
@@ -329,6 +321,7 @@ public class RSSData {
 			}
 			
 			similarityMatrix = MatrixUtils.createRealMatrix(array);
+			similarityMatrixInitialised = true;
 		}
 		
 		public void start() {
@@ -336,31 +329,15 @@ public class RSSData {
 			if (t == null) {
 				t = new Thread (this, threadName);
 				t.start ();
+				
+				try {
+					t.join();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		
-		/**
-		 * The sum of squares of the retained singular values should be at least 90%
-		 * of the sum of square of all the singular values
-		 * @param S
-		 * @return
-		 */
-		public int numOfSingularValuesToRetain(RealMatrix S) {
-			System.out.println("Calculating optimal number of singular values to drop...");
-			int singularValuesToRetain = 2;
-			double percentage = 0;
-			double originalValues = toolBox.getSumOfSquares(S);
-				
-			while(percentage < 90) {
-				RealMatrix Sp = S.getSubMatrix(0, singularValuesToRetain, 0, S.getColumnDimension() - 1);
-				double newValues = toolBox.getSumOfSquares(Sp);
-				percentage = (newValues / originalValues) * 100;
-				singularValuesToRetain++;
-			}
-			
-			return singularValuesToRetain;
-		}
-
 		@Override
 		public void run() {
 			System.out.println("Performing SVD calulations on matrix...");
@@ -386,7 +363,7 @@ public class RSSData {
 			
 			
 			setUpSimilarityMatrix(calculation.COSINE);		//TODO: consider parallelising this 
-			getSimilarItems(11, 5);
+			//getSimilarItems(11, 5);
 			
 
 
@@ -421,13 +398,15 @@ public class RSSData {
 				
 				//System.out.println("score " + listOfScores.get(i) + " Index " + index + " item title " + feedItems.get(i));
 				//System.out.println(originalListOfScores.get(index) + " " + index);
+				//feedItems.get(index).appendDescription(" | Similar to: " + feedItems.get(feedItemIndex).getTitle());
 				similarItems.add(feedItems.get(index));
 			}
 			
-			System.out.println("Item provided " + feedItems.get(feedItemIndex).getTitle());
+			System.out.println();
+			System.out.println("Item provided " + feedItems.get(feedItemIndex).getTitle() + " | score: " + feedItems.get(feedItemIndex).getScore());
 			System.out.println();
 			for(int i = 0;i < similarItems.size();i++) {
-				System.out.println(similarItems.get(i).getTitle() + "  |  " + similarItems.get(i).getScore());
+				System.out.println(similarItems.get(i).getTitle());
 			}
 			
 			//printTokens();
@@ -435,11 +414,57 @@ public class RSSData {
 			return similarItems;
 		}
 		
+		/**
+		 * The sum of squares of the retained singular values should be at least 90%
+		 * of the sum of square of all the singular values
+		 * @param S
+		 * @return
+		 */
+		public int numOfSingularValuesToRetain(RealMatrix S) {
+			System.out.println("Calculating optimal number of singular values to drop...");
+			int singularValuesToRetain = 2;
+			double percentage = 0;
+			double originalValues = toolBox.getSumOfSquares(S);
+				
+			while(percentage < 90) {
+				RealMatrix Sp = S.getSubMatrix(0, singularValuesToRetain, 0, S.getColumnDimension() - 1);
+				double newValues = toolBox.getSumOfSquares(Sp);
+				percentage = (newValues / originalValues) * 100;
+				singularValuesToRetain++;
+			}
+			
+			return singularValuesToRetain;
+		}
+
 		
-		
-		
-		
-		
+		/**
+		 * This method utilises the tfidf class to
+		 * generate a numerical score for each feed based on user interests
+		 * as defined in the userTopics class.
+		 * @param feed
+		 */
+		public Feed setTFIDFScoresPerFeed() {
+			TFIDFCalculator tfidfCalc = new TFIDFCalculator();
+			UserTopics topics = UserTopics.getInstance();
+			Feed recFeed = new Feed();
+				
+			int size = feedItems.size();
+			for(int i = 0;i < size;i++) {
+				for(String term : topics.getTerms()) {
+					double tfidfScore = tfidfCalc.tfidf(feedItems.get(i).getTokens(), documents, term);					
+					
+					if(tfidfScore > 0) {
+						feedItems.get(i).setScore(tfidfScore);
+						feedItems.get(i).appendDescription(" | Generated Score: " + tfidfScore);
+						
+						recFeed.addToFeed(getSimilarItems(i, 5));
+						recFeed.addToFeed(feedItems.get(i));
+					}	
+				}
+			}
+			
+			return recFeed;
+		}
 		
 		
 		public void printMatrixData() {
