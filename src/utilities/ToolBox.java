@@ -114,4 +114,18 @@ public class ToolBox {
 	public int getIndex(final List<Double> list, final double score) {
 		return IntStream.range(0, list.size()).filter(i -> score == list.get(i)).findFirst().orElse(0);
 	}
+	
+	public double getSumOfSquares(RealMatrix S) {
+		int rows = S.getRowDimension();
+		int columns = S.getColumnDimension();
+		
+		double value = 0;
+		for(int i = 0;i < columns;i++) {
+			for(int j = 0;j < rows;j++) {
+				value += Math.pow(S.getEntry(j, i), 2);
+			}
+		}
+		
+		return value;
+	}
 }

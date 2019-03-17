@@ -337,6 +337,27 @@ public class RSSData {
 				t.start ();
 			}
 		}
+		
+		/**
+		 * The sum of squares of the retained singular values should be at least 90%
+		 * of the sum of square of all the singular values
+		 * @param S
+		 * @return
+		 */
+		public int numOfSingularValuesToRetain(RealMatrix S) {
+			int singularValuesToRetain = 2;
+			double percentage = 0;
+			double originalValues = toolBox.getSumOfSquares(S);
+			
+			while(percentage < 90) {
+				RealMatrix Sp = S.getSubMatrix(0, singularValuesToRetain, 0, S.getColumnDimension() - 1);
+				double newValues = toolBox.getSumOfSquares(Sp);
+				percentage = (newValues / originalValues) * 100;
+				singularValuesToRetain++;
+			}
+			
+			return singularValuesToRetain;
+		}
 
 		@Override
 		public void run() {
@@ -344,14 +365,22 @@ public class RSSData {
 			SingularValueDecomposition SVD = new SingularValueDecomposition(feedTokenMatrix);
 			
 			//RealMatrix U = SVD.getU();
-			//RealMatrix S = SVD.getS();
+			RealMatrix S = SVD.getS();
 			RealMatrix V = SVD.getV();
 			
+			//Multiple by v to map queries into concept space
 			RealMatrix Vp = V.getSubMatrix(0, feedTokenMatrix.getColumnDimension() - 1, 0, 1);
+			
+			System.err.println("Start Matrix S");
+			//toolBox.printMatrix(S.getSubMatrix(0, 10, 0, S.getColumnDimension() - 1));
+			System.out.println("Energy retained: " + numOfSingularValuesToRetain(S));
+			System.err.println("End Matrix S");
+			
+			
 			
 			
 			AtomicInteger index = new AtomicInteger();
-			feedItems.stream().forEachOrdered(item -> {
+			feedItems.parallelStream().forEachOrdered(item -> {
 				RealMatrix result = feedTokenMatrix.getRowMatrix(index.getAndIncrement()).multiply(Vp);
 				item.setReducedMatrixValue(result);
 			});
