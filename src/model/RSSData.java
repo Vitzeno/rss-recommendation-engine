@@ -261,7 +261,7 @@ public class RSSData {
 		 * This method 
 		 */
 		public void setUpMatrix() {
-			System.out.println("Initialising matrix");
+			System.out.println("Initialising matrix...");
 			TFIDFCalculator tfidfCalc = new TFIDFCalculator();
 			
 
@@ -306,6 +306,7 @@ public class RSSData {
 		 * @param method
 		 */
 		public void setUpSimilarityMatrix(calculation method) {
+			System.out.println("Creating similarity matrix...");
 			this.method = method;
 			double[][] array = new double[rowSize][rowSize];
 			double similarity = 0;
@@ -345,10 +346,11 @@ public class RSSData {
 		 * @return
 		 */
 		public int numOfSingularValuesToRetain(RealMatrix S) {
+			System.out.println("Calculating optimal number of singular values to drop...");
 			int singularValuesToRetain = 2;
 			double percentage = 0;
 			double originalValues = toolBox.getSumOfSquares(S);
-			
+				
 			while(percentage < 90) {
 				RealMatrix Sp = S.getSubMatrix(0, singularValuesToRetain, 0, S.getColumnDimension() - 1);
 				double newValues = toolBox.getSumOfSquares(Sp);
@@ -361,45 +363,35 @@ public class RSSData {
 
 		@Override
 		public void run() {
-			System.out.println("Performing SVD calulations on matrix");
+			System.out.println("Performing SVD calulations on matrix...");
 			SingularValueDecomposition SVD = new SingularValueDecomposition(feedTokenMatrix);
 			
 			//RealMatrix U = SVD.getU();
 			RealMatrix S = SVD.getS();
 			RealMatrix V = SVD.getV();
 			
+			int singularValuesToDrop = S.getColumnDimension() - numOfSingularValuesToRetain(S);
+			//System.out.println("Number of values to drop " + singularValuesToDrop);
+			
 			//Multiple by v to map queries into concept space
-			RealMatrix Vp = V.getSubMatrix(0, feedTokenMatrix.getColumnDimension() - 1, 0, 1);
-			
-			System.err.println("Start Matrix S");
-			//toolBox.printMatrix(S.getSubMatrix(0, 10, 0, S.getColumnDimension() - 1));
-			System.out.println("Energy retained: " + numOfSingularValuesToRetain(S));
-			System.err.println("End Matrix S");
-			
-			
-			
-			
+			RealMatrix Vp = V.getSubMatrix(0, feedTokenMatrix.getColumnDimension() - 1, 0, singularValuesToDrop - 1);
+
 			AtomicInteger index = new AtomicInteger();
 			feedItems.parallelStream().forEachOrdered(item -> {
 				RealMatrix result = feedTokenMatrix.getRowMatrix(index.getAndIncrement()).multiply(Vp);
 				item.setReducedMatrixValue(result);
 			});
 			
-			/*
-			int i = 0;
-			for(FeedItem item : feedItems) {
-				RealMatrix result = feedTokenMatrix.getRowMatrix(i).multiply(Vp);
-				item.setReducedMatrixValue(result);
-				//toolBox.printMatrix(item.getReducedMatrixValue());
-				//System.out.println(item.getTitle());
-				i++;
-			}
-			*/
+			
+			
+			
+			setUpSimilarityMatrix(calculation.COSINE);		//TODO: consider parallelising this 
+			getSimilarItems(11, 5);
+			
+
+
 			
 			System.out.println("Finishing thread " + t.getName());
-			
-			setUpSimilarityMatrix(calculation.EUCLIDEAN);		//TODO: consider parallelising this 
-			getSimilarItems(4, 20);
 		}
 		
 		/**
