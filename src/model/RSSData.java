@@ -56,7 +56,11 @@ public class RSSData {
 	private boolean feedsParsed = false;
 	private boolean feedsTokenised = false;
 	private boolean feedTokenMatrixInitialised = false;
-	public boolean similarityMatrixInitialised = false;
+	private boolean similarityMatrixInitialised = false;
+	
+	private int numOfSimilarRecommendations = 5;
+	
+	
 	
 	private FeedsMatrix feedsMatrix;
 	
@@ -457,7 +461,7 @@ public class RSSData {
 						feedItems.get(i).setScore(tfidfScore);
 						feedItems.get(i).appendDescription(" | Generated Score: " + tfidfScore);
 						
-						recFeed.addToFeed(getSimilarItems(i, 5));
+						recFeed.addToFeed(getSimilarItems(i, numOfSimilarRecommendations));
 						recFeed.addToFeed(feedItems.get(i));
 					}	
 				}

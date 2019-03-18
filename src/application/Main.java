@@ -1,5 +1,6 @@
 package application;
 	
+import database.DatabaseHandler;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -22,6 +23,14 @@ public class Main extends Application {
 			 * project and must "live" for the project lifetime
 			 */
 			RSSData.getInstance(RSSFileName);
+			
+			
+			DatabaseHandler DBHandler = new DatabaseHandler("test");
+			DBHandler.createNewDatabase();
+			DBHandler.createNewTable();
+			//DBHandler.insert("Lol");
+			//DBHandler.insert("Lolwarhw");
+			DBHandler.selectAll();
 			
 			primaryStage.setTitle("RSS Reader");
 			primaryStage.setMinWidth(640);
