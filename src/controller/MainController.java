@@ -6,6 +6,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.ParseException;
+
+import database.DatabaseHandler;
 import feed.Feed;
 import feed.FeedItem;
 import javafx.collections.FXCollections;
@@ -37,7 +39,6 @@ import utilities.Reader;
 public class MainController {
 	
 	private String RSSFileName = "standardFeeds";
-	private String topicsFileName = "topics";
 	private RSSData RSSDataModel;
 	private ObservableList<Feed> RSSFeedList = FXCollections.observableArrayList();
 	private Reader reader = new Reader();
@@ -239,9 +240,12 @@ public class MainController {
      * feed using the RSSDataModel class
      */
     public void initFeed() {
+    	DatabaseHandler DBHandler = new DatabaseHandler();
     	//add user topics to singleton class
     	UserTopics topics = UserTopics.getInstance();
-		topics.addTerms(reader.readFile(topicsFileName).toArray(new String[0]));
+		topics.addTerms(DBHandler.selectAllFromTopicsTable().toArray(new String[0]));
+		System.out.println(topics);
+		
     	
     	//clear lstView then add feeds
     	lstViewFeedTitles.getItems().clear();

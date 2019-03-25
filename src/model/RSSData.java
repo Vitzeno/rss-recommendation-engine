@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.SingularValueDecomposition;
+import database.DatabaseHandler;
 import feed.Feed;
 import feed.FeedItem;
 import javafx.collections.FXCollections;
@@ -20,7 +21,6 @@ import textClassification.TFIDFCalculator;
 import textClassification.Tokeniser;
 import textClassification.UserTopics;
 import utilities.RSSParser;
-import utilities.Reader;
 import utilities.ToolBox;
 
 /**
@@ -37,14 +37,12 @@ public class RSSData {
 	
 	private static RSSData single_instance = null;
 	
-	private Reader reader = new Reader();
 	private ToolBox toolBox = new ToolBox();
 	
 	//All feeds
 	private ObservableList<Feed> Feeds = FXCollections.observableArrayList();
 	private ArrayList<String> feedsURL = new ArrayList<String>();
 	
-	private String feedURLs;
 	
 	//private List<List<String>> documents = new ArrayList<List<String>>();
 	private Set<Set<String>> documents = new HashSet<Set<String>>(); 
@@ -72,13 +70,6 @@ public class RSSData {
 
 	}
 	
-	/**
-	 * Alternate Constructor to pass feeds url
-	 * @param url
-	 */
-	private RSSData(String url) {
-		this.feedURLs = url;
-	}
 	
 	/**
 	 * This method servers to provide an instance of the class
@@ -92,19 +83,6 @@ public class RSSData {
 		return single_instance;
 	}
 	
-	/**
-	 * This method servers to provide an instance of the class
-	 * and ensure that only one instance exists, also servers
-	 * as an alternate constructor for singleton nature
-	 * of this class
-	 * @return
-	 */
-	public static RSSData getInstance(String url) {
-		if(single_instance == null)
-			single_instance = new RSSData(url);
-		
-		return single_instance;
-	}
 	
 	/**
 	 * This method uses the RSSParser class to parse a list of RSS feeds from the provided URL
@@ -112,8 +90,9 @@ public class RSSData {
 	 * @param url
 	 */
 	public ObservableList<Feed> parseRSSFeeds() {
+		DatabaseHandler DBHandler = new DatabaseHandler();
+		feedsURL = DBHandler.selectAllFromFeedsTable();
 		
-		feedsURL = reader.readFile(feedURLs);
     	for (String URL : feedsURL) {
     		Feeds.add(parseRSSFeed(URL));
     	}

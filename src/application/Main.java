@@ -11,8 +11,6 @@ import javafx.scene.Scene;
 
 public class Main extends Application {
 	
-	private String RSSFileName = "standardFeeds";
-	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -22,15 +20,19 @@ public class Main extends Application {
 			 * contains data to be used by most classes in this 
 			 * project and must "live" for the project lifetime
 			 */
-			RSSData.getInstance(RSSFileName);
+			RSSData.getInstance();
 			
 			
-			DatabaseHandler DBHandler = new DatabaseHandler("test");
-			DBHandler.createNewDatabase();
-			DBHandler.createNewTable();
-			//DBHandler.insert("Lol");
-			//DBHandler.insert("Lolwarhw");
-			DBHandler.selectAll();
+			DatabaseHandler DBHandler = new DatabaseHandler();
+			DBHandler.createDatabase();
+			DBHandler.createTables();
+			
+			//DBHandler.setUpDefaultValues();
+			
+			
+			DBHandler.selectAllFromFeedsTable();
+			DBHandler.selectAllFromTopicsTable();
+			DBHandler.selectAllFromLikedItemsTable();
 			
 			primaryStage.setTitle("RSS Reader");
 			primaryStage.setMinWidth(640);

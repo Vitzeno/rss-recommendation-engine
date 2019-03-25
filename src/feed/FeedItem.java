@@ -12,12 +12,14 @@ import org.apache.commons.math3.linear.RealMatrix;
  */
 public class FeedItem implements Comparable<FeedItem> {
 	
+	//Intrinsic properties of feed items
 	String title;
     String description;
     String link;
     String author;
     String guid;
     String pubDate;
+    //Properties of feed item to be calculated on each run
     double tfidfScore;
     RealMatrix reducedMatrixValue;
 
