@@ -106,7 +106,7 @@ public class DatabaseHandler {
 	
 	
 	public ArrayList<String> selectAllFromFeedsTable(){
-        String sql = "SELECT id, feed FROM feeds";
+        String sql = "SELECT DISTINCT feed FROM feeds";
         
         ArrayList<String> feeds = new ArrayList<String>();
         
@@ -138,7 +138,7 @@ public class DatabaseHandler {
     }
     
     public ArrayList<String> selectAllFromTopicsTable() {
-    	String sql = "SELECT id, topic FROM topics";
+    	String sql = "SELECT DISTINCT topic FROM topics";
     	
     	ArrayList<String> topics = new ArrayList<String>();
         

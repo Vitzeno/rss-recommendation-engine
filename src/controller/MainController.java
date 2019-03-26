@@ -2,9 +2,11 @@ package controller;
 
 import java.awt.Desktop;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.text.ParseException;
 
 import database.DatabaseHandler;
@@ -15,7 +17,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -133,16 +138,18 @@ public class MainController {
      */
     @FXML
     void addFeed(MouseEvent event) {
+    	DatabaseHandler DBHandler = new DatabaseHandler();
     	String toWirte = txtFeed.getText();
     	if(validateURI(txtFeed.getText())) {
     		System.out.println("Adding feed: " + toWirte);
     		txtFeed.setStyle("-fx-text-fill: green;");
-    		reader.appendFile(RSSFileName, toWirte);
-    		initialize();
+    		DBHandler.insertIntoFeedsTable(toWirte);
+    		//reader.appendFile(RSSFileName, toWirte);
+    		//initialize();
     	}	
     	else {
     		System.out.println("Malformed URL provided");
-    		txtFeed.setText("Malformed URL provided");
+    		//txtFeed.setText("Malformed URL provided");
     		txtFeed.setStyle("-fx-text-fill: red;");
     	}
     }
@@ -153,13 +160,38 @@ public class MainController {
      * @return
      */
     private boolean validateURI(String url) {
-    	try { 
-            new URL(url).toURI(); 
-            return true; 
-        } 
-        catch (Exception e) { 
-            return false; 
-        } 
+    	try {
+    	    URL urlTest = new URL(url);
+    	    URLConnection conn = urlTest.openConnection();
+    	    conn.connect();
+    	} catch (MalformedURLException e) {
+    		txtFeed.clear();
+    		Alert alert = new Alert(AlertType.ERROR);
+    		alert.setTitle("Error");
+    		alert.setHeaderText("Malformed URL");
+    		alert.setContentText("URL provided is malformed, please check again and enter a well formed url");
+    		alert.showAndWait().ifPresent(rs -> {
+    		    if (rs == ButtonType.OK) {
+    		        System.out.println("Pressed OK.");
+    		    }
+    		});
+    		e.printStackTrace();
+    		return false;
+    	} catch (IOException e) {
+    		txtFeed.clear();
+    		Alert alert = new Alert(AlertType.ERROR);
+    		alert.setTitle("Error");
+    		alert.setHeaderText("Connection Error");
+    		alert.setContentText("Connection to the provided URL cannot be establish, this may be cause by lack of internet connection or invalid URL");
+    		alert.showAndWait().ifPresent(rs -> {
+    		    if (rs == ButtonType.OK) {
+    		        System.out.println("Pressed OK.");
+    		    }
+    		});
+			e.printStackTrace();
+			return false;
+		}
+		return true; 
     }
     
     /**
