@@ -32,6 +32,7 @@ import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import model.RSSData;
 import recommendation.RecommendationEngine;
 import textClassification.UserTopics;
@@ -79,6 +80,8 @@ public class MainController {
     private Button btnSave;
     @FXML
     private TabPane tabs;
+    @FXML
+    private AnchorPane root;
     
     /**
      * On click method when item in feed list is selected
@@ -253,6 +256,7 @@ public class MainController {
      */
     @FXML
     void initialize() {
+    	
     	System.out.println("Controller initialise");
     	//chkOpenInBrowse.setSelected(true);
     	
@@ -370,4 +374,5 @@ public class MainController {
     	System.out.println("Initialising data model");
     	RSSDataModel = RSSData.getInstance();
     }
+    
 }

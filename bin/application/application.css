@@ -1,1 +1,135 @@
-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+/* List view properties */
+
+/* List view cell when selected */
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: #0093ff;
+    -fx-text-fill: white;
+}
+
+/* list view cell when mouse hover */
+
+.list-cell:filled:hover {
+    -fx-background-color: #0093ff;
+    -fx-text-fill: white;
+}
+
+.list-cell {
+  -fx-background-color: white;
+}
+
+.list-view {
+  
+  -fx-background-insets: 0;
+  -fx-padding: 0;
+}
+
+.list-view .scroll-pane {
+  -fx-background-color: transparent;
+}
+
+.list-view .scroll-bar .increment-button {
+  visibility: hidden;
+}
+
+.list-view .scroll-bar .decrement-button {
+  visibility: hidden;
+}
+.list-view .scroll-bar .increment-arrow {
+  visibility: hidden;
+}
+
+.list-view .scroll-bar .decrement-arrow {
+  visibility: hidden;
+}
+
+.list-view .scroll-bar:vertical {
+  -fx-background-color: transparent;
+}
+
+.list-view .scroll-bar:horizontal {
+  -fx-background-color: transparent;
+}
+
+.list-view .corner {
+  -fx-background-color: transparent;
+}
+
+.list-view .thumb:vertical {
+  visibility: hidden;	
+}
+
+.list-view .thumb:horizontal {
+  visibility: hidden;	
+}
+
+.split-pane-divider {
+  -fx-padding: 1 ;
+}
+
+.split-pane {
+  -fx-background-insets: 0;
+  -fx-padding: 0;
+}
+
+/* Button properties */
+.button {
+    -fx-background-color: white; 
+    -fx-text-fill: black;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 )
+}
+
+.button:hover {
+    -fx-background-color: #0093ff;
+    -fx-text-fill: white;
+	-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 )
+}
+
+
+/* Tab properties */
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-opacity: 0;
+}
+
+.tab-pane {
+    -fx-tab-min-width:150px;
+    -fx-tab-max-width:150px;
+    -fx-background-color: white;
+}
+
+.tab-pane .tab {
+	-fx-background-color: white;
+	-fx-text-fill: black;
+}
+
+.tab-pane .tab:hover {
+    -fx-background-color: #0093ff;
+    -fx-text-fill: white;
+}
+
+.tab-pane .tab:selected {
+    -fx-background-color: #0093ff;
+    -fx-text-fill: white;
+}
+
+.tab .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: black;
+    -fx-font-size: 16px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
