@@ -54,7 +54,7 @@ public class DatabaseHandler {
 	public void createFeedsTable() {
 		String sql = "CREATE TABLE IF NOT EXISTS feeds (\n"
                 + "	id integer PRIMARY KEY,\n"
-                + "	feed text NOT NULL\n"
+                + "	feed text NOT NULL UNIQUE\n"
                 + ");";
 		
 		try (Connection conn = DriverManager.getConnection(url);
@@ -71,7 +71,7 @@ public class DatabaseHandler {
 	public void createTopicsTable() {
 		String sql = "CREATE TABLE IF NOT EXISTS topics (\n"
                 + "	id integer PRIMARY KEY,\n"
-                + "	topic text NOT NULL\n"
+                + "	topic text NOT NULL UNIQUE\n"
                 + ");";
 		
 		try (Connection conn = DriverManager.getConnection(url);
@@ -90,7 +90,7 @@ public class DatabaseHandler {
                 + "	id integer PRIMARY KEY,\n"
                 + "	title text NOT NULL,\n"
                 + "	description text,\n"
-                + "	link text NOT NULL,\n"
+                + "	link text NOT NULL UNIQUE,\n"
                 + "	author text,\n"
                 + "	guid text,\n"
                 + "	pubDate text\n"
@@ -126,7 +126,7 @@ public class DatabaseHandler {
     }
 	
     public void insertIntoFeedsTable(String name) {
-        String sql = "INSERT IGNORE INTO feeds(feed) VALUES(?)";
+        String sql = "INSERT INTO feeds(feed) VALUES(?)";
  
         try (Connection conn = this.connect();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -158,7 +158,7 @@ public class DatabaseHandler {
     }
     
     public void insertIntoTopicsTable(String name) {
-    	String sql = "INSERT IGNORE INTO topics(topic) VALUES(?)";
+    	String sql = "INSERT INTO topics(topic) VALUES(?)";
     	 
         try (Connection conn = this.connect();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
