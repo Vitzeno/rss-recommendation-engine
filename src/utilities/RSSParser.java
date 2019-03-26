@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
+
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -13,6 +15,9 @@ import javax.xml.stream.events.XMLEvent;
 
 import feed.Feed;
 import feed.FeedItem;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  * This class handles all parsing of RSS
@@ -40,11 +45,42 @@ public class RSSParser {
      * @param feedUrl
      */
     public RSSParser(String feedUrl) {
+    	try {
+    		this.url = new URL(feedUrl);
+    	    URLConnection conn = this.url.openConnection();
+    	    conn.connect();
+    	} catch (MalformedURLException e) {
+    		Alert alert = new Alert(AlertType.ERROR);
+    		alert.setTitle("Error");
+    		alert.setHeaderText("Malformed URL " + feedUrl);
+    		alert.showAndWait().ifPresent(rs -> {
+    		    if (rs == ButtonType.OK) {
+    		        System.out.println("Pressed OK.");
+    		    }
+    		});
+    		e.printStackTrace();
+    		throw new RuntimeException(e);
+    	} catch (IOException e) {
+    		Alert alert = new Alert(AlertType.ERROR);
+    		alert.setTitle("Error");
+    		alert.setHeaderText("Connection Error");
+    		alert.setContentText("Connection error may be caused by lack of internet. Please check your connection and try again.");
+    		alert.showAndWait().ifPresent(rs -> {
+    		    if (rs == ButtonType.OK) {
+    		        System.out.println("Pressed OK.");
+    		    }
+    		});
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+    	
+    	/*
         try {
             this.url = new URL(feedUrl);
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
+        */
     }
 
     /**
@@ -64,6 +100,7 @@ public class RSSParser {
             String author = "";
             String pubdate = "";
             String guid = "";
+            String url = this.url.toString();
 
             XMLInputFactory inputFactory = XMLInputFactory.newInstance();
             InputStream in = read();
@@ -81,7 +118,7 @@ public class RSSParser {
             			if(name.equalsIgnoreCase(ITEM) || name.equalsIgnoreCase(ENTRY)) {
             				if (isFeedHeader) {
                                 isFeedHeader = false;
-                                feed = new Feed(title, link, description, language, copyright, pubdate);
+                                feed = new Feed(title, link, description, language, copyright, pubdate, url);
                             }
                             //event = eventReader.nextEvent();
             			}
@@ -133,6 +170,8 @@ public class RSSParser {
             	}
             }
         } catch (XMLStreamException e) {
+        	
+        	e.printStackTrace();
             throw new RuntimeException(e);
         }
         return feed;

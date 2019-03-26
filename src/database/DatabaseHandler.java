@@ -137,6 +137,18 @@ public class DatabaseHandler {
         }
     }
     
+    public void deleteFromFeedTable(String name) {
+    	String sql = "DELETE FROM feeds WHERE feed = ?";
+    	 
+        try (Connection conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	            pstmt.setString(1, name);
+	            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
     public ArrayList<String> selectAllFromTopicsTable() {
     	String sql = "SELECT DISTINCT topic FROM topics";
     	
@@ -160,6 +172,18 @@ public class DatabaseHandler {
     public void insertIntoTopicsTable(String name) {
     	String sql = "INSERT INTO topics(topic) VALUES(?)";
     	 
+        try (Connection conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	            pstmt.setString(1, name);
+	            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public void deleteFromTopicsTable(String name) {
+    	String sql = "DELETE FROM topics WHERE topic = ?";
+   	 
         try (Connection conn = this.connect();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 	            pstmt.setString(1, name);
@@ -202,6 +226,18 @@ public class DatabaseHandler {
 	            pstmt.setString(4, author);
 	            pstmt.setString(5, guid);
 	            pstmt.setString(6, pubDate);
+	            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public void deleteFromLikedItemsTable(String name) {
+    	String sql = "DELETE FROM likedItems WHERE link = ?";
+      	 
+        try (Connection conn = this.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	            pstmt.setString(1, name);
 	            pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());

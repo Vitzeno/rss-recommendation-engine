@@ -29,7 +29,6 @@ public class Main extends Application {
 			
 			//DBHandler.setUpDefaultValues();
 			
-			
 			DBHandler.selectAllFromFeedsTable();
 			DBHandler.selectAllFromTopicsTable();
 			DBHandler.selectAllFromLikedItemsTable();

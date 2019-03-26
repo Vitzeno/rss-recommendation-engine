@@ -8,12 +8,13 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.ParseException;
-
+import java.util.Optional;
 import database.DatabaseHandler;
 import feed.Feed;
 import feed.FeedItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -29,11 +30,11 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import model.RSSData;
 import recommendation.RecommendationEngine;
 import textClassification.UserTopics;
-import utilities.Reader;
 
 
 /**
@@ -43,10 +44,8 @@ import utilities.Reader;
  */
 public class MainController {
 	
-	private String RSSFileName = "standardFeeds";
 	private RSSData RSSDataModel;
 	private ObservableList<Feed> RSSFeedList = FXCollections.observableArrayList();
-	private Reader reader = new Reader();
 	
 	private RecommendationEngine recEngine;
 	
@@ -87,7 +86,9 @@ public class MainController {
      */
     @FXML
     void handleMouseClickF(MouseEvent event) {
-    	initFeedItems(lstViewFeedTitles.getSelectionModel().getSelectedItem());
+		if(event.getButton() == MouseButton.PRIMARY) {
+			initFeedItems(lstViewFeedTitles.getSelectionModel().getSelectedItem());
+		}
     }
    
     /**
@@ -97,39 +98,80 @@ public class MainController {
      * @throws IOException 
      */
     @FXML
-    void handleMouseClickFI(MouseEvent event) throws IOException {  	   
+    void handleMouseClickFI(MouseEvent event) throws IOException {  
+    	if(event.getButton() == MouseButton.PRIMARY) {
+    		String link = lstViewFeed.getSelectionModel().getSelectedItem().getLink();
+        	String pubDate = lstViewFeed.getSelectionModel().getSelectedItem().getPubDate();
+        	if(chkOpenInBrowse.isSelected()) {
+            	
+                System.out.println("Clicked on " + link + pubDate);
+                Desktop desktop = Desktop.getDesktop();
+                try {
+        			desktop.browse(new URI(link));
+        		} catch (IOException e) {
+        			System.err.println("IO Error");
+        			e.printStackTrace();
+        		} catch (URISyntaxException e) {
+        			System.err.println("Invalid URI syntax");
+        			e.printStackTrace();
+        		}
+            }
+            else {
+            	FXMLLoader loader = new FXMLLoader();
+            	loader.setLocation(getClass().getClassLoader().getResource("BrowserView.fxml"));
+            	
+            	Parent browserViewParent = loader.load();
+            	
+            	//access the controller and call a method
+                BrowserController controller = loader.getController();
+                controller.load(link);
+            	
+                Tab newTab = new Tab();
+                tabs.getTabs().add(newTab);
+                newTab.setContent(browserViewParent);
+                newTab.setClosable(true);
+                newTab.setText(lstViewFeed.getSelectionModel().getSelectedItem().getTitle());
+            }
+    	}
+    	
+    }
+    
+    @FXML
+    void handleRemoveFeed(ActionEvent event) {
+    	DatabaseHandler DBHandler = new DatabaseHandler();
+    	Feed toDelete = lstViewFeedTitles.getSelectionModel().getSelectedItem();
+    	
+    	Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+    	alert.setTitle("Remove Feed?");
+    	alert.setContentText("Are you sure you wish to remove: " + toDelete.getTitle());
+    	Optional<ButtonType> answer = alert.showAndWait();
+    	
+    	if(answer.get() == ButtonType.OK) {
+    		DBHandler.deleteFromFeedTable(toDelete.getUrl());
+    	}
+    }
+    
+    @FXML
+    void handleOpenFeedItem(ActionEvent event) {
     	String link = lstViewFeed.getSelectionModel().getSelectedItem().getLink();
     	String pubDate = lstViewFeed.getSelectionModel().getSelectedItem().getPubDate();
-    	if(chkOpenInBrowse.isSelected()) {
         	
-            System.out.println("Clicked on " + link + pubDate);
-            Desktop desktop = Desktop.getDesktop();
-            try {
-    			desktop.browse(new URI(link));
-    		} catch (IOException e) {
-    			System.err.println("IO Error");
-    			e.printStackTrace();
-    		} catch (URISyntaxException e) {
-    			System.err.println("Invalid URI syntax");
-    			e.printStackTrace();
-    		}
-        }
-        else {
-        	FXMLLoader loader = new FXMLLoader();
-        	loader.setLocation(getClass().getClassLoader().getResource("BrowserView.fxml"));
-        	
-        	Parent browserViewParent = loader.load();
-        	
-        	//access the controller and call a method
-            BrowserController controller = loader.getController();
-            controller.load(link);
-        	
-            Tab newTab = new Tab();
-            tabs.getTabs().add(newTab);
-            newTab.setContent(browserViewParent);
-            newTab.setClosable(true);
-            newTab.setText(lstViewFeed.getSelectionModel().getSelectedItem().getTitle());
-        }
+        System.out.println("Clicked on " + link + pubDate);
+        Desktop desktop = Desktop.getDesktop();
+        try {
+			desktop.browse(new URI(link));
+		} catch (IOException e) {
+			System.err.println("IO Error");
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			System.err.println("Invalid URI syntax");
+			e.printStackTrace();
+		}
+    }
+    
+    @FXML
+    void handleRefreshFeedList(ActionEvent event) {
+    	//initialize();
     }
     
     /**

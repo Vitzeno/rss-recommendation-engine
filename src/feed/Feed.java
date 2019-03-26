@@ -17,8 +17,12 @@ public class Feed {
     final String language;
     final String copyright;
     final String pubDate;
+    
+    final String url;
 
-    final TreeSet<FeedItem> items = new TreeSet<FeedItem>();
+    
+
+	final TreeSet<FeedItem> items = new TreeSet<FeedItem>();
 
     /**
      * The constructor takes a set of feed attributes and sets them up
@@ -29,13 +33,14 @@ public class Feed {
      * @param copyright
      * @param pubDate
      */
-    public Feed(String title, String link, String description, String language, String copyright, String pubDate) {
+    public Feed(String title, String link, String description, String language, String copyright, String pubDate, String url) {
         this.title = title;
         this.link = link;
         this.description = description;
         this.language = language;
         this.copyright = copyright;
         this.pubDate = pubDate;
+        this.url = url;
     }
     
     public Feed() {
@@ -45,7 +50,13 @@ public class Feed {
         this.language = "";
         this.copyright = "";
         this.pubDate = "";
+        
+        this.url = "";
     }
+    
+    public String getUrl() {
+		return url;
+	}
     
     /**
      * This method returns an ArrayList of feed items
