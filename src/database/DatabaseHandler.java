@@ -126,7 +126,7 @@ public class DatabaseHandler {
     }
 	
     public void insertIntoFeedsTable(String name) {
-        String sql = "INSERT INTO feeds(feed) VALUES(?)";
+        String sql = "INSERT IGNORE INTO feeds(feed) VALUES(?)";
  
         try (Connection conn = this.connect();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -158,7 +158,7 @@ public class DatabaseHandler {
     }
     
     public void insertIntoTopicsTable(String name) {
-    	String sql = "INSERT INTO topics(topic) VALUES(?)";
+    	String sql = "INSERT IGNORE INTO topics(topic) VALUES(?)";
     	 
         try (Connection conn = this.connect();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {

@@ -145,6 +145,18 @@ public class MainController {
     		txtFeed.setStyle("-fx-text-fill: green;");
     		DBHandler.insertIntoFeedsTable(toWirte);
     		//reader.appendFile(RSSFileName, toWirte);
+    		
+    		Alert alert = new Alert(AlertType.CONFIRMATION);
+    		alert.setTitle("Feed Added");
+    		alert.setHeaderText("Feed Added Sucessfully");
+    		alert.setContentText("RSS feed has been saved to your list.");
+    		alert.showAndWait().ifPresent(rs -> {
+    		    if (rs == ButtonType.OK) {
+    		        System.out.println("Pressed OK.");
+    		    }
+    		});
+    		
+    		
     		//initialize();
     	}	
     	else {
