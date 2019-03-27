@@ -39,7 +39,7 @@
                           <items>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                  <children>
-                                    <ListView fx:id="lstViewFeedTitles" layoutX="57.0" layoutY="177.0" onMouseClicked="#handleMouseClickF" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <ListView fx:id="lstViewFeeds" layoutX="57.0" layoutY="177.0" onMouseClicked="#handleMouseClickF" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <contextMenu>
                                           <ContextMenu fx:id="cntMenuFeed">
                                             <items>
@@ -52,7 +52,7 @@
                               </AnchorPane>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                  <children>
-                                    <ListView fx:id="lstViewFeed" layoutX="141.0" layoutY="75.0" onMouseClicked="#handleMouseClickFI" prefHeight="541.0" prefWidth="922.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <ListView fx:id="lstViewFeedItems" layoutX="141.0" layoutY="75.0" onMouseClicked="#handleMouseClickFI" prefHeight="541.0" prefWidth="922.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <contextMenu>
                                           <ContextMenu fx:id="cntMenuFeedItem">
                                             <items>

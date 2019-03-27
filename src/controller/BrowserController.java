@@ -5,9 +5,13 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import utilities.HTMLParser;
 
@@ -58,7 +62,7 @@ public class BrowserController {
     		displayText(htmlParser.parseHTML(URL));
     	}	
     	else
-    		System.out.println("Malformed URL passed: " + URL);
+    		System.out.println("Cannot connect: " + URL);
     }
     
     private void displayText(String text) {
@@ -73,13 +77,24 @@ public class BrowserController {
      * @return
      */
     private boolean validateURI(String url) {
-    	try { 
-            new URL(url).toURI(); 
-            return true; 
-        } 
-        catch (Exception e) { 
-            return false; 
-        } 
+    	try {
+    	    URL urlTest = new URL(url);
+    	    URLConnection conn = urlTest.openConnection();
+    	    conn.connect();
+    	} catch (IOException e) {
+    		Alert alert = new Alert(AlertType.ERROR);
+    		alert.setTitle("Error");
+    		alert.setHeaderText("Connection Error");
+    		alert.setContentText("Connection to the provided URL cannot be establish, this may be cause by lack of internet connection or invalid URL");
+    		alert.showAndWait().ifPresent(rs -> {
+    		    if (rs == ButtonType.OK) {
+    		        System.out.println("Pressed OK.");
+    		    }
+    		});
+			e.printStackTrace();
+			return false;
+		}
+		return true; 
     }
 
 }

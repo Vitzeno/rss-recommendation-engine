@@ -57,9 +57,9 @@ public class MainController {
     @FXML
     private TextField txtFeed;
     @FXML
-    private ListView<Feed> lstViewFeedTitles;
+    private ListView<Feed> lstViewFeeds;
     @FXML
-    private ListView<FeedItem> lstViewFeed;
+    private ListView<FeedItem> lstViewFeedItems;
     @FXML
     private CheckBox chkOpenInBrowse;
     @FXML
@@ -90,7 +90,7 @@ public class MainController {
     @FXML
     void handleMouseClickF(MouseEvent event) {
 		if(event.getButton() == MouseButton.PRIMARY) {
-			initFeedItems(lstViewFeedTitles.getSelectionModel().getSelectedItem());
+			initFeedItems(lstViewFeeds.getSelectionModel().getSelectedItem());
 		}
     }
    
@@ -103,8 +103,8 @@ public class MainController {
     @FXML
     void handleMouseClickFI(MouseEvent event) throws IOException {  
     	if(event.getButton() == MouseButton.PRIMARY) {
-    		String link = lstViewFeed.getSelectionModel().getSelectedItem().getLink();
-        	String pubDate = lstViewFeed.getSelectionModel().getSelectedItem().getPubDate();
+    		String link = lstViewFeedItems.getSelectionModel().getSelectedItem().getLink();
+        	String pubDate = lstViewFeedItems.getSelectionModel().getSelectedItem().getPubDate();
         	if(chkOpenInBrowse.isSelected()) {
             	
                 System.out.println("Clicked on " + link + pubDate);
@@ -133,7 +133,7 @@ public class MainController {
                 tabs.getTabs().add(newTab);
                 newTab.setContent(browserViewParent);
                 newTab.setClosable(true);
-                newTab.setText(lstViewFeed.getSelectionModel().getSelectedItem().getTitle());
+                newTab.setText(lstViewFeedItems.getSelectionModel().getSelectedItem().getTitle());
             }
     	}
     	
@@ -142,7 +142,7 @@ public class MainController {
     @FXML
     void handleRemoveFeed(ActionEvent event) {
     	DatabaseHandler DBHandler = new DatabaseHandler();
-    	Feed toDelete = lstViewFeedTitles.getSelectionModel().getSelectedItem();
+    	Feed toDelete = lstViewFeeds.getSelectionModel().getSelectedItem();
     	
     	Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
     	alert.setTitle("Remove Feed?");
@@ -156,8 +156,8 @@ public class MainController {
     
     @FXML
     void handleOpenFeedItem(ActionEvent event) {
-    	String link = lstViewFeed.getSelectionModel().getSelectedItem().getLink();
-    	String pubDate = lstViewFeed.getSelectionModel().getSelectedItem().getPubDate();
+    	String link = lstViewFeedItems.getSelectionModel().getSelectedItem().getLink();
+    	String pubDate = lstViewFeedItems.getSelectionModel().getSelectedItem().getPubDate();
         	
         System.out.println("Clicked on " + link + pubDate);
         Desktop desktop = Desktop.getDesktop();
@@ -212,7 +212,7 @@ public class MainController {
     }
     
     /**
-     * This method server to verify if the URI provided is syntactically valid or not
+     * This method serves to verify if the URI provided is syntactically valid or not
      * @param uri
      * @return
      */
@@ -319,9 +319,9 @@ public class MainController {
      * @param feed
      */
     public void initFeedItems(Feed feed) {
-    	lstViewFeed.getItems().clear();
+    	lstViewFeedItems.getItems().clear();
     	for (FeedItem item : feed.getMessages()) {
-    		lstViewFeed.getItems().add(item);
+    		lstViewFeedItems.getItems().add(item);
     	}
     }
     
@@ -338,23 +338,30 @@ public class MainController {
 		
     	
     	//clear lstView then add feeds
-    	lstViewFeedTitles.getItems().clear();
+    	lstViewFeeds.getItems().clear();
     	RSSFeedList.clear();
     	if(RSSDataModel == null)
     		initModel();
     	
     	RSSFeedList = RSSDataModel.parseRSSFeeds();
     	
-    	for (Feed feed : RSSFeedList) {
-    		lstViewFeedTitles.getItems().add(feed);
-        } 
+    	lstViewFeeds.setItems(RSSFeedList);
     	 	
     	if(recEngine == null)
     		initRecEngine();
     	
     	try {
-			lstViewFeedTitles.getItems().add(0, recEngine.generateRecommendations());
+			lstViewFeeds.getItems().add(0, recEngine.generateRecommendations());
 		} catch (ParseException e) {
+			Alert alert = new Alert(AlertType.ERROR);
+    		alert.setTitle("Error");
+    		alert.setHeaderText("Unable to generate recommendations");
+    		alert.setContentText("This could be due to a drop in connection, or a failed RSS parse");
+    		alert.showAndWait().ifPresent(rs -> {
+    		    if (rs == ButtonType.OK) {
+    		        System.out.println("Pressed OK.");
+    		    }
+    		});
 			e.printStackTrace();
 		}
     }
