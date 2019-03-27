@@ -64,7 +64,7 @@
 }
 
 .split-pane-divider {
-  -fx-padding: 1 ;
+  -fx-padding: 0;
 }
 
 .split-pane {
@@ -76,13 +76,17 @@
 .button {
     -fx-background-color: white; 
     -fx-text-fill: black;
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 )
+    -fx-border-color: #0093ff;
+    -fx-border-width: 1;
+    -fx-background-radius: 1;
 }
 
 .button:hover {
     -fx-background-color: #0093ff;
     -fx-text-fill: white;
-	-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 )
+	-fx-border-color: #0093ff;
+    -fx-border-width: 1;
+    -fx-background-radius: 1;
 }
 
 

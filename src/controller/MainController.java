@@ -9,9 +9,13 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.text.ParseException;
 import java.util.Optional;
+
+import application.Main;
 import database.DatabaseHandler;
 import feed.Feed;
 import feed.FeedItem;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,6 +30,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
@@ -82,6 +87,16 @@ public class MainController {
     private TabPane tabs;
     @FXML
     private AnchorPane root;
+    @FXML
+    private SplitPane splintPane;
+    
+    
+    @FXML
+    private AnchorPane rightAnchorPane;
+    @FXML
+    private AnchorPane leftAnchorPane;
+    
+
     
     /**
      * On click method when item in feed list is selected
@@ -267,6 +282,10 @@ public class MainController {
     	
     	initFeed();
     	setUpSettingsValues();
+    	/* enusres that split pane divider does not resize when windows is resized */
+    	splintPane.setResizableWithParent(leftAnchorPane, false);
+    	splintPane.setResizableWithParent(rightAnchorPane, false);
+    	splintPane.setDividerPositions(0.20);
     }
     
     /**
@@ -323,6 +342,8 @@ public class MainController {
     	for (FeedItem item : feed.getMessages()) {
     		lstViewFeedItems.getItems().add(item);
     	}
+    	
+    	lstViewFeedItems.setCellFactory(feedItemsListView -> new FeedItemsListViewCell());
     }
     
     /**

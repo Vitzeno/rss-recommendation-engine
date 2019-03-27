@@ -390,6 +390,7 @@ public class RSSData {
 			System.out.println();
 			for(int i = 0;i < similarItems.size();i++) {
 				System.out.println(similarItems.get(i).getTitle());
+				//similarItems.get(i).setExraDecription("Recommended based on topics you enjoy");
 			}
 			
 			//printTokens();
@@ -405,7 +406,7 @@ public class RSSData {
 		 */
 		public int numOfSingularValuesToRetain(RealMatrix S) {
 			System.out.println("Calculating optimal number of singular values to drop...");
-			int singularValuesToRetain = 2;
+			int singularValuesToRetain = rowSize / 2;
 			double percentage = 0;
 			double originalValues = toolBox.getSumOfSquares(S);
 				
@@ -438,7 +439,8 @@ public class RSSData {
 					
 					if(tfidfScore > 0) {
 						feedItems.get(i).setScore(tfidfScore);
-						feedItems.get(i).appendDescription(" | Generated Score: " + tfidfScore);
+						//feedItems.get(i).appendDescription(" | Generated Score: " + tfidfScore);
+						feedItems.get(i).setExraDecription("Recommended Score: " + (int) (tfidfScore*100));
 						
 						recFeed.addToFeed(getSimilarItems(i, numOfSimilarRecommendations));
 						recFeed.addToFeed(feedItems.get(i));

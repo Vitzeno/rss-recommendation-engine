@@ -15,14 +15,22 @@ public class FeedItem implements Comparable<FeedItem> {
 	//Intrinsic properties of feed items
 	String title;
     String description;
-    String link;
+    String exraDecription;
+	String link;
     String author;
     String guid;
     String pubDate;
     //Properties of feed item to be calculated on each run
     double tfidfScore;
     RealMatrix reducedMatrixValue;
+    
+    public String getExraDecription() {
+		return exraDecription;
+	}
 
+	public void setExraDecription(String exraDecription) {
+		this.exraDecription = exraDecription;
+	}
 
 	public RealMatrix getReducedMatrixValue() {
 		return reducedMatrixValue;
