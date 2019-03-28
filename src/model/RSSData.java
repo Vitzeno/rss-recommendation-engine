@@ -415,7 +415,7 @@ public class RSSData {
 					double tfidfScore = tfidfCalc.tfidf(feedItems.get(i).getTokens(), documents, term);					
 					
 					if(tfidfScore > 0) {
-						feedItems.get(i).setScore(tfidfScore);
+						feedItems.get(i).setScore((feedItems.get(i).getScore() + tfidfScore));
 						feedItems.get(i).setExraDecription("Recommended Score: " + (int) ((feedItems.get(i).getScore() + tfidfScore) * 100));
 						
 						recFeed.addToFeed(getSimilarItems(i, numOfSimilarRecommendations));
