@@ -25,13 +25,10 @@ public class TFIDFCalculator {
 		performIDF = false;
 		
 		for(String word : document) {
-//			System.out.println("Term " + term);
-//			System.out.println("Word " + word);
 			if(term.equalsIgnoreCase(word))
 				termCount++;
 		}
 		
-//		System.out.println("Term " + term + " count " + termCount);
 		//normalise result
 		result = termCount / document.size();
 		
@@ -69,8 +66,8 @@ public class TFIDFCalculator {
 	}
 	
 	/**
-	 * This is composed of both the term frequency (tf) and inverse domain frequency (idf).
-	 * term frequency inverse domain frequency (tfidf) is large when term appears many times
+	 * This is composed of both the term frequency (tf) and inverse document  frequency (idf).
+	 * term frequency inverse document  frequency (tfidf) is large when term appears many times
 	 * in small number of documents, but small when term appears in all documents.
 	 * 
 	 * tfidf = tf * idf

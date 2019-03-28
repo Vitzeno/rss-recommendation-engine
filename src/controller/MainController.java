@@ -189,7 +189,7 @@ public class MainController {
     
     @FXML
     void handleRefreshFeedList(ActionEvent event) {
-    	//initialize();
+    	initFeed();
     }
     
     /**

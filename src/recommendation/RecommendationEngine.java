@@ -54,7 +54,15 @@ public class RecommendationEngine {
 	public Feed generateRecommendations() throws ParseException {
 		recFeed = new Feed("Recommended Feeds", null, "Auto generated feed of recommended items", "en-gb", null, null, "");
 		
+
+		
 		RSSDataModel.initialiseFeedsMatrix();
+		Thread t = RSSDataModel.getThread();
+		try {
+			t.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		
 		recFeed.addToFeed(RSSDataModel.setTFIDFScores());
 		

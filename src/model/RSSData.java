@@ -165,6 +165,7 @@ public class RSSData {
 	}
 	
 	public List<FeedItem> getFeedItems() {
+		feedItems.clear();
 		for(Feed feeds : Feeds) {
 			for(FeedItem item : feeds.getMessages()) {
 				feedItems.add(item);
@@ -216,13 +217,17 @@ public class RSSData {
 		return recFeed;
 	}
 	
+	public Thread getThread() {
+		return feedsMatrix.t;
+	}
+	
 	
 	private class FeedsMatrix implements Runnable{
 		
 		public RealMatrix feedTokenMatrix;
 		public RealMatrix similarityMatrix;
 		
-		private Thread t;
+		public Thread t;
 		private String threadName;
 		
 		private calculation method;
@@ -312,12 +317,13 @@ public class RSSData {
 			if (t == null) {
 				t = new Thread (this, threadName);
 				t.start ();
-				
+				/*
 				try {
 					t.join();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				*/
 			}
 		}
 		
@@ -439,8 +445,7 @@ public class RSSData {
 					
 					if(tfidfScore > 0) {
 						feedItems.get(i).setScore(tfidfScore);
-						//feedItems.get(i).appendDescription(" | Generated Score: " + tfidfScore);
-						feedItems.get(i).setExraDecription("Recommended Score: " + (int) (tfidfScore*100));
+						feedItems.get(i).setExraDecription("Recommended Score: " + (int) ((feedItems.get(i).getScore() + tfidfScore) * 100));
 						
 						recFeed.addToFeed(getSimilarItems(i, numOfSimilarRecommendations));
 						recFeed.addToFeed(feedItems.get(i));
