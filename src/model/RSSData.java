@@ -53,8 +53,6 @@ public class RSSData {
 	
 	private boolean feedsParsed = false;
 	private boolean feedsTokenised = false;
-	private boolean feedTokenMatrixInitialised = false;
-	private boolean similarityMatrixInitialised = false;
 	
 	private int numOfSimilarRecommendations = 5;
 	
@@ -126,6 +124,7 @@ public class RSSData {
 	 * to be used in tfidf calculations
 	 */
 	public void tokeniseDocuments() {
+		documents.clear();
 		Tokeniser tokeniser = new Tokeniser();
 		
 		for(Feed feed : Feeds) {
@@ -142,6 +141,7 @@ public class RSSData {
 	 * Creates a set of all tokens from the set of tokens in documents set
 	 */
 	private void tokeniseAllTerms() {
+		tokens.clear();
 		tokens = new HashSet<String>(documents.stream().flatMap(x -> x.stream()).collect(Collectors.toList()));
 	}
 	
@@ -196,17 +196,23 @@ public class RSSData {
 	 * This method initialises the inner matrix class, this should only
 	 * be done when all feeds and feeds items have been parsed and tokenised
 	 * otherwise matrix size will be incorrect
+	 * @return 
 	 */
-	public void initialiseFeedsMatrix() {
+	public Feed getRecommendations() {
+		Feed recFeed = new Feed();
 		if(feedsParsed && feedsTokenised) {
 			feedsMatrix = new FeedsMatrix();
 			feedsMatrix.printMatrixData();
 			feedsMatrix.reduceMatrix("Thread 1");
-			feedTokenMatrixInitialised = true;
+
+			
+			recFeed.addToFeed(feedsMatrix.setTFIDFScoresPerFeed());
+			return recFeed;
 		}
 		else {
 			System.err.println("ERROR: Cannot initialise feeds matrix until all feeds have been parsed and tokenised.");
 		}
+		return recFeed;
 	}
 	
 	public Feed setTFIDFScores() {
@@ -217,18 +223,12 @@ public class RSSData {
 		return recFeed;
 	}
 	
-	public Thread getThread() {
-		return feedsMatrix.t;
-	}
 	
-	
-	private class FeedsMatrix implements Runnable{
+	private class FeedsMatrix {
 		
 		public RealMatrix feedTokenMatrix;
 		public RealMatrix similarityMatrix;
-		
-		public Thread t;
-		private String threadName;
+
 		
 		private calculation method;
 	
@@ -272,9 +272,29 @@ public class RSSData {
 		}
 		
 		public void reduceMatrix(String threadName) {
-			this.threadName = threadName;
-			System.out.println("Creating thread " + threadName);
-			this.start();
+			System.out.println("Performing SVD calulations on matrix...");
+			SingularValueDecomposition SVD = new SingularValueDecomposition(feedTokenMatrix);
+			
+			//RealMatrix U = SVD.getU();
+			RealMatrix S = SVD.getS();
+			RealMatrix V = SVD.getV();
+			
+			int singularValuesToDrop = S.getColumnDimension() - numOfSingularValuesToRetain(S);
+			//System.out.println("Number of values to drop " + singularValuesToDrop);
+			
+			//Multiple by v to map queries into concept space
+			RealMatrix Vp = V.getSubMatrix(0, feedTokenMatrix.getColumnDimension() - 1, 0, singularValuesToDrop - 1);
+
+			AtomicInteger index = new AtomicInteger();
+			feedItems.parallelStream().forEachOrdered(item -> {
+				RealMatrix result = feedTokenMatrix.getRowMatrix(index.getAndIncrement()).multiply(Vp);
+				item.setReducedMatrixValue(result);
+			});
+			
+			setUpSimilarityMatrix(calculation.COSINE);		//TODO: consider parallelising this 
+			//getSimilarItems(11, 5);
+			
+			//System.out.println("Finishing thread " + t.getName());
 		}
 		
 		/**
@@ -309,55 +329,6 @@ public class RSSData {
 			}
 			
 			similarityMatrix = MatrixUtils.createRealMatrix(array);
-			similarityMatrixInitialised = true;
-		}
-		
-		public void start() {
-			System.out.println("Starting thread: " + threadName);
-			if (t == null) {
-				t = new Thread (this, threadName);
-				t.start ();
-				/*
-				try {
-					t.join();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				*/
-			}
-		}
-		
-		@Override
-		public void run() {
-			System.out.println("Performing SVD calulations on matrix...");
-			SingularValueDecomposition SVD = new SingularValueDecomposition(feedTokenMatrix);
-			
-			//RealMatrix U = SVD.getU();
-			RealMatrix S = SVD.getS();
-			RealMatrix V = SVD.getV();
-			
-			int singularValuesToDrop = S.getColumnDimension() - numOfSingularValuesToRetain(S);
-			//System.out.println("Number of values to drop " + singularValuesToDrop);
-			
-			//Multiple by v to map queries into concept space
-			RealMatrix Vp = V.getSubMatrix(0, feedTokenMatrix.getColumnDimension() - 1, 0, singularValuesToDrop - 1);
-
-			AtomicInteger index = new AtomicInteger();
-			feedItems.parallelStream().forEachOrdered(item -> {
-				RealMatrix result = feedTokenMatrix.getRowMatrix(index.getAndIncrement()).multiply(Vp);
-				item.setReducedMatrixValue(result);
-			});
-			
-			
-			
-			
-			setUpSimilarityMatrix(calculation.COSINE);		//TODO: consider parallelising this 
-			//getSimilarItems(11, 5);
-			
-
-
-			
-			System.out.println("Finishing thread " + t.getName());
 		}
 		
 		/**
@@ -460,59 +431,6 @@ public class RSSData {
 		public void printMatrixData() {
 			toolBox.printMatrixData(feedTokenMatrix);
 		}
-		
-		public void printMatrix() {
-			toolBox.printMatrix(feedTokenMatrix);
-		}
-		
-		public void testSVD() {
-			double[][] array = {
-					{1, 1, 1, 0, 0},
-					{3, 3, 3, 0, 0},
-					{4, 4, 4, 0, 0},
-					{5, 5, 5, 0, 0},
-					{0, 2, 0, 4, 4},
-					{0, 0, 0, 5, 5},
-					{0, 1, 0, 2, 2}
-			};
-			
-			RealMatrix A = MatrixUtils.createRealMatrix(array);
-			SingularValueDecomposition svd = new SingularValueDecomposition(A);
-			RealMatrix U = svd.getU();
-			RealMatrix S = svd.getS();
-			RealMatrix V = svd.getV();
-			
-			
-			RealMatrix Up = U.getSubMatrix(0, A.getRowDimension() - 1, 0, 1);
-			RealMatrix Sp = S.getSubMatrix(0, 1, 0, 1);
-			RealMatrix Vp = V.getSubMatrix(0, A.getColumnDimension() - 1, 0, 1);
-			
-			RealMatrix query = A.getRowMatrix(4);
-			RealMatrix query2 = A.getRowMatrix(1);
-
-			
-			RealMatrix vector = query.multiply(Vp);
-			RealMatrix vector2 = query2.multiply(Vp);
-			
-			System.out.println("A");
-			toolBox.printMatrix(A);
-			
-			System.out.println("Up");
-			toolBox.printMatrix(Up);
-			
-			System.out.println("Sp");
-			toolBox.printMatrix(Sp);
-			
-			System.out.println("Vp");
-			toolBox.printMatrix(Vp);
-			
-			System.out.println("vector");
-			toolBox.printMatrix(vector);
-			
-			System.out.println("vector2");
-			toolBox.printMatrix(vector2);
-
-		}
-		
+	
 	}
 }

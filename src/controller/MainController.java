@@ -9,13 +9,10 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.text.ParseException;
 import java.util.Optional;
-
-import application.Main;
 import database.DatabaseHandler;
 import feed.Feed;
 import feed.FeedItem;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -215,9 +212,7 @@ public class MainController {
     		        System.out.println("Pressed OK.");
     		    }
     		});
-    		
-    		
-    		//initialize();
+    		txtFeed.clear();
     	}	
     	else {
     		System.out.println("Malformed URL provided");
@@ -271,7 +266,6 @@ public class MainController {
      */
     @FXML
     void initialize() {
-    	
     	System.out.println("Controller initialise");
     	//chkOpenInBrowse.setSelected(true);
     	
@@ -281,10 +275,10 @@ public class MainController {
     		tabs.setClosable(false);
     	
     	initFeed();
-    	setUpSettingsValues();
+    	
     	/* enusres that split pane divider does not resize when windows is resized */
-    	splintPane.setResizableWithParent(leftAnchorPane, false);
-    	splintPane.setResizableWithParent(rightAnchorPane, false);
+    	SplitPane.setResizableWithParent(leftAnchorPane, false);
+    	SplitPane.setResizableWithParent(rightAnchorPane, false);
     	splintPane.setDividerPositions(0.20);
     }
     
@@ -371,20 +365,28 @@ public class MainController {
     	if(recEngine == null)
     		initRecEngine();
     	
-    	try {
-			lstViewFeeds.getItems().add(0, recEngine.generateRecommendations());
-		} catch (ParseException e) {
-			Alert alert = new Alert(AlertType.ERROR);
-    		alert.setTitle("Error");
-    		alert.setHeaderText("Unable to generate recommendations");
-    		alert.setContentText("This could be due to a drop in connection, or a failed RSS parse");
-    		alert.showAndWait().ifPresent(rs -> {
-    		    if (rs == ButtonType.OK) {
-    		        System.out.println("Pressed OK.");
-    		    }
-    		});
-			e.printStackTrace();
-		}
+    	new Thread(){
+			@Override
+			public void run() {
+				try {
+					Feed recFeed = recEngine.generateRecommendations();
+					Platform.runLater( () -> {
+						lstViewFeeds.getItems().add(0, recFeed);
+			    	});
+				} catch (ParseException e) {
+					Alert alert = new Alert(AlertType.ERROR);
+		    		alert.setTitle("Error");
+		    		alert.setHeaderText("Unable to generate recommendations");
+		    		alert.setContentText("This could be due to a drop in connection, or a failed RSS parse");
+		    		alert.showAndWait().ifPresent(rs -> {
+		    		    if (rs == ButtonType.OK) {
+		    		        System.out.println("Pressed OK.");
+		    		    }
+		    		});
+					e.printStackTrace();
+				}
+			}
+		}.start();
     }
     
     /**

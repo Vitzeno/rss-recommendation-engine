@@ -9,15 +9,4 @@ http://m.highwaysengland.co.uk/feeds/rss/UnplannedEvents.xml
 https://kotaku.com/rss
 http://feeds.ign.com/ign/video-guides
 https://www.nottinghampost.com/news/?service=rss
-trtrtr
-http://feeds.bbci.co.uk/news/rss.xml
 feeds.bbci.co.uk/news/rss.xml
-feeds.bbci.co.uk/news/rss.xml
-http://feeds.bbci.co.uk/news/rss.xml
-fefe
-fdef
-http://feeds.bbci.co.uk/news/rss.xml
-ee
-defefefsdf
-dsds
-dsdsfdsfgdsgdfsdfdsfds
