@@ -5,7 +5,6 @@ import feed.Feed;
 import feed.FeedItem;
 import javafx.collections.ObservableList;
 import model.RSSData;
-import utilities.ToolBox;
 
 /**
  * This class handles all the recommendations produced
@@ -37,7 +36,6 @@ public class RecommendationEngine {
 	private boolean useLikedFeedWeighting = true;
 	private boolean useLikedAuthorWeighting = false;
 	
-	ToolBox toolBox = new ToolBox();
 	
 	
 	public RecommendationEngine(ObservableList<Feed> RSSFeedList) {

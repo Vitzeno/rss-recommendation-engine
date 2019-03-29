@@ -37,8 +37,6 @@ public class RSSData {
 	
 	private static RSSData single_instance = null;
 	
-	private ToolBox toolBox = new ToolBox();
-	
 	//All feeds
 	private ObservableList<Feed> Feeds = FXCollections.observableArrayList();
 	private ArrayList<String> feedsURL = new ArrayList<String>();
@@ -146,18 +144,18 @@ public class RSSData {
 	}
 	
 	public void printTokens() {
-		toolBox.printTokens(tokens);
+		ToolBox.printTokens(tokens);
 	}
 	
 	public void printDocuments() {
-		toolBox.printDocuments(documents);
+		ToolBox.printDocuments(documents);
 	}
 	
 	/**
 	 * Simple method to print all feeds for debugging purposes
 	 */
 	public void printFeeds() {
-		toolBox.printFeeds(Feeds);
+		ToolBox.printFeeds(Feeds);
 	}
 	
 	public Set<Set<String>> getAllDocumentTokens() {
@@ -317,9 +315,9 @@ public class RSSData {
 					FeedItem feedB = feedItems.get(j);
 					
 					if(method == calculation.EUCLIDEAN)
-						similarity = toolBox.euclideanDistance(feedA.getReducedMatrixValue().getRow(0), feedB.getReducedMatrixValue().getRow(0));
+						similarity = ToolBox.euclideanDistance(feedA.getReducedMatrixValue().getRow(0), feedB.getReducedMatrixValue().getRow(0));
 					else if(method == calculation.COSINE)
-						similarity = toolBox.cosineSimilarity(feedA.getReducedMatrixValue().getRow(0), feedB.getReducedMatrixValue().getRow(0));
+						similarity = ToolBox.cosineSimilarity(feedA.getReducedMatrixValue().getRow(0), feedB.getReducedMatrixValue().getRow(0));
 					
 					//System.out.println("Feed A: " + feedA.getTitle() + " Feed B: " + feedB.getTitle());
 					//System.out.println("Similarity score: " + similarity);
@@ -354,7 +352,7 @@ public class RSSData {
 			
 			
 			for(int i = 0;i < listOfScores.size();i++) {
-				int index = toolBox.getIndex(originalListOfScores, listOfScores.get(i));
+				int index = ToolBox.getIndex(originalListOfScores, listOfScores.get(i));
 				
 				//System.out.println("score " + listOfScores.get(i) + " Index " + index + " item title " + feedItems.get(i));
 				//System.out.println(originalListOfScores.get(index) + " " + index);
@@ -385,11 +383,11 @@ public class RSSData {
 			System.out.println("Calculating optimal number of singular values to drop...");
 			int singularValuesToRetain = rowSize / 2;
 			double percentage = 0;
-			double originalValues = toolBox.getSumOfSquares(S);
+			double originalValues = ToolBox.getSumOfSquares(S);
 				
 			while(percentage < 90) {
 				RealMatrix Sp = S.getSubMatrix(0, singularValuesToRetain, 0, S.getColumnDimension() - 1);
-				double newValues = toolBox.getSumOfSquares(Sp);
+				double newValues = ToolBox.getSumOfSquares(Sp);
 				percentage = (newValues / originalValues) * 100;
 				singularValuesToRetain++;
 			}
@@ -414,9 +412,9 @@ public class RSSData {
 				for(String term : topics.getTerms()) {
 					double tfidfScore = tfidfCalc.tfidf(feedItems.get(i).getTokens(), documents, term);					
 					
-					if(tfidfScore > 0) {
-						feedItems.get(i).setScore((feedItems.get(i).getScore() + tfidfScore));
-						feedItems.get(i).setExraDecription("Recommended Score: " + (int) ((feedItems.get(i).getScore() + tfidfScore) * 100));
+					if(tfidfScore > 0.0) {
+						feedItems.get(i).setScore(tfidfScore);
+						feedItems.get(i).setExraDecription("Recommended Score: " + (int) (feedItems.get(i).getScore() * 100));
 						
 						recFeed.addToFeed(getSimilarItems(i, numOfSimilarRecommendations));
 						recFeed.addToFeed(feedItems.get(i));
@@ -429,7 +427,7 @@ public class RSSData {
 		
 		
 		public void printMatrixData() {
-			toolBox.printMatrixData(feedTokenMatrix);
+			ToolBox.printMatrixData(feedTokenMatrix);
 		}
 	
 	}

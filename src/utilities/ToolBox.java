@@ -20,7 +20,7 @@ public class ToolBox {
 	 * for ease of use and visualisation purposes
 	 * @param m
 	 */
-	public void printMatrix(RealMatrix m) {
+	public static void printMatrix(RealMatrix m) {
 		for(int i = 0;i < m.getRowDimension();i++) {
 			for(int j = 0;j < m.getColumnDimension();j++) {
 				System.out.print(m.getEntry(i, j) + " ");
@@ -30,22 +30,22 @@ public class ToolBox {
 		System.out.println();
 	}
 	
-	public void printMatrixData(RealMatrix m) {
+	public static void printMatrixData(RealMatrix m) {
 		System.out.println("Matrix row dimension " + m.getRowDimension());
 		System.out.println("Matrix col dimension " + m.getColumnDimension());
 	}
 	
-	public void printTokens(Set<String> tokens) {
+	public static void printTokens(Set<String> tokens) {
 		System.out.println(tokens);
 		System.out.println("Feed size " + tokens.size());
 	}
 	
-	public void printDocuments(Set<Set<String>> documents) {
+	public static void printDocuments(Set<Set<String>> documents) {
 		System.out.println(documents);
 		System.out.println("Feed size " + documents.size());
 	}
 	
-	public void printFeeds(List<Feed> feeds) {
+	public static void printFeeds(List<Feed> feeds) {
 		for(Feed feed : feeds) {
 			for(FeedItem items : feed.getMessages())
 				System.out.println(items);
@@ -65,7 +65,7 @@ public class ToolBox {
 	 * @param B
 	 * @return
 	 */
-	public double cosineSimilarity(double[] A, double[] B) {
+	public static double cosineSimilarity(double[] A, double[] B) {
 		double dotProduct = 0;
 		double A_Magnitude = 0;
 		double B_Magnitude = 0;
@@ -97,7 +97,7 @@ public class ToolBox {
 	 * @param B
 	 * @return
 	 */
-	public double euclideanDistance(double[] A, double[] B) {
+	public static double euclideanDistance(double[] A, double[] B) {
 		double distance = 0;
 		
 		if(A.length != B.length) {
@@ -111,11 +111,11 @@ public class ToolBox {
 		return Math.sqrt(distance);
 	}
 	
-	public int getIndex(final List<Double> list, final double score) {
+	public static int getIndex(final List<Double> list, final double score) {
 		return IntStream.range(0, list.size()).filter(i -> score == list.get(i)).findFirst().orElse(0);
 	}
 	
-	public double getSumOfSquares(RealMatrix S) {
+	public static double getSumOfSquares(RealMatrix S) {
 		int rows = S.getRowDimension();
 		int columns = S.getColumnDimension();
 		

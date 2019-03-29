@@ -21,7 +21,7 @@ public class FeedItem implements Comparable<FeedItem> {
     String guid;
     String pubDate;
     //Properties of feed item to be calculated on each run
-    double tfidfScore;
+    double tfidfScore = 0;
     RealMatrix reducedMatrixValue;
     
     public String getExraDecription() {
