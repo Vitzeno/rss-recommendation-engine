@@ -111,10 +111,22 @@ public class ToolBox {
 		return Math.sqrt(distance);
 	}
 	
+	/**
+	 * Returns the index of an item within a list, useful when the list indexes have been altered
+	 * @param list
+	 * @param score
+	 * @return
+	 */
 	public static int getIndex(final List<Double> list, final double score) {
 		return IntStream.range(0, list.size()).filter(i -> score == list.get(i)).findFirst().orElse(0);
 	}
 	
+	/**
+	 * Returns the sum of squares of a diagonal matrix. Only the values along the diagonal 
+	 * are used in the calculations
+	 * @param S
+	 * @return
+	 */
 	public static double getSumOfSquares(RealMatrix S) {
 		int rows = S.getRowDimension();
 		int columns = S.getColumnDimension();
@@ -127,5 +139,17 @@ public class ToolBox {
 		}
 		
 		return value;
+	}
+	
+	public static double getCoverage(double allFeeds, double recFeed) {
+		return (recFeed / allFeeds) * 100;
+	}
+	
+	
+	public static double getIntraListSimilarity(Feed feed) {
+		double avergare = 0;
+		
+		
+		return 0;
 	}
 }

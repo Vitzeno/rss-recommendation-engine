@@ -52,7 +52,7 @@ public class RSSData {
 	private boolean feedsParsed = false;
 	private boolean feedsTokenised = false;
 	
-	private int numOfSimilarRecommendations = 5;
+	//private int numOfSimilarRecommendations = Feeds.size();
 	
 	
 	
@@ -205,19 +205,20 @@ public class RSSData {
 
 			
 			recFeed.addToFeed(feedsMatrix.setTFIDFScoresPerFeed());
+			
+			System.out.println();
+			System.out.println("Coverage is: " + ToolBox.getCoverage(feedItems.size(), recFeed.getMessages().size()));
+			System.out.println();
+			
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			
 			return recFeed;
 		}
 		else {
 			System.err.println("ERROR: Cannot initialise feeds matrix until all feeds have been parsed and tokenised.");
 		}
-		return recFeed;
-	}
-	
-	public Feed setTFIDFScores() {
-		Feed recFeed = new Feed();
-		
-		recFeed.addToFeed(feedsMatrix.setTFIDFScoresPerFeed());
-		
 		return recFeed;
 	}
 	
@@ -416,7 +417,7 @@ public class RSSData {
 						feedItems.get(i).setScore(tfidfScore);
 						feedItems.get(i).setExraDecription("Recommended Score: " + (int) (feedItems.get(i).getScore() * 100));
 						
-						recFeed.addToFeed(getSimilarItems(i, numOfSimilarRecommendations));
+						recFeed.addToFeed(getSimilarItems(i, Feeds.size()));
 						recFeed.addToFeed(feedItems.get(i));
 					}	
 				}
