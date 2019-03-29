@@ -141,15 +141,29 @@ public class ToolBox {
 		return value;
 	}
 	
+	/**
+	 * Returns to coverage of the recommendation system, this is essentially the percentage
+	 * of items in all feeds which show up in as recommendations.
+	 * @param allFeeds size
+	 * @param recFeed size
+	 * @return
+	 */
 	public static double getCoverage(double allFeeds, double recFeed) {
 		return (recFeed / allFeeds) * 100;
 	}
 	
 	
 	public static double getIntraListSimilarity(Feed feed) {
-		double avergare = 0;
+		double average = 0;
 		
+		Feed curr = feed;
 		
-		return 0;
+		for(FeedItem item1 : feed.getMessages()) {
+			for(FeedItem item2 : curr.getMessages()) {
+				average += euclideanDistance(item1.getReducedMatrixValue().getRow(0), item2.getReducedMatrixValue().getRow(0));
+			}
+		}
+		
+		return average / feed.getMessages().size();
 	}
 }

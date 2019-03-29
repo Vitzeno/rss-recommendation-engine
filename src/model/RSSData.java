@@ -52,7 +52,7 @@ public class RSSData {
 	private boolean feedsParsed = false;
 	private boolean feedsTokenised = false;
 	
-	//private int numOfSimilarRecommendations = Feeds.size();
+	private int numOfSimilarRecommendations;
 	
 	
 	
@@ -198,6 +198,7 @@ public class RSSData {
 	 */
 	public Feed getRecommendations() {
 		Feed recFeed = new Feed();
+		numOfSimilarRecommendations = Feeds.size() / 2;
 		if(feedsParsed && feedsTokenised) {
 			feedsMatrix = new FeedsMatrix();
 			feedsMatrix.printMatrixData();
@@ -211,7 +212,7 @@ public class RSSData {
 			System.out.println();
 			
 			System.out.println();
-			System.out.println();
+			System.out.println("Average distance is: " + ToolBox.getIntraListSimilarity(recFeed));
 			System.out.println();
 			
 			return recFeed;
@@ -358,6 +359,8 @@ public class RSSData {
 				//System.out.println("score " + listOfScores.get(i) + " Index " + index + " item title " + feedItems.get(i));
 				//System.out.println(originalListOfScores.get(index) + " " + index);
 				//feedItems.get(index).appendDescription(" | Similar to: " + feedItems.get(feedItemIndex).getTitle());
+				if(feedItems.get(index).getExraDecription().isEmpty())
+					feedItems.get(index).setExraDecription("Recommended based on topics you enjoy");
 				similarItems.add(feedItems.get(index));
 			}
 			
@@ -417,7 +420,7 @@ public class RSSData {
 						feedItems.get(i).setScore(tfidfScore);
 						feedItems.get(i).setExraDecription("Recommended Score: " + (int) (feedItems.get(i).getScore() * 100));
 						
-						recFeed.addToFeed(getSimilarItems(i, Feeds.size()));
+						recFeed.addToFeed(getSimilarItems(i, numOfSimilarRecommendations));
 						recFeed.addToFeed(feedItems.get(i));
 					}	
 				}

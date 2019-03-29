@@ -13,23 +13,23 @@ import org.apache.commons.math3.linear.RealMatrix;
 public class FeedItem implements Comparable<FeedItem> {
 	
 	//Intrinsic properties of feed items
-	String title;
-    String description;
-    String exraDecription;
-	String link;
-    String author;
-    String guid;
-    String pubDate;
+	String title = "";
+    String description = "";
+    String extraDecription = "";
+	String link = "";
+    String author = "";
+    String guid = "";
+    String pubDate = "";
     //Properties of feed item to be calculated on each run
     double tfidfScore = 0;
     RealMatrix reducedMatrixValue;
     
     public String getExraDecription() {
-		return exraDecription;
+		return extraDecription;
 	}
 
-	public void setExraDecription(String exraDecription) {
-		this.exraDecription = exraDecription;
+	public void setExraDecription(String extraDecription) {
+		this.extraDecription = extraDecription;
 	}
 
 	public RealMatrix getReducedMatrixValue() {
