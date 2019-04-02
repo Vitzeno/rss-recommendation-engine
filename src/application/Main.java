@@ -32,7 +32,7 @@ public class Main extends Application {
 			DBHandler.selectAllFromFeedsTable();
 			DBHandler.selectAllFromTopicsTable();
 			DBHandler.selectAllFromLikedItemsTable();
-			
+					
 			primaryStage.setTitle("RSS Reader");
 			primaryStage.setMinWidth(640);
 			primaryStage.setMinHeight(480);

@@ -1,0 +1,5 @@
+{
+  "method": "COSINE",
+  "openInBrowser": false,
+  "readerFontSize": 55
+}

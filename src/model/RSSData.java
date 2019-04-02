@@ -202,7 +202,7 @@ public class RSSData {
 		if(feedsParsed && feedsTokenised) {
 			feedsMatrix = new FeedsMatrix();
 			feedsMatrix.printMatrixData();
-			feedsMatrix.reduceMatrix("Thread 1");
+			feedsMatrix.reduceMatrix();
 
 			
 			recFeed.addToFeed(feedsMatrix.setTFIDFScoresPerFeed());
@@ -242,7 +242,7 @@ public class RSSData {
 		}
 		
 		/**
-		 * This method 
+		 * This method sets up the feeds to tokens matrix
 		 */
 		public void setUpMatrix() {
 			System.out.println("Initialising matrix...");
@@ -260,7 +260,6 @@ public class RSSData {
 					if(itr.hasNext()) {
 						currentToken = itr.next();
 					}
-					//System.out.println(currentToken);
 
 					double score = tfidfCalc.tf(currentFeedItem.getTokens(), currentToken);
 					//double score = tfidfCalc.tfidf(currentFeedItem.getTokens(), documents, currentToken);
@@ -270,17 +269,19 @@ public class RSSData {
 			
 			feedTokenMatrix = MatrixUtils.createRealMatrix(array);
 		}
-		
-		public void reduceMatrix(String threadName) {
+	
+		/**
+		 * This method uses SVD to reduce the dimensionality of the feeds matrix,
+		 * furthermore is also maps items to concept space
+		 */
+		public void reduceMatrix() {
 			System.out.println("Performing SVD calulations on matrix...");
 			SingularValueDecomposition SVD = new SingularValueDecomposition(feedTokenMatrix);
 			
-			//RealMatrix U = SVD.getU();
 			RealMatrix S = SVD.getS();
 			RealMatrix V = SVD.getV();
 			
 			int singularValuesToDrop = S.getColumnDimension() - numOfSingularValuesToRetain(S);
-			//System.out.println("Number of values to drop " + singularValuesToDrop);
 			
 			//Multiple by v to map queries into concept space
 			RealMatrix Vp = V.getSubMatrix(0, feedTokenMatrix.getColumnDimension() - 1, 0, singularValuesToDrop - 1);
@@ -291,10 +292,7 @@ public class RSSData {
 				item.setReducedMatrixValue(result);
 			});
 			
-			setUpSimilarityMatrix(calculation.COSINE);		//TODO: consider parallelising this 
-			//getSimilarItems(11, 5);
-			
-			//System.out.println("Finishing thread " + t.getName());
+			setUpSimilarityMatrix(calculation.COSINE);	
 		}
 		
 		/**

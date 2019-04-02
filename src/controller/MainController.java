@@ -26,7 +26,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.Slider;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -37,6 +36,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import model.RSSData;
 import recommendation.RecommendationEngine;
+import settings.Settings;
 import textClassification.UserTopics;
 
 
@@ -65,19 +65,7 @@ public class MainController {
     @FXML
     private CheckBox chkOpenInBrowse;
     @FXML
-    private CheckBox chkFeedDate;
-    @FXML
-    private CheckBox chkLikedFeeds;
-    @FXML
-    private CheckBox chkLikedAuthors;
-    @FXML
-    private Slider sldDateRange;
-    @FXML
-    private Slider sldLikedFeeds;
-    @FXML
-    private Slider sldLikedAuthors;
-    @FXML
-    private TextField txtDateRange;
+    private TextField txtreaderFontSize;
     @FXML
     private Button btnSave;
     @FXML
@@ -267,7 +255,7 @@ public class MainController {
     @FXML
     void initialize() {
     	System.out.println("Controller initialise");
-    	//chkOpenInBrowse.setSelected(true);
+    	initSettings();
     	
     	tabs.setTabClosingPolicy(TabClosingPolicy.ALL_TABS);
     	//Ensures default tabs are not closable
@@ -280,52 +268,32 @@ public class MainController {
     	SplitPane.setResizableWithParent(leftAnchorPane, false);
     	SplitPane.setResizableWithParent(rightAnchorPane, false);
     	splintPane.setDividerPositions(0.20);
+    	
+    	/* enusres that text field only accepts numbers */
+    	txtreaderFontSize.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+            	txtreaderFontSize.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
     }
     
-    /**
-     * This method uses the recEngine object, therefore it must called
-     * after that object is initialised to avoid errors. In this case it 
-     * must be called after initFeed()
-     */
-    public void setUpSettingsValues() {
-    	sldDateRange.setMax(1);
-    	sldDateRange.setMin(0);
-    	sldDateRange.setValue(recEngine.getDateWeighting());
-    	
-    	txtDateRange.setText(String.valueOf(recEngine.getDateRange()));
-    	
-    	sldLikedFeeds.setMax(1);
-    	sldLikedFeeds.setMin(0);
-    	sldLikedFeeds.setValue(recEngine.getLikedFeedWeighting());
-    	
-    	sldLikedAuthors.setMax(1);
-    	sldLikedAuthors.setMin(0);
-    	sldLikedAuthors.setValue(recEngine.getLikedAuthorWeighting());
-    	
-    	chkFeedDate.setSelected(recEngine.isUseDateWeighting());
-    	chkLikedFeeds.setSelected(recEngine.isUseLikedFeedWeighting());
-    	chkLikedAuthors.setSelected(recEngine.isUseLikedAuthorWeighting());
+    
+    public void initSettings() {
+    	Settings settings = Settings.getSettings();
+    	chkOpenInBrowse.setSelected(settings.isOpenInBrowser());
     }
     
-    /**
-     * This method gets the data from the settings view and passes it 
-     * to the recommendation object
-     * @param event
-     */
+
     @FXML
-    void saveRecommendationSettings(MouseEvent event) {
-    	recEngine.setUseDateWeighting(chkFeedDate.isSelected());
-    	recEngine.setDateWeighting(sldDateRange.getValue());
-    	recEngine.setDateRange(Integer.parseInt(txtDateRange.getText()));
+    void saveSettings(MouseEvent event) {
+    	Settings settings = Settings.getSettings();
     	
-    	recEngine.setUseLikedFeedWeighting(chkLikedFeeds.isSelected());
-    	recEngine.setLikedFeedWeighting(sldLikedFeeds.getValue());
+    	settings.setReaderFontSize(Integer.parseInt(txtreaderFontSize.getText()));
+    	settings.setOpenInBrowser(chkOpenInBrowse.isSelected());
     	
-    	recEngine.setUseLikedAuthorWeighting(chkLikedAuthors.isSelected());
-    	recEngine.setLikedAuthorWeighting(sldLikedAuthors.getValue());
-    	initFeed();
+    	Settings.writeSettingsToFile(settings);
+    	initSettings();
     }
-    
     
     /**
      * This method initialises the list of feed items for each feed

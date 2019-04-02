@@ -13,6 +13,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
+import settings.Settings;
 import utilities.HTMLParser;
 
 /**
@@ -66,7 +67,7 @@ public class BrowserController {
     }
     
     private void displayText(String text) {
-    	txtArticle.setStyle("-fx-highlight-text-fill: firebrick; -fx-font-size: 20px;");
+    	txtArticle.setStyle("-fx-highlight-text-fill: firebrick; -fx-font-size: " + Settings.getSettings().getReaderFontSize() + "px;");
     	txtArticle.setWrapText(true);
     	txtArticle.setText(text);
     }
