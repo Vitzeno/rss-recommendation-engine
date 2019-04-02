@@ -281,14 +281,17 @@ public class MainController {
     public void initSettings() {
     	Settings settings = Settings.getSettings();
     	chkOpenInBrowse.setSelected(settings.isOpenInBrowser());
+    	txtreaderFontSize.setText("" + settings.getReaderFontSize());
     }
     
 
     @FXML
     void saveSettings(MouseEvent event) {
     	Settings settings = Settings.getSettings();
-    	int font = Integer.parseInt(txtreaderFontSize.getText());
-    	settings.setReaderFontSize(font);
+    	if(txtreaderFontSize.getText().contentEquals(""))
+    		settings.setReaderFontSize(20);
+    	else
+    		settings.setReaderFontSize(Integer.parseInt(txtreaderFontSize.getText()));
     	settings.setOpenInBrowser(chkOpenInBrowse.isSelected());
     	
     	Settings.writeSettingsToFile(settings);

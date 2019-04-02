@@ -98,14 +98,15 @@
                               </AnchorPane>
                               <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="640.0">
                                  <children>
-                                    <VBox prefHeight="200.0" prefWidth="100.0" spacing="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <VBox prefHeight="200.0" prefWidth="100.0" spacing="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
                                           <Label text="Reader">
                                              <font>
                                                 <Font name="System Bold" size="24.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="txtreaderFontSize" promptText="Font Size" stylesheets="@application/application.css" />
+                                          <Label text="Reader Font Size" />
+                                          <TextField fx:id="txtreaderFontSize" promptText="Font Size" stylesheets="@application/application.css" text="20" />
                                        </children>
                                     </VBox>
                                  </children>
