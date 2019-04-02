@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
@@ -25,6 +24,9 @@ public class Settings {
 	public boolean openInBrowser;
 	public int readerFontSize;
 	
+	/**
+	 * Constructor serves to setup default values
+	 */
 	public Settings() {
 		this.method = calculation.COSINE;
 		this.openInBrowser = true;
@@ -54,7 +56,11 @@ public class Settings {
 	public void setReaderFontSize(int readerFontSize) {
 		this.readerFontSize = readerFontSize;
 	}
-
+	
+	/**
+	 * Initialises settings values and writes into JSON
+	 * file
+	 */
 	public static void initSettings() {
 		Writer writer = null;
 		try {
@@ -70,6 +76,12 @@ public class Settings {
 		}
 	}
 	
+	/**
+	 * Returns a settings object by reading from config JSON file,
+	 * if file does not exist it is created and a object with
+	 * default values is returned
+	 * @return
+	 */
 	public static Settings getSettings() {
 		Gson gson = new Gson();
 		Settings setting = new Settings();
@@ -83,6 +95,10 @@ public class Settings {
 		return setting;
 	}
 	
+	/**
+	 * Writes a settings object to a JSON file
+	 * @param newSettings
+	 */
 	public static void writeSettingsToFile(Settings newSettings) {
 		Writer writer = null;
 		try {

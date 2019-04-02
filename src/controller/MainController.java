@@ -264,12 +264,12 @@ public class MainController {
     	
     	initFeed();
     	
-    	/* enusres that split pane divider does not resize when windows is resized */
+    	/* Ensures that split pane divider does not resize when windows is resized */
     	SplitPane.setResizableWithParent(leftAnchorPane, false);
     	SplitPane.setResizableWithParent(rightAnchorPane, false);
     	splintPane.setDividerPositions(0.20);
     	
-    	/* enusres that text field only accepts numbers */
+    	/* Ensures that text field only accepts numbers */
     	txtreaderFontSize.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
             	txtreaderFontSize.setText(newValue.replaceAll("[^\\d]", ""));
@@ -287,8 +287,8 @@ public class MainController {
     @FXML
     void saveSettings(MouseEvent event) {
     	Settings settings = Settings.getSettings();
-    	
-    	settings.setReaderFontSize(Integer.parseInt(txtreaderFontSize.getText()));
+    	int font = Integer.parseInt(txtreaderFontSize.getText());
+    	settings.setReaderFontSize(font);
     	settings.setOpenInBrowser(chkOpenInBrowse.isSelected());
     	
     	Settings.writeSettingsToFile(settings);
