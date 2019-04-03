@@ -24,6 +24,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
@@ -38,6 +39,7 @@ import model.RSSData;
 import recommendation.RecommendationEngine;
 import settings.Settings;
 import textClassification.UserTopics;
+import utilities.ToolBox;
 
 
 /**
@@ -65,8 +67,6 @@ public class MainController {
     @FXML
     private CheckBox chkOpenInBrowse;
     @FXML
-    private TextField txtreaderFontSize;
-    @FXML
     private Button btnSave;
     @FXML
     private TabPane tabs;
@@ -74,6 +74,14 @@ public class MainController {
     private AnchorPane root;
     @FXML
     private SplitPane splintPane;
+    
+    
+    @FXML
+    private ComboBox<String> cmbReaderFont;
+    @FXML
+    private ComboBox<String> cmbReaderFontSize;
+    @FXML
+    private ComboBox<String> cmbOpenMode;
     
     
     @FXML
@@ -269,30 +277,48 @@ public class MainController {
     	SplitPane.setResizableWithParent(rightAnchorPane, false);
     	splintPane.setDividerPositions(0.20);
     	
-    	/* Ensures that text field only accepts numbers */
-    	txtreaderFontSize.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-            	txtreaderFontSize.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-        });
+
     }
     
     
     public void initSettings() {
+    	cmbReaderFont.getItems().clear();
+    	cmbReaderFontSize.getItems().clear();
+    	cmbOpenMode.getItems().clear();
+    	
+    	cmbReaderFont.getItems().addAll("System", "Serif", "Segoe UI", "Calibri", "Calibri Light", "SansSerif", "Unispace");
+    	cmbReaderFontSize.getItems().addAll("12", "14", "16", "18", "20", "22", "24", "26", "28", "30", "32", "34", "36", "38", "40", "42", "44", "46", "48", "50");
+    	
+    	cmbOpenMode.getItems().addAll("Browser", "Reader");
+    	
     	Settings settings = Settings.getSettings();
     	chkOpenInBrowse.setSelected(settings.isOpenInBrowser());
-    	txtreaderFontSize.setText("" + settings.getReaderFontSize());
+    	
+    	cmbReaderFont.setValue(settings.getReaderFont());
+    	cmbReaderFontSize.setValue("" + settings.getReaderFontSize());
+    	if(settings.openInBrowser)
+    		cmbOpenMode.setValue("Browser");
+    	else
+    		cmbOpenMode.setValue("Reader");
+
     }
     
 
     @FXML
     void saveSettings(MouseEvent event) {
     	Settings settings = Settings.getSettings();
-    	if(txtreaderFontSize.getText().contentEquals(""))
+    	
+    	settings.setReaderFont(cmbReaderFont.getSelectionModel().getSelectedItem());
+    	
+    	if(ToolBox.intToString(cmbReaderFontSize.getSelectionModel().getSelectedItem()) == -1)
     		settings.setReaderFontSize(20);
     	else
-    		settings.setReaderFontSize(Integer.parseInt(txtreaderFontSize.getText()));
-    	settings.setOpenInBrowser(chkOpenInBrowse.isSelected());
+    		settings.setReaderFontSize(ToolBox.intToString(cmbReaderFontSize.getSelectionModel().getSelectedItem()));
+    	
+    	if(cmbOpenMode.getSelectionModel().getSelectedItem().equalsIgnoreCase("browser")) 
+    		settings.setOpenInBrowser(true);
+    	else 
+    		settings.setOpenInBrowser(false) ;
     	
     	Settings.writeSettingsToFile(settings);
     	initSettings();

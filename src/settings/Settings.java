@@ -23,6 +23,7 @@ public class Settings {
 	public calculation method;
 	public boolean openInBrowser;
 	public int readerFontSize;
+	public String readerFont;
 	
 	/**
 	 * Constructor serves to setup default values
@@ -31,8 +32,17 @@ public class Settings {
 		this.method = calculation.COSINE;
 		this.openInBrowser = true;
 		this.readerFontSize = 25;
+		this.readerFont = "System";
 	}
 	
+	public String getReaderFont() {
+		return readerFont;
+	}
+
+	public void setReaderFont(String readerFont) {
+		this.readerFont = readerFont;
+	}
+
 	public calculation getMethod() {
 		return method;
 	}

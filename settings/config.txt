@@ -1,5 +1,6 @@
 {
   "method": "COSINE",
   "openInBrowser": false,
-  "readerFontSize": 20
+  "readerFontSize": 16,
+  "readerFont": "Unispace"
 }

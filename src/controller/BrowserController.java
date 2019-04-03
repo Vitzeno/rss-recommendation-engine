@@ -67,7 +67,7 @@ public class BrowserController {
     }
     
     private void displayText(String text) {
-    	txtArticle.setStyle("-fx-highlight-text-fill: firebrick; -fx-font-size: " + Settings.getSettings().getReaderFontSize() + "px;");
+    	txtArticle.setStyle("-fx-highlight-text-fill: firebrick; -fx-font-family: " + Settings.getSettings().getReaderFont() +";" + " -fx-font-size: " + Settings.getSettings().getReaderFontSize() + "px;");
     	txtArticle.setWrapText(true);
     	txtArticle.setText(text);
     }

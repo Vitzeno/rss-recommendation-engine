@@ -122,6 +122,20 @@ public class ToolBox {
 	}
 	
 	/**
+	 * Converts a string into an integer, if conversion fails method return -1
+	 * otherwise the converted value in integer form is returned
+	 * @param param
+	 * @return
+	 */
+	public static int intToString(String param) {
+		try {
+			return Integer.parseInt(param);
+		} catch(NumberFormatException e) {
+			return -1;
+		}
+	}
+	
+	/**
 	 * Returns the sum of squares of a diagonal matrix. Only the values along the diagonal 
 	 * are used in the calculations
 	 * @param S
