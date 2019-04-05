@@ -48,13 +48,13 @@ public class Main extends Application {
 				stylesheet = "dark.css";
 				break;
 			case "Lapis Light":
-				stylesheet = "light.css.";
+				stylesheet = "light.css";
 				break;
 			case "Modena":
-				stylesheet = "application.css.";
+				stylesheet = "application.css";
 				break;
 			default:
-				stylesheet = "light.css.";
+				stylesheet = "light.css";
 				break;
 			}
 			
