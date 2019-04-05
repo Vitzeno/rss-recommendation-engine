@@ -344,6 +344,17 @@ public class MainController {
     	settings.setReaderTheme(cmbTheme.getSelectionModel().getSelectedItem());
     	
     	Settings.writeSettingsToFile(settings);
+    	
+    	Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Settings Saved");
+		alert.setHeaderText("Settings Saved Sucessfully");
+		alert.setContentText("New settings have been saved.");
+		alert.showAndWait().ifPresent(rs -> {
+		    if (rs == ButtonType.OK) {
+		        System.out.println("Pressed OK.");
+		    }
+		});
+    	
     	initSettings();
     }
     

@@ -121,8 +121,8 @@
                                                       </ContextMenu>
                                                    </contextMenu>
                                                 </ListView>
-                                                <Button fx:id="btnAddTopic" mnemonicParsing="false" onMouseClicked="#addTopic" text="Add" GridPane.rowIndex="3" />
-                                                <TextField fx:id="txtTopic" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <Button fx:id="btnAddTopic" mnemonicParsing="false" onMouseClicked="#addTopic" text="Add" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <TextField fx:id="txtTopic" GridPane.rowIndex="3" />
                                                 <Label text="Add or remove topics" GridPane.rowIndex="1" />
                                              </children>
                                           </GridPane>

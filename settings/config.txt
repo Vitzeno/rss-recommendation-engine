@@ -3,5 +3,5 @@
   "openInBrowser": false,
   "readerFontSize": 16,
   "readerFont": "Unispace",
-  "readerTheme": "Modena"
+  "readerTheme": "Lapis Light"
 }
