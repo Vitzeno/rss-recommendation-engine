@@ -288,7 +288,6 @@ public class MainController {
     	
     	cmbReaderFont.getItems().addAll("System", "Serif", "Segoe UI", "Calibri", "Calibri Light", "SansSerif", "Unispace");
     	cmbReaderFontSize.getItems().addAll("12", "14", "16", "18", "20", "22", "24", "26", "28", "30", "32", "34", "36", "38", "40", "42", "44", "46", "48", "50");
-    	
     	cmbOpenMode.getItems().addAll("Browser", "Reader");
     	
     	Settings settings = Settings.getSettings();
@@ -318,7 +317,7 @@ public class MainController {
     	if(cmbOpenMode.getSelectionModel().getSelectedItem().equalsIgnoreCase("browser")) 
     		settings.setOpenInBrowser(true);
     	else 
-    		settings.setOpenInBrowser(false) ;
+    		settings.setOpenInBrowser(false);
     	
     	Settings.writeSettingsToFile(settings);
     	initSettings();

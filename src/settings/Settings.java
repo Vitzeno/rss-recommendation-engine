@@ -15,7 +15,7 @@ public class Settings {
 	public static String FILE_TYPE = ".txt";
 	public static String CONFIG_FILE = RES_LOC + "config" + FILE_TYPE;
 	
-	enum calculation {
+	public enum calculation {
 		  COSINE,
 		  EUCLIDEAN
 	}
