@@ -75,6 +75,10 @@ public class MainController {
     private AnchorPane root;
     @FXML
     private SplitPane splintPane;
+    @FXML
+    private Label lblTitile;
+    @FXML
+    private TextField txtSearch;
     
     
     @FXML
@@ -109,6 +113,7 @@ public class MainController {
      */
     @FXML
     void handleMouseClickF(MouseEvent event) {
+    	lblTitile.setText(lstViewFeeds.getSelectionModel().getSelectedItem().getTitle());
 		if(event.getButton() == MouseButton.PRIMARY) {
 			initFeedItems(lstViewFeeds.getSelectionModel().getSelectedItem());
 		}
