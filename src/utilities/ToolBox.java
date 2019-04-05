@@ -52,6 +52,11 @@ public class ToolBox {
 		}
 	}
 	
+	public static String cleanString(String toClean) {
+		toClean.replaceAll("\\s+","");
+		return toClean;
+	}
+	
 	/**
 	 * Cosine similarity returns a range between -1 and 1 ranging from opposites to 
 	 * exactly the same. If the method returns any other value then there has been

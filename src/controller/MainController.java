@@ -8,6 +8,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Optional;
 import database.DatabaseHandler;
 import feed.Feed;
@@ -82,7 +83,16 @@ public class MainController {
     private ComboBox<String> cmbReaderFontSize;
     @FXML
     private ComboBox<String> cmbOpenMode;
+    @FXML
+    private ComboBox<String> cmbTheme;
     
+    
+    @FXML
+    private ListView<String> lstTopics;
+    @FXML
+    private Button btnAddTopic;
+    @FXML
+    private TextField txtTopic;
     
     @FXML
     private AnchorPane rightAnchorPane;
@@ -271,6 +281,7 @@ public class MainController {
     		tabs.setClosable(false);
     	
     	initFeed();
+    	initTopicsList();
     	
     	/* Ensures that split pane divider does not resize when windows is resized */
     	SplitPane.setResizableWithParent(leftAnchorPane, false);
@@ -280,29 +291,38 @@ public class MainController {
 
     }
     
-    
+    /**
+     * Gets and sets settings values from config file
+     */
     public void initSettings() {
     	cmbReaderFont.getItems().clear();
     	cmbReaderFontSize.getItems().clear();
     	cmbOpenMode.getItems().clear();
+    	cmbTheme.getItems().clear();
     	
     	cmbReaderFont.getItems().addAll("System", "Serif", "Segoe UI", "Calibri", "Calibri Light", "SansSerif", "Unispace");
     	cmbReaderFontSize.getItems().addAll("12", "14", "16", "18", "20", "22", "24", "26", "28", "30", "32", "34", "36", "38", "40", "42", "44", "46", "48", "50");
     	cmbOpenMode.getItems().addAll("Browser", "Reader");
+    	cmbTheme.getItems().addAll("Modena", "Lapis Light", "Verdant Dark");
     	
     	Settings settings = Settings.getSettings();
     	chkOpenInBrowse.setSelected(settings.isOpenInBrowser());
     	
     	cmbReaderFont.setValue(settings.getReaderFont());
     	cmbReaderFontSize.setValue("" + settings.getReaderFontSize());
+    	
     	if(settings.openInBrowser)
     		cmbOpenMode.setValue("Browser");
     	else
     		cmbOpenMode.setValue("Reader");
-
+    	
+    	cmbTheme.setValue(settings.getReaderTheme());
     }
     
-
+    /**
+     * Saves new settings values to config file
+     * @param event
+     */
     @FXML
     void saveSettings(MouseEvent event) {
     	Settings settings = Settings.getSettings();
@@ -318,6 +338,8 @@ public class MainController {
     		settings.setOpenInBrowser(true);
     	else 
     		settings.setOpenInBrowser(false);
+    	
+    	settings.setReaderTheme(cmbTheme.getSelectionModel().getSelectedItem());
     	
     	Settings.writeSettingsToFile(settings);
     	initSettings();
@@ -356,7 +378,8 @@ public class MainController {
     	
     	RSSFeedList = RSSDataModel.parseRSSFeeds();
     	
-    	lstViewFeeds.setItems(RSSFeedList);
+    	if(!RSSFeedList.isEmpty())
+    		lstViewFeeds.setItems(RSSFeedList);
     	 	
     	if(recEngine == null)
     		initRecEngine();
@@ -401,6 +424,61 @@ public class MainController {
     public void initModel() {
     	System.out.println("Initialising data model");
     	RSSDataModel = RSSData.getInstance();
+    }
+    
+    /**
+     * Populates the topics table
+     */
+    public void initTopicsList() {
+    	lstTopics.getItems().clear();
+    	DatabaseHandler DBHandler = new DatabaseHandler();
+    	ArrayList<String> topics = DBHandler.selectAllFromTopicsTable();
+    	
+    	if(!topics.isEmpty())
+    		lstTopics.getItems().addAll(topics);
+    }
+    
+    /**
+     * Removes the selected topics from the database
+     * @param event
+     */
+    @FXML
+    void deleteTopic(ActionEvent event) {
+    	DatabaseHandler DBHandler = new DatabaseHandler();
+    	String toDelete = lstTopics.getSelectionModel().getSelectedItem();
+    	
+    	Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+    	alert.setTitle("Remove Topic?");
+    	alert.setContentText("Are you sure you wish to remove: " + toDelete);
+    	Optional<ButtonType> answer = alert.showAndWait();
+    	
+    	if(answer.get() == ButtonType.OK) {
+    		DBHandler.deleteFromTopicsTable(toDelete);
+    		initTopicsList();
+    	}
+    }
+   
+    /**
+     * Verifies then adds a topic to the database
+     * @param event
+     */
+    @FXML
+    void addTopic(MouseEvent event) {
+    	DatabaseHandler DBHandler = new DatabaseHandler();
+    	System.out.println("Topic added " + ToolBox.cleanString(txtTopic.getText()));
+    	DBHandler.insertIntoTopicsTable(ToolBox.cleanString(txtTopic.getText()));
+    	
+    	Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Topic Added");
+		alert.setHeaderText("Topic Added Sucessfully");
+		alert.setContentText("Topics has been added and will be used in recommendations.");
+		alert.showAndWait().ifPresent(rs -> {
+		    if (rs == ButtonType.OK) {
+		        System.out.println("Pressed OK.");
+		    }
+		});
+		txtTopic.clear();
+		initTopicsList();
     }
     
 }

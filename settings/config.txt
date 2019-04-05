@@ -2,5 +2,6 @@
   "method": "COSINE",
   "openInBrowser": false,
   "readerFontSize": 16,
-  "readerFont": "Unispace"
+  "readerFont": "Unispace",
+  "readerTheme": "Verdant Dark"
 }

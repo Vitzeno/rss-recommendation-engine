@@ -84,62 +84,87 @@
                               <Font name="System Bold" size="36.0" />
                            </font>
                         </Label>
-                        <HBox layoutX="540.0" layoutY="296.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0">
+                        <HBox layoutX="540.0" layoutY="296.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0">
                            <children>
-                              <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="640.0">
+                              <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Button fx:id="btnSave" layoutX="15.0" layoutY="592.0" mnemonicParsing="false" onMouseClicked="#saveSettings" text="Save" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" />
-                                    <VBox prefHeight="569.0" prefWidth="640.0" spacing="25.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <VBox prefHeight="569.0" prefWidth="636.0" spacing="25.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <Label text="Recommendation">
-                                             <font>
-                                                <Font name="System Bold" size="24.0" />
-                                             </font>
-                                          </Label>
-                                          <GridPane>
+                                          <GridPane alignment="CENTER" hgap="5.0" vgap="5.0">
                                             <columnConstraints>
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                              <ColumnConstraints minWidth="300.0" prefWidth="300.0" />
+                                                <ColumnConstraints minWidth="300.0" prefWidth="300.0" />
+                                                <ColumnConstraints />
+                                              <ColumnConstraints />
                                             </columnConstraints>
                                             <rowConstraints>
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                                                <RowConstraints maxHeight="500.0" minHeight="300.0" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                                              <RowConstraints valignment="CENTER" />
+                                              <RowConstraints valignment="CENTER" />
                                             </rowConstraints>
+                                             <children>
+                                                <Label text="Recommendation">
+                                                   <font>
+                                                      <Font name="System Bold" size="24.0" />
+                                                   </font>
+                                                </Label>
+                                                <ListView fx:id="lstTopics" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
+                                                   <contextMenu>
+                                                      <ContextMenu>
+                                                        <items>
+                                                          <MenuItem mnemonicParsing="false" onAction="#deleteTopic" text="Delete" />
+                                                        </items>
+                                                      </ContextMenu>
+                                                   </contextMenu>
+                                                </ListView>
+                                                <Button fx:id="btnAddTopic" mnemonicParsing="false" onMouseClicked="#addTopic" text="Add" GridPane.rowIndex="3" />
+                                                <TextField fx:id="txtTopic" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <Label text="Add or remove topics" GridPane.rowIndex="1" />
+                                             </children>
                                           </GridPane>
                                        </children>
                                     </VBox>
                                  </children>
                               </AnchorPane>
-                              <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="640.0">
+                              <AnchorPane HBox.hgrow="ALWAYS">
                                  <children>
-                                    <VBox prefHeight="200.0" prefWidth="100.0" spacing="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <VBox prefHeight="630.0" prefWidth="621.0" spacing="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <Label text="Reader">
-                                             <font>
-                                                <Font name="System Bold" size="24.0" />
-                                             </font>
-                                          </Label>
-                                          <GridPane>
+                                          <GridPane alignment="CENTER" hgap="5.0" vgap="5.0">
                                             <columnConstraints>
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                              <ColumnConstraints />
+                                              <ColumnConstraints />
                                             </columnConstraints>
                                             <rowConstraints>
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                                              <RowConstraints />
+                                              <RowConstraints />
+                                                <RowConstraints />
+                                                <RowConstraints />
+                                              <RowConstraints />
+                                                <RowConstraints />
+                                                <RowConstraints />
+                                                <RowConstraints />
                                             </rowConstraints>
                                              <children>
-                                                <Label prefHeight="18.0" prefWidth="90.0" text="Reader Font" />
-                                                <ComboBox fx:id="cmbReaderFont" prefWidth="250.0" promptText="Reader Font" GridPane.rowIndex="1" />
-                                                <Label text="Reader Font Size" GridPane.rowIndex="2" />
-                                                <ComboBox fx:id="cmbReaderFontSize" prefWidth="250.0" promptText="Reader Font Size" GridPane.rowIndex="3" />
-                                                <Label text="Default Open Mode" GridPane.rowIndex="4" />
-                                                <ComboBox fx:id="cmbOpenMode" prefWidth="250.0" promptText="Open links In" GridPane.rowIndex="5" />
+                                                <Label prefHeight="18.0" prefWidth="90.0" text="Reader Font" GridPane.rowIndex="1" />
+                                                <ComboBox fx:id="cmbReaderFont" prefWidth="250.0" promptText="Reader Font" GridPane.rowIndex="2" />
+                                                <Label text="Reader Font Size" GridPane.rowIndex="3" />
+                                                <ComboBox fx:id="cmbReaderFontSize" prefWidth="250.0" promptText="Reader Font Size" GridPane.rowIndex="4" />
+                                                <Label text="Default Open Mode" GridPane.rowIndex="5" />
+                                                <ComboBox fx:id="cmbOpenMode" prefWidth="250.0" promptText="Open links In" GridPane.rowIndex="6" />
+                                                <Label text="Theme" GridPane.rowIndex="7" />
+                                                <ComboBox fx:id="cmbTheme" prefWidth="250.0" promptText="Reader Theme" GridPane.rowIndex="8" />
+                                                <Label text="* restart required before changes can take effect" textFill="#fa0000" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                                <Label text="Reader">
+                                                   <font>
+                                                      <Font name="System Bold" size="24.0" />
+                                                   </font>
+                                                </Label>
                                              </children>
                                           </GridPane>
                                        </children>

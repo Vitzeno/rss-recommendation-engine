@@ -24,6 +24,7 @@ public class Settings {
 	public boolean openInBrowser;
 	public int readerFontSize;
 	public String readerFont;
+	public String readerTheme;
 	
 	/**
 	 * Constructor serves to setup default values
@@ -33,8 +34,17 @@ public class Settings {
 		this.openInBrowser = true;
 		this.readerFontSize = 25;
 		this.readerFont = "System";
+		this.readerTheme = "Lapis Blue";
 	}
 	
+	public String getReaderTheme() {
+		return readerTheme;
+	}
+
+	public void setReaderTheme(String readerTheme) {
+		this.readerTheme = readerTheme;
+	}
+
 	public String getReaderFont() {
 		return readerFont;
 	}
