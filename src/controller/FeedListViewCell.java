@@ -42,7 +42,7 @@ public class FeedListViewCell extends ListCell<Feed> {
             }
 
             if(item.getTitle().equalsIgnoreCase("Recommended Feeds"))
-            	lblTitle.setTextFill(Color.web("#0093ff"));
+            	lblTitle.setTextFill(Color.web("#DC143C"));
             else
             	lblTitle.setTextFill(Color.web("#000000"));
             
