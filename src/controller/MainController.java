@@ -383,6 +383,8 @@ public class MainController {
 				}
 			}
 		}.start();
+		
+		lstViewFeeds.setCellFactory(feedsListView -> new FeedListViewCell());
     }
     
     /**

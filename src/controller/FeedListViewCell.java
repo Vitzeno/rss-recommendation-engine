@@ -1,31 +1,27 @@
 package controller;
 
 import java.io.IOException;
-import feed.FeedItem;
+import feed.Feed;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 
-public class FeedItemsListViewCell extends ListCell<FeedItem> {
+public class FeedListViewCell extends ListCell<Feed> {
 	
-    @FXML
-    private Label lblDescription;
     @FXML
     private Label lblTitle;
     @FXML
-    private Label lblExtras;
-    @FXML
-    private Button btnLike;
+    private Label lblDescription;
     @FXML
     private GridPane gridPane;
     
     private FXMLLoader loader;
 
     @Override
-    protected void updateItem(FeedItem item, boolean empty) {
+    protected void updateItem(Feed item, boolean empty) {
         super.updateItem(item, empty);
 
         if(empty || item == null) {
@@ -35,7 +31,7 @@ public class FeedItemsListViewCell extends ListCell<FeedItem> {
 
         } else {
             if (loader == null) {
-                loader = new FXMLLoader(getClass().getClassLoader().getResource("FeedItemListViewCell.fxml"));
+                loader = new FXMLLoader(getClass().getClassLoader().getResource("FeedListViewCell.fxml"));
                 loader.setController(this);
 
                 try {
@@ -45,13 +41,16 @@ public class FeedItemsListViewCell extends ListCell<FeedItem> {
                 }
             }
 
+            if(item.getTitle().equalsIgnoreCase("Recommended Feeds"))
+            	lblTitle.setTextFill(Color.web("#0093ff"));
+            else
+            	lblTitle.setTextFill(Color.web("#000000"));
+            
             lblTitle.setText(item.getTitle());;
             lblDescription.setText(item.getDescription());
-            lblExtras.setText(item.getExraDecription());
             
             setText(null);
             setGraphic(gridPane);
         }
     }
-
 }
