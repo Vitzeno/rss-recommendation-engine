@@ -56,6 +56,13 @@ public class UserTopics {
 	}
 	
 	/**
+	 * This method simply clears all terms in the set
+	 */
+	public void clearTerms() {
+		userTopics.clear();
+	}
+	
+	/**
 	 * This method returns the set of user topics
 	 * @return
 	 */

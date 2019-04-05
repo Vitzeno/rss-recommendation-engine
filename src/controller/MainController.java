@@ -366,6 +366,7 @@ public class MainController {
     	DatabaseHandler DBHandler = new DatabaseHandler();
     	//add user topics to singleton class
     	UserTopics topics = UserTopics.getInstance();
+    	topics.clearTerms();
 		topics.addTerms(DBHandler.selectAllFromTopicsTable().toArray(new String[0]));
 		System.out.println(topics);
 		
