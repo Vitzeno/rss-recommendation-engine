@@ -8,6 +8,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -28,17 +29,12 @@
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Label fx:id="lblNews" layoutX="14.0" layoutY="6.0" text="News" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="6.0">
-                           <font>
-                              <Font name="System Bold" size="36.0" />
-                           </font>
-                        </Label>
                         <Button fx:id="btnAdd" layoutX="14.0" layoutY="652.0" mnemonicParsing="false" onMouseClicked="#addFeed" text="Add Feed" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0">
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
                         </Button>
-                        <TextField fx:id="txtFeed" layoutX="107.0" layoutY="651.0" promptText="Enter RSS Feed" AnchorPane.bottomAnchor="15.0" />
+                        <TextField fx:id="txtFeed" layoutX="107.0" layoutY="651.0" prefWidth="250.0" promptText="Enter RSS Feed" AnchorPane.bottomAnchor="15.0" />
                         <SplitPane fx:id="splintPane" dividerPositions="0.15" layoutX="540.0" layoutY="266.0" prefHeight="160.0" prefWidth="200.0" stylesheets="@application/application.css" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="75.0">
                           <items>
                             <AnchorPane fx:id="rightAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
@@ -71,15 +67,25 @@
                           </items>
                         </SplitPane>
                         <CheckBox fx:id="chkOpenInBrowse" layoutX="1166.0" layoutY="655.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="154.0" text="Open in browser" AnchorPane.bottomAnchor="19.0" AnchorPane.rightAnchor="10.0" />
-                        <Label fx:id="lblTitile" layoutX="256.0" layoutY="10.0" textAlignment="CENTER">
-                           <font>
-                              <Font name="System Bold" size="30.0" />
-                           </font>
-                        </Label>
-                        <HBox layoutX="1066.0" layoutY="14.0" spacing="25.0" AnchorPane.rightAnchor="14.0">
+                        <HBox alignment="CENTER" layoutX="1066.0" layoutY="14.0" minWidth="573.0" prefHeight="54.0" prefWidth="637.0" spacing="25.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="6.0">
                            <children>
-                              <TextField fx:id="txtSearch" prefWidth="250.0" promptText="Search Feed Items" />
-                              <Button mnemonicParsing="false" text="Search" />
+                              <RadioButton fx:id="rdbLimitSearch" mnemonicParsing="false" prefHeight="18.0" prefWidth="252.0" text="Limit Search To Current Feed" textFill="RED" />
+                              <TextField fx:id="txtSearch" prefHeight="26.0" prefWidth="250.0" promptText="Search Feed Items" />
+                              <Button fx:id="btnSearch" mnemonicParsing="false" onMouseClicked="#searchFeedItem" prefHeight="27.0" prefWidth="78.0" text="Search" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" layoutX="14.0" layoutY="6.0" prefHeight="54.0" prefWidth="579.0" spacing="75.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="6.0">
+                           <children>
+                              <Label fx:id="lblNews" prefHeight="54.0" prefWidth="217.0" text="News">
+                                 <font>
+                                    <Font name="System Bold" size="36.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lblTitile" prefHeight="27.0" prefWidth="507.0" text="Test" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
                      </children>
@@ -99,7 +105,6 @@
                            <children>
                               <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Button fx:id="btnSave" layoutX="15.0" layoutY="592.0" mnemonicParsing="false" onMouseClicked="#saveSettings" text="Save" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" />
                                     <VBox prefHeight="569.0" prefWidth="636.0" spacing="25.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
                                           <GridPane alignment="CENTER" hgap="5.0" vgap="5.0">
@@ -160,22 +165,24 @@
                                                 <RowConstraints />
                                                 <RowConstraints />
                                                 <RowConstraints />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" />
                                             </rowConstraints>
                                              <children>
                                                 <Label prefHeight="18.0" prefWidth="90.0" text="Reader Font" GridPane.rowIndex="1" />
                                                 <ComboBox fx:id="cmbReaderFont" prefWidth="250.0" promptText="Reader Font" GridPane.rowIndex="2" />
                                                 <Label text="Reader Font Size" GridPane.rowIndex="3" />
                                                 <ComboBox fx:id="cmbReaderFontSize" prefWidth="250.0" promptText="Reader Font Size" GridPane.rowIndex="4" />
-                                                <Label text="Default Open Mode" GridPane.rowIndex="5" />
-                                                <ComboBox fx:id="cmbOpenMode" prefWidth="250.0" promptText="Open links In" GridPane.rowIndex="6" />
-                                                <Label text="Theme" GridPane.rowIndex="7" />
-                                                <ComboBox fx:id="cmbTheme" prefWidth="250.0" promptText="Reader Theme" GridPane.rowIndex="8" />
-                                                <Label text="* restart required before changes can take effect" textFill="#fa0000" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                                <Label text="Default Open Mode" GridPane.rowIndex="7" />
+                                                <ComboBox fx:id="cmbOpenMode" prefWidth="250.0" promptText="Open links In" GridPane.rowIndex="8" />
+                                                <Label text="Theme" GridPane.rowIndex="5" />
+                                                <ComboBox fx:id="cmbTheme" prefWidth="250.0" promptText="Reader Theme" GridPane.rowIndex="6" />
+                                                <Label text="* restart required before changes can take effect" textFill="#fa0000" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                                 <Label text="Reader">
                                                    <font>
                                                       <Font name="System Bold" size="24.0" />
                                                    </font>
                                                 </Label>
+                                                <Button fx:id="btnSave" mnemonicParsing="false" onMouseClicked="#saveSettings" text="Save" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
                                              </children>
                                           </GridPane>
                                        </children>

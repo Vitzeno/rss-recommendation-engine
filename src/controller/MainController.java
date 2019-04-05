@@ -9,7 +9,11 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
 import database.DatabaseHandler;
 import feed.Feed;
 import feed.FeedItem;
@@ -17,6 +21,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,11 +33,14 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -79,6 +87,8 @@ public class MainController {
     private Label lblTitile;
     @FXML
     private TextField txtSearch;
+    @FXML
+    private RadioButton rdbLimitSearch;
     
     
     @FXML
@@ -105,7 +115,7 @@ public class MainController {
     
     Thread recThread = new Thread();
     
-
+    Feed currentFeed = new Feed();
     
     /**
      * On click method when item in feed list is selected
@@ -202,6 +212,31 @@ public class MainController {
     	initFeed();
     }
     
+    
+    @FXML
+    void searchFeedItem(MouseEvent event) {
+    	System.out.println("Search clicked");
+    	String searchTerm = txtSearch.getText();
+    	List<FeedItem> result = new ArrayList<FeedItem>();
+    	
+    	if(rdbLimitSearch.isSelected()) {
+    		result = currentFeed.getMessages().stream()
+			.filter(e -> 
+			e.getTitle().toLowerCase().contains(searchTerm.toLowerCase()) || e.getDescription().toLowerCase().contains(searchTerm.toLowerCase()))
+			.collect(Collectors.toList());
+    		
+    	} else {
+    		result = RSSDataModel.getFeedItems().stream()
+    				.filter(e -> 
+    				e.getTitle().toLowerCase().contains(searchTerm.toLowerCase()) || e.getDescription().toLowerCase().contains(searchTerm.toLowerCase()))
+    				.collect(Collectors.toList());
+    	}
+    	
+		lstViewFeedItems.getItems().clear();
+		lstViewFeedItems.getItems().addAll(result);
+
+    }
+    
     /**
      * This method servers to add feeds to the users list of saved feeds
      * @param event
@@ -280,6 +315,8 @@ public class MainController {
     @FXML
     void initialize() {
     	System.out.println("Controller initialise");
+    	lstViewFeedItems.setCellFactory(feedItemsListView -> new FeedItemsListViewCell());
+    	lstViewFeeds.setCellFactory(feedsListView -> new FeedListViewCell());
     	initSettings();
     	
     	tabs.setTabClosingPolicy(TabClosingPolicy.ALL_TABS);
@@ -295,7 +332,6 @@ public class MainController {
     	SplitPane.setResizableWithParent(rightAnchorPane, false);
     	splintPane.setDividerPositions(0.20);
     	
-
     }
     
     /**
@@ -368,12 +404,13 @@ public class MainController {
      * @param feed
      */
     public void initFeedItems(Feed feed) {
+    	currentFeed = feed;
     	lstViewFeedItems.getItems().clear();
     	for (FeedItem item : feed.getMessages()) {
     		lstViewFeedItems.getItems().add(item);
     	}
     	
-    	lstViewFeedItems.setCellFactory(feedItemsListView -> new FeedItemsListViewCell());
+    	
     }
     
     /**
@@ -434,7 +471,7 @@ public class MainController {
 		};
 		recThread.start();
 		
-		lstViewFeeds.setCellFactory(feedsListView -> new FeedListViewCell());
+		
     }
     
     /**
