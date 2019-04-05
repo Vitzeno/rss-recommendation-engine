@@ -99,6 +99,8 @@ public class MainController {
     @FXML
     private AnchorPane leftAnchorPane;
     
+    Thread recThread = new Thread();
+    
 
     
     /**
@@ -385,7 +387,14 @@ public class MainController {
     	if(recEngine == null)
     		initRecEngine();
     	
-    	new Thread(){
+
+    	if(recThread.isAlive()) {
+    		System.out.println("Thread still alive");
+    		recThread.stop();
+    	}
+    		
+    	
+    	recThread = new Thread(){
 			@Override
 			public void run() {
 				try {
@@ -406,7 +415,8 @@ public class MainController {
 					e.printStackTrace();
 				}
 			}
-		}.start();
+		};
+		recThread.start();
 		
 		lstViewFeeds.setCellFactory(feedsListView -> new FeedListViewCell());
     }
