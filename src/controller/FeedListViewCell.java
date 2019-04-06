@@ -8,8 +8,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 
 public class FeedListViewCell extends ListCell<Feed> {
 	
@@ -48,7 +46,7 @@ public class FeedListViewCell extends ListCell<Feed> {
             else
             	lblTitle.setTextFill(Color.web("#000000"));
             
-            if(item.getTitle().isEmpty())
+            if(item.getTitle().equalsIgnoreCase("Error"))
             	lblTitle.setText("Error Parsing Feed");
             else
             	lblTitle.setText(item.getTitle());

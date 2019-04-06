@@ -9,6 +9,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import feed.Feed;
+import feed.FeedItem;
+
 public class DatabaseHandler {
 	private String DB_LOC = "database/";
 	private String FILE_TYPE = ".db";
@@ -193,8 +196,9 @@ public class DatabaseHandler {
         }
     }
     
-    public void selectAllFromLikedItemsTable() {
+    public Feed selectAllFromLikedItemsTable() {
     	String sql = "SELECT id, title, description, link, author, guid, pubDate FROM likedItems";
+        Feed savedFeeds = new Feed("Saved Feeds", "", "List of feeds saved for later", "", "", "", "");
         
         try (Connection conn = this.connect();
              Statement stmt  = conn.createStatement();
@@ -202,17 +206,19 @@ public class DatabaseHandler {
             
             // loop through the result set
             while (rs.next()) {
-                System.out.println(rs.getInt("id") +  "\t" 
-                		+ rs.getString("title") + "\t" 
-                		+ rs.getString("description") + "\t" 
-                		+ rs.getString("link") + "\t" 
-                		+ rs.getString("author") + "\t" 
-                		+ rs.getString("guid") + "\t" 
-                		+ rs.getString("pubDate") + "\t");
+            	FeedItem item = new FeedItem();
+            	item.setTitle(rs.getString("title"));
+            	item.setDescription(rs.getString("description"));
+            	item.setLink(rs.getString("link"));
+            	item.setAuthor(rs.getString("author"));
+            	item.setGuid(rs.getString("guid"));
+            	item.setPubDate(rs.getString("pubDate"));
+            	savedFeeds.addToFeed(item);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+		return savedFeeds;
     }
     
     public void insertIntoLikedItemsTable(String title, String description, String link, String author, String guid, String pubDate) {

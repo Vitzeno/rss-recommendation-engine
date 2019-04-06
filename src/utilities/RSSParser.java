@@ -197,7 +197,7 @@ public class RSSParser {
                 		DBHandler.deleteFromFeedTable(toDelete);
                 	}
         			
-        			return feed;
+        			return feed = new Feed("Error", "", "", "", "", "", "");
                 }
             }     	
         }

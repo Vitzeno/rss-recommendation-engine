@@ -11,9 +11,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
 import database.DatabaseHandler;
 import feed.Feed;
 import feed.FeedItem;
@@ -21,7 +19,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -39,8 +36,6 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -249,7 +244,7 @@ public class MainController {
     @FXML
     void addFeed(MouseEvent event) {
     	DatabaseHandler DBHandler = new DatabaseHandler();
-    	String toWirte = txtFeed.getText();
+    	String toWirte = txtFeed.getText().toLowerCase();
     	if(validateURI(txtFeed.getText())) {
     		System.out.println("Adding feed: " + toWirte);
     		txtFeed.setStyle("-fx-text-fill: green;");
@@ -266,12 +261,13 @@ public class MainController {
     		    }
     		});
     		txtFeed.clear();
+    		initFeed();
     	}	
     	else {
     		System.out.println("Malformed URL provided");
     		//txtFeed.setText("Malformed URL provided");
     		txtFeed.setStyle("-fx-text-fill: red;");
-    	}
+    	}	
     }
     
     /**
@@ -423,7 +419,8 @@ public class MainController {
      * This method initialises the list view of feeds by parsing a URL containing an RSS
      * feed using the RSSDataModel class
      */
-    public void initFeed() {
+    @SuppressWarnings("deprecation")
+	public void initFeed() {
     	DatabaseHandler DBHandler = new DatabaseHandler();
     	//add user topics to singleton class
     	UserTopics topics = UserTopics.getInstance();
@@ -431,54 +428,63 @@ public class MainController {
 		topics.addTerms(DBHandler.selectAllFromTopicsTable().toArray(new String[0]));
 		System.out.println(topics);
 		
-    	
-    	//clear lstView then add feeds
-    	lstViewFeeds.getItems().clear();
-    	RSSFeedList.clear();
-    	if(RSSDataModel == null)
-    		initModel();
-    	
-    	RSSFeedList = RSSDataModel.parseRSSFeeds();
-    	
-    	if(!RSSFeedList.isEmpty())
-    		lstViewFeeds.setItems(RSSFeedList);
-    	 	
-    	if(recEngine == null)
-    		initRecEngine();
-    	
-
-    	if(recThread.isAlive()) {
+		Feed savedFeeds = DBHandler.selectAllFromLikedItemsTable();
+		
+		if(recThread.isAlive()) {
     		System.out.println("Thread still alive");
     		recThread.stop();
     	}
-    		
     	
-    	recThread = new Thread(){
-			@Override
-			public void run() {
-				try {
-					Feed recFeed = recEngine.generateRecommendations();
-					Platform.runLater( () -> {
-						lstViewFeeds.getItems().add(0, recFeed);
-			    	});
-				} catch (ParseException e) {
-					Alert alert = new Alert(AlertType.ERROR);
-		    		alert.setTitle("Error");
-		    		alert.setHeaderText("Unable to generate recommendations");
-		    		alert.setContentText("This could be due to a drop in connection, or a failed RSS parse");
-		    		alert.showAndWait().ifPresent(rs -> {
-		    		    if (rs == ButtonType.OK) {
-		    		        System.out.println("Pressed OK.");
-		    		    }
-		    		});
-					e.printStackTrace();
-				}
-			}
-		};
-		recThread.start();
+    	/* clear lstView then add feeds */
+    	lstViewFeeds.getItems().clear();
+    	RSSFeedList.clear();
+    	
+
+    	
+    	/* init RSS data class*/
+    	if(RSSDataModel == null)
+    		initModel();
+    	/* init rec engine class */
+    	if(recEngine == null)
+    		initRecEngine();  		
+    	
+		/* parse all feeds  */
+    	RSSFeedList = RSSDataModel.parseRSSFeeds();
+    	
+    	/* if feeds are not empty populate table and generate recommendations */
+    	if(!RSSFeedList.isEmpty()) {
+    		lstViewFeeds.setItems(RSSFeedList);
+    		recThread = new Thread(){
+    			@Override
+    			public void run() {
+    				try {
+    					Feed recFeed = recEngine.generateRecommendations();
+    					Platform.runLater( () -> {
+    						lstViewFeeds.getItems().add(0, recFeed);
+    			    	});
+    				} catch (ParseException e) {
+    					Alert alert = new Alert(AlertType.ERROR);
+    		    		alert.setTitle("Error");
+    		    		alert.setHeaderText("Unable to generate recommendations");
+    		    		alert.setContentText("This could be due to a drop in connection, or a failed RSS parse");
+    		    		alert.showAndWait().ifPresent(rs -> {
+    		    		    if (rs == ButtonType.OK) {
+    		    		        System.out.println("Pressed OK.");
+    		    		    }
+    		    		});
+    					e.printStackTrace();
+    				}
+    			}
+    		};
+    		recThread.start();
+    	}
 		
-		
+    	/* populate saved feeds if they exist */
+		if(!savedFeeds.getMessages().isEmpty()) 
+			lstViewFeeds.getItems().add(0, savedFeeds);
+
     }
+
     
     /**
      * This method only serves to  initialise the RecommendationEngine object
@@ -537,7 +543,7 @@ public class MainController {
     	DatabaseHandler DBHandler = new DatabaseHandler();
     	if(!txtTopic.getText().isEmpty()) {
 	    	System.out.println("Topic added " + ToolBox.cleanString(txtTopic.getText()));
-	    	DBHandler.insertIntoTopicsTable(ToolBox.cleanString(txtTopic.getText()));
+	    	DBHandler.insertIntoTopicsTable(ToolBox.cleanString(txtTopic.getText().toLowerCase()));
 	    	
 	    	Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Topic Added");

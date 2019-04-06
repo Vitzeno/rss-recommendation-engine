@@ -27,7 +27,7 @@ public class RecommendationEngine {
 	 * @throws ParseException 
 	 */
 	public Feed generateRecommendations() throws ParseException {
-		recFeed = new Feed("Recommended Feeds", null, "Auto generated feed of recommended items", "en-gb", null, null, "");
+		recFeed = new Feed("Recommended Feeds", "", "Auto generated feed of recommended items", "en-gb", "", "", "");
 	
 		recFeed.addToFeed(RSSDataModel.getRecommendations());
 		
