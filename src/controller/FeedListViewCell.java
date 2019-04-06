@@ -17,6 +17,7 @@ public class FeedListViewCell extends ListCell<Feed> {
     private Label lblDescription;
     @FXML
     private GridPane gridPane;
+
     
     private FXMLLoader loader;
 
@@ -40,6 +41,8 @@ public class FeedListViewCell extends ListCell<Feed> {
                     e.printStackTrace();
                 }
             }
+            
+
 
             if(item.getTitle().equalsIgnoreCase("Recommended Feeds"))
             	lblTitle.setTextFill(Color.web("#DC143C"));

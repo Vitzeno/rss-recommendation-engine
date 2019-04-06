@@ -26,6 +26,7 @@ public class FeedItemsListViewCell extends ListCell<FeedItem> {
     private FXMLLoader loader;
     
     DatabaseHandler DBHandler = new DatabaseHandler();
+   
 
     @Override
     protected void updateItem(FeedItem item, boolean empty) {
@@ -55,9 +56,19 @@ public class FeedItemsListViewCell extends ListCell<FeedItem> {
             btnLike.setOnMouseClicked((event) -> {
             	FeedItem toAdd = getItem();
             	DBHandler.insertIntoLikedItemsTable(toAdd.getTitle(), toAdd.getDescription(), toAdd.getLink(), toAdd.getAuthor(), toAdd.getGuid(), toAdd.getPubDate());
-            	btnLike.setStyle("-fx-background-color: #00C7FF");
-            	btnLike.setText("Saved");
+            	System.out.println("Saving " + toAdd.getTitle());
+            	toAdd.setSaved(true);
         	});
+            
+            if(item.isSaved()) {
+            	System.out.println("Saved item " + item.getTitle());
+            	btnLike.setStyle("base-button-colour: #00C7FF");
+            	btnLike.setText("Saved");
+            } else {
+            	btnLike.setStyle("base-button-colour: white");
+            	btnLike.setText("Save");
+            }
+            	
             
             setText(null);
             setGraphic(gridPane);

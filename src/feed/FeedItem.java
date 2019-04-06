@@ -20,11 +20,22 @@ public class FeedItem implements Comparable<FeedItem> {
     String author = "";
     String guid = "";
     String pubDate = "";
+    Boolean saved = false;
+    
     //Properties of feed item to be calculated on each run
     double tfidfScore = 0;
     RealMatrix reducedMatrixValue;
     
-    public String getExraDecription() {
+
+    public Boolean isSaved() {
+		return saved;
+	}
+
+	public void setSaved(Boolean saved) {
+		this.saved = saved;
+	}
+
+	public String getExraDecription() {
 		return extraDecription;
 	}
 

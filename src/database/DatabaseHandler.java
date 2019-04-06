@@ -213,6 +213,7 @@ public class DatabaseHandler {
             	item.setAuthor(rs.getString("author"));
             	item.setGuid(rs.getString("guid"));
             	item.setPubDate(rs.getString("pubDate"));
+            	item.setSaved(true);
             	savedFeeds.addToFeed(item);
             }
         } catch (SQLException e) {
@@ -264,7 +265,7 @@ public class DatabaseHandler {
     	insertIntoTopicsTable("traffic");
     	insertIntoTopicsTable("car");
     	insertIntoTopicsTable("sale");
-    	insertIntoTopicsTable("EU");
+    	insertIntoTopicsTable("eu");
     	insertIntoTopicsTable("sports");
     }
     
