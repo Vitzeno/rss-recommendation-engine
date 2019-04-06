@@ -283,6 +283,7 @@ public class MainController {
     	try {
     	    URL urlTest = new URL(url);
     	    URLConnection conn = urlTest.openConnection();
+    	    conn.setConnectTimeout(3000);
     	    conn.connect();
     	} catch (MalformedURLException e) {
     		txtFeed.clear();

@@ -48,6 +48,7 @@ public class RSSParser {
     	try {
     		this.url = new URL(feedUrl);
     	    URLConnection conn = this.url.openConnection();
+    	    conn.setConnectTimeout(3000);
     	    conn.connect();
     	} catch (MalformedURLException e) {
     		Alert alert = new Alert(AlertType.ERROR);
@@ -114,7 +115,7 @@ public class RSSParser {
 			e.printStackTrace();
 		}
         
-        if(!(eventReader == null)) {
+        if(!(eventReader == null) && !(in == null)) {
         	//System.out.println("event reader not null");
         	while(eventReader.hasNext()) {
             	//System.out.println("event reader has next");
@@ -226,11 +227,35 @@ public class RSSParser {
      * @return an open URL stream
      */
     private InputStream read() {
+    	InputStream stream = null;
         try {
-            return url.openStream();
+        	URLConnection conn = this.url.openConnection();
+        	conn.setConnectTimeout(3000);
+    	    conn.connect();
+    	    stream = conn.getInputStream();
+            return stream;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+        	e.printStackTrace();
+        	
+        	DatabaseHandler DBHandler = new DatabaseHandler();
+        	String toDelete = this.url.toString();
+        	
+        	Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        	alert.setTitle("Error");
+        	alert.setContentText("Error regarding:   " + toDelete + "\n" 
+        				+ "\n"
+        				+ "403 returned, connection is valid but resourse is forbidden.\n"
+        				+ "\n"
+        				+ "It is causing parsing issues, it may not be a valid RSS feed, do you wish to remove it?");
+        	Optional<ButtonType> answer = alert.showAndWait();
+        	
+        	if(answer.get() == ButtonType.OK) {
+        		DBHandler.deleteFromFeedTable(toDelete);
+        	}
+        	
+            
         }
+		return stream;
     }
 
 }

@@ -34,6 +34,9 @@ public class Main extends Application {
 			DBHandler.selectAllFromFeedsTable();
 			DBHandler.selectAllFromTopicsTable();
 			DBHandler.selectAllFromLikedItemsTable();
+			
+			System.setProperty("http.agent", "Chrome");
+
 					
 			primaryStage.setTitle("RSS Reader");
 			primaryStage.setMinWidth(640);
