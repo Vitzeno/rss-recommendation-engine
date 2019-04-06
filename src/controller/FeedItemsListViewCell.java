@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import database.DatabaseHandler;
 import feed.FeedItem;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +24,8 @@ public class FeedItemsListViewCell extends ListCell<FeedItem> {
     private GridPane gridPane;
     
     private FXMLLoader loader;
+    
+    DatabaseHandler DBHandler = new DatabaseHandler();
 
     @Override
     protected void updateItem(FeedItem item, boolean empty) {
@@ -48,6 +51,12 @@ public class FeedItemsListViewCell extends ListCell<FeedItem> {
             lblTitle.setText(item.getTitle());;
             lblDescription.setText(item.getDescription());
             lblExtras.setText(item.getExraDecription());
+            
+            btnLike.setOnMouseClicked((event) -> {
+            	FeedItem toAdd = getItem();
+            	DBHandler.insertIntoLikedItemsTable(toAdd.getTitle(), toAdd.getDescription(), toAdd.getLink(), toAdd.getAuthor(), toAdd.getGuid(), toAdd.getPubDate());
+            	btnLike.setText("Liked");
+        	});
             
             setText(null);
             setGraphic(gridPane);

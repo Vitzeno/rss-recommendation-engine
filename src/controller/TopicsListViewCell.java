@@ -36,6 +36,7 @@ public class TopicsListViewCell extends ListCell<String> {
             	System.out.println("Topic to Delete: " + getItem());                
             }
         });
+    	
 	}
     
     @Override
