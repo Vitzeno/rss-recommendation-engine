@@ -64,7 +64,7 @@ public class FeedItemsListViewCell extends ListCell<FeedItem> {
             		System.out.println("Removing " + toAdd.getTitle());
                 	toAdd.setSaved(false);
             	}
-            	
+            	updateItem(item, false);
         	});
             
             if(item.isSaved()) {
@@ -75,11 +75,13 @@ public class FeedItemsListViewCell extends ListCell<FeedItem> {
             	btnLike.setStyle("base-button-colour: white");
             	btnLike.setText("Save");
             }
-            	
+            
+            
             
             setText(null);
             setGraphic(gridPane);
         }
     }
+
 
 }
