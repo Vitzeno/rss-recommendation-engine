@@ -212,6 +212,12 @@ public class MainController {
     	initFeed();
     }
     
+
+    @FXML
+    void handleRefreshTopicsList(ActionEvent event) {
+    	initTopicsList();
+    }
+    
     
     @FXML
     void searchFeedItem(MouseEvent event) {

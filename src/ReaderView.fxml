@@ -132,6 +132,7 @@
                                                    <contextMenu>
                                                       <ContextMenu>
                                                         <items>
+                                                            <MenuItem mnemonicParsing="false" onAction="#handleRefreshTopicsList" text="Refresh" />
                                                           <MenuItem mnemonicParsing="false" onAction="#deleteTopic" text="Delete" />
                                                         </items>
                                                       </ContextMenu>
