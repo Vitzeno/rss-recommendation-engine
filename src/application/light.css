@@ -89,6 +89,14 @@
     -fx-background-radius: 1;
 }
 
+.button:pressed {
+    -fx-background-color: #00C7FF; 
+    -fx-text-fill: black;
+    -fx-border-color: #0093ff;
+    -fx-border-width: 1;
+    -fx-background-radius: 1;
+}
+
 
 /* Tab properties */
 

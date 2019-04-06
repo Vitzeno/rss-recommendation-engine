@@ -336,8 +336,7 @@ public class MainController {
     	/* Ensures that split pane divider does not resize when windows is resized */
     	SplitPane.setResizableWithParent(leftAnchorPane, false);
     	SplitPane.setResizableWithParent(rightAnchorPane, false);
-    	splintPane.setDividerPositions(0.20);
-    	
+    	splintPane.setDividerPositions(0.15);
     }
     
     /**

@@ -31,13 +31,13 @@
             </Label>
             <Label fx:id="lblTitle" text="Label" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                <font>
-                  <Font name="System Bold" size="24.0" />
+                  <Font name="System Bold" size="20.0" />
                </font>
                <padding>
                   <Insets left="10.0" />
                </padding>
             </Label>
-            <Button fx:id="btnLike" mnemonicParsing="false" prefWidth="200.0" text="Like" textAlignment="CENTER" textFill="#3300ff" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+            <Button fx:id="btnLike" mnemonicParsing="false" prefWidth="200.0" text="Save" textAlignment="CENTER" textFill="#3300ff" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font>

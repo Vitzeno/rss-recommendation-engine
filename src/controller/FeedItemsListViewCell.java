@@ -55,7 +55,8 @@ public class FeedItemsListViewCell extends ListCell<FeedItem> {
             btnLike.setOnMouseClicked((event) -> {
             	FeedItem toAdd = getItem();
             	DBHandler.insertIntoLikedItemsTable(toAdd.getTitle(), toAdd.getDescription(), toAdd.getLink(), toAdd.getAuthor(), toAdd.getGuid(), toAdd.getPubDate());
-            	btnLike.setText("Liked");
+            	btnLike.setStyle("-fx-background-color: #00C7FF");
+            	btnLike.setText("Saved");
         	});
             
             setText(null);
