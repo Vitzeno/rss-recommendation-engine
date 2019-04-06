@@ -234,7 +234,6 @@ public class MainController {
     	
 		lstViewFeedItems.getItems().clear();
 		lstViewFeedItems.getItems().addAll(result);
-
     }
     
     /**
@@ -317,6 +316,7 @@ public class MainController {
     	System.out.println("Controller initialise");
     	lstViewFeedItems.setCellFactory(feedItemsListView -> new FeedItemsListViewCell());
     	lstViewFeeds.setCellFactory(feedsListView -> new FeedListViewCell());
+    	lstTopics.setCellFactory(topics -> new TopicsListViewCell());
     	initSettings();
     	
     	tabs.setTabClosingPolicy(TabClosingPolicy.ALL_TABS);
@@ -529,18 +529,32 @@ public class MainController {
     @FXML
     void addTopic(MouseEvent event) {
     	DatabaseHandler DBHandler = new DatabaseHandler();
-    	System.out.println("Topic added " + ToolBox.cleanString(txtTopic.getText()));
-    	DBHandler.insertIntoTopicsTable(ToolBox.cleanString(txtTopic.getText()));
+    	if(!txtTopic.getText().isEmpty()) {
+	    	System.out.println("Topic added " + ToolBox.cleanString(txtTopic.getText()));
+	    	DBHandler.insertIntoTopicsTable(ToolBox.cleanString(txtTopic.getText()));
+	    	
+	    	Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Topic Added");
+			alert.setHeaderText("Topic Added Sucessfully");
+			alert.setContentText("Topics has been added and will be used in recommendations.");
+			alert.showAndWait().ifPresent(rs -> {
+			    if (rs == ButtonType.OK) {
+			        System.out.println("Pressed OK.");
+			    }
+			});
+    	} else {
+    		Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Topic NOT Added");
+			alert.setHeaderText("Topic Empty");
+			alert.setContentText("Please enter a valid topic to add.");
+			alert.showAndWait().ifPresent(rs -> {
+			    if (rs == ButtonType.OK) {
+			        System.out.println("Pressed OK.");
+			    }
+			});
+    	}
     	
-    	Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Topic Added");
-		alert.setHeaderText("Topic Added Sucessfully");
-		alert.setContentText("Topics has been added and will be used in recommendations.");
-		alert.showAndWait().ifPresent(rs -> {
-		    if (rs == ButtonType.OK) {
-		        System.out.println("Pressed OK.");
-		    }
-		});
+    	
 		txtTopic.clear();
 		initTopicsList();
     }
