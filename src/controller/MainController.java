@@ -207,6 +207,11 @@ public class MainController {
     	initFeed();
     }
     
+    @FXML
+    void handleRefreshFeedItemsList(ActionEvent event) {
+    	initFeedItems(currentFeed);
+    }
+    
 
     @FXML
     void handleRefreshTopicsList(ActionEvent event) {

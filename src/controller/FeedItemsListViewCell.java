@@ -55,15 +55,22 @@ public class FeedItemsListViewCell extends ListCell<FeedItem> {
             
             btnLike.setOnMouseClicked((event) -> {
             	FeedItem toAdd = getItem();
-            	DBHandler.insertIntoLikedItemsTable(toAdd.getTitle(), toAdd.getDescription(), toAdd.getLink(), toAdd.getAuthor(), toAdd.getGuid(), toAdd.getPubDate());
-            	System.out.println("Saving " + toAdd.getTitle());
-            	toAdd.setSaved(true);
+            	if(!toAdd.isSaved()) {
+            		DBHandler.insertIntoLikedItemsTable(toAdd.getTitle(), toAdd.getDescription(), toAdd.getLink(), toAdd.getAuthor(), toAdd.getGuid(), toAdd.getPubDate());
+                	System.out.println("Saving " + toAdd.getTitle());
+                	toAdd.setSaved(true);
+            	} else {
+            		DBHandler.deleteFromLikedItemsTable(toAdd.getLink());
+            		System.out.println("Removing " + toAdd.getTitle());
+                	toAdd.setSaved(false);
+            	}
+            	
         	});
             
             if(item.isSaved()) {
             	System.out.println("Saved item " + item.getTitle());
             	btnLike.setStyle("base-button-colour: #00C7FF");
-            	btnLike.setText("Saved");
+            	btnLike.setText("Unsave");
             } else {
             	btnLike.setStyle("base-button-colour: white");
             	btnLike.setText("Save");

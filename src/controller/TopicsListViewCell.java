@@ -33,7 +33,7 @@ public class TopicsListViewCell extends ListCell<String> {
 
             @Override
             public void handle(MouseEvent event) {              
-            	System.out.println("Topic to Delete: " + getItem());                
+            	System.out.println("Topic clicked: " + getItem());                
             }
         });
     	

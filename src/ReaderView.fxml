@@ -56,7 +56,7 @@
                                        <contextMenu>
                                           <ContextMenu fx:id="cntMenuFeedItem">
                                             <items>
-                                              <MenuItem fx:id="contextMenu" mnemonicParsing="false" text="Refresh" />
+                                              <MenuItem fx:id="contextMenu" mnemonicParsing="false" onAction="#handleRefreshFeedItemsList" text="Refresh" />
                                                 <MenuItem fx:id="contextMenu2" mnemonicParsing="false" onAction="#handleOpenFeedItem" text="Open in browser" />
                                                 <MenuItem fx:id="contextMenu1" mnemonicParsing="false" text="Like" />
                                             </items>
