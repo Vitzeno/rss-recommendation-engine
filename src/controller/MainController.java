@@ -374,6 +374,21 @@ public class MainController {
     	cmbTheme.setValue(settings.getReaderTheme());
     	
     	clrPicker.setValue(Color.web(settings.getAccentColour()));
+    	
+    	switch(settings.getReaderTheme()) {
+		case "Verdant Dark":
+			clrPicker.setDisable(true);
+			break;
+		case "Lapis Light":
+			clrPicker.setDisable(false);
+			break;
+		case "Modena":
+			clrPicker.setDisable(true);
+			break;
+		default:
+			clrPicker.setDisable(false);
+			break;
+		}
     }
     
     /**
