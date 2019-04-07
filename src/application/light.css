@@ -3,6 +3,7 @@
    accent-base-colour: #ff8080ff;
    accent-hover-colour: #e66767;
    accent-pressed-colour: #d15252;
+   text-button-colour: #000000;
 }
 
 
@@ -14,11 +15,23 @@
     -fx-text-fill: white;
 }
 
-/* list view cell when mouse hover */
-
-.list-cell:filled:hover {
+/* Colour of the custom list hover */
+.list-view .list-cell:filled:hover .label{
     -fx-background-color: accent-base-colour;
-    -fx-text-fill: white;
+    -fx-text-fill: text-button-colour;
+}
+
+/* Colour of the custom list selected */
+.list-view .list-cell:filled:selected:focused .label,
+.list-view .list-cell:filled:selected .label {
+    -fx-background-color: accent-base-colour;
+    -fx-text-fill: text-button-colour;
+}
+
+/* Colour of the normal list hover */
+.list-view .list-cell:filled:hover {
+    -fx-background-color: accent-base-colour;
+    -fx-text-fill: text-button-colour;
 }
 
 .list-cell {
@@ -89,7 +102,7 @@
 
 .button:hover {
     -fx-background-color: accent-hover-colour;
-    -fx-text-fill: white;
+    -fx-text-fill: text-button-colour;
 	-fx-border-color: accent-hover-colour;
     -fx-border-width: 1;
     -fx-background-radius: 1;
@@ -97,7 +110,7 @@
 
 .button:pressed {
     -fx-background-color: accent-pressed-colour; 
-    -fx-text-fill: black;
+    -fx-text-fill: text-button-colour;
     -fx-border-color: accent-pressed-colour;
     -fx-border-width: 1;
     -fx-background-radius: 1;
@@ -121,15 +134,34 @@
 	-fx-text-fill: black;
 }
 
-.tab-pane .tab:hover {
+.tab-pane .tab:hover  {
     -fx-background-color: accent-base-colour;
-    -fx-text-fill: white;
+    -fx-alignment: CENTER;
+    -fx-text-fill: text-button-colour;
+    -fx-font-size: 16px;
 }
 
-.tab-pane .tab:selected {
+.tab-pane .tab:selected  {
     -fx-background-color: accent-base-colour;
-    -fx-text-fill: white;
+    -fx-alignment: CENTER;
+    -fx-text-fill: text-button-colour;
+    -fx-font-size: 16px;
 }
+
+.tab-pane .tab:hover .tab-label {
+    -fx-background-color: accent-base-colour;
+    -fx-alignment: CENTER;
+    -fx-text-fill: text-button-colour;
+    -fx-font-size: 16px;
+}
+
+.tab-pane .tab:selected .tab-label {
+    -fx-background-color: accent-base-colour;
+    -fx-alignment: CENTER;
+    -fx-text-fill: text-button-colour;
+    -fx-font-size: 16px;
+}
+
 
 .tab .tab-label { 
     -fx-alignment: CENTER;

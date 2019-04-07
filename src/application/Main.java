@@ -29,6 +29,7 @@ public class Main extends Application {
 			
 			Color baseColor = Color.web(settings.getAccentColour());
 			Color hover = ToolBox.lightenColour(baseColor);
+			Color textFill = baseColor.invert();
 
 			
 			DatabaseHandler DBHandler = new DatabaseHandler();
@@ -51,7 +52,9 @@ public class Main extends Application {
 			
 		    content.setStyle("accent-base-colour: " + ToolBox.cleanColour(baseColor.toString()) + ";" 
 		    		+ " accent-hover-colour: " + ToolBox.cleanColour(hover.toString()) + ";" 
-		    		+ " accent-pressed-colour: " + ToolBox.cleanColour(baseColor.toString()));
+		    		+ " accent-pressed-colour: " + ToolBox.cleanColour(baseColor.toString()) + ";" 
+		    		+ " text-button-colour: " + ToolBox.cleanColour(textFill.toString())
+		    		);
 		    
 			Scene scene = new Scene(content);
 			
