@@ -6,8 +6,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import model.RSSData;
 import settings.Settings;
+import utilities.ToolBox;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 
 
 public class Main extends Application {
@@ -25,6 +27,10 @@ public class Main extends Application {
 			Settings settings = Settings.getSettings();
 			String stylesheet = null;
 			
+			Color baseColor = Color.web(settings.getAccentColour());
+			Color hover = ToolBox.lightenColour(baseColor);
+
+			
 			DatabaseHandler DBHandler = new DatabaseHandler();
 			DBHandler.createDatabase();
 			DBHandler.createTables();
@@ -36,14 +42,16 @@ public class Main extends Application {
 			DBHandler.selectAllFromLikedItemsTable();
 			
 			System.setProperty("http.agent", "Chrome");
-
 					
 			primaryStage.setTitle("RSS Reader");
 			primaryStage.setMinWidth(640);
-			primaryStage.setMinHeight(480);
+			primaryStage.setMinHeight(480);		
 			
 			Parent content = FXMLLoader.load(getClass().getClassLoader().getResource("ReaderView.fxml"));
-		    content.setStyle("accent-base-colour: " + settings.getAccentColour());
+			
+		    content.setStyle("accent-base-colour: " + ToolBox.cleanColour(baseColor.toString()) + ";" 
+		    		+ " accent-hover-colour: " + ToolBox.cleanColour(hover.toString()) + ";" 
+		    		+ " accent-pressed-colour: " + ToolBox.cleanColour(baseColor.toString()));
 		    
 			Scene scene = new Scene(content);
 			

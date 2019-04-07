@@ -4,5 +4,5 @@
   "readerFontSize": 16,
   "readerFont": "Unispace",
   "readerTheme": "Lapis Light",
-  "accentColour": "#ff8080ff"
+  "accentColour": "#331a80ff"
 }

@@ -36,7 +36,7 @@ public class Settings {
 		this.readerFontSize = 16;
 		this.readerFont = "System";
 		this.readerTheme = "Lapis Light";
-		this.accentColour = "#0093ff";
+		this.accentColour = "#ff8080ff";
 	}
 	
 	public String getAccentColour() {

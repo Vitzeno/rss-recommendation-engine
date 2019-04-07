@@ -6,6 +6,7 @@ import java.util.stream.IntStream;
 import org.apache.commons.math3.linear.RealMatrix;
 import feed.Feed;
 import feed.FeedItem;
+import javafx.scene.paint.Color;
 
 /**
  * This class contains various helper methods used in multiple
@@ -60,6 +61,16 @@ public class ToolBox {
 	public static String cleanColour(String toClean) {
 		toClean = toClean.replace("0x", "#");
 		return toClean;
+	}
+	
+	public static Color darkenColour(Color toDarken) {
+		toDarken = toDarken.darker();
+		return toDarken;
+	}
+	
+	public static Color lightenColour(Color toLighten) {
+		toLighten = toLighten.brighter();
+		return toLighten;
 	}
 	
 	/**

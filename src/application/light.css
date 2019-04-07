@@ -1,26 +1,10 @@
 .root {
    base-button-colour: white;
-   accent-base-colour: #1189dfff;
-   base-font-family: Unispace;
-}
-/* 
-.labelHeading {
-	-fx-font-family: base-font-family;
-	-fx-font-weight: bold;
-	-fx-font-size: 36pt;
+   accent-base-colour: #ff8080ff;
+   accent-hover-colour: #e66767;
+   accent-pressed-colour: #d15252;
 }
 
-.labelSubHeading {
-	-fx-font-family: base-font-family;
-	-fx-font-weight: bold;
-	-fx-font-size: 24pt;
-}
-
-.label {
-	-fx-font-family: base-font-family;
-	-fx-font-size: 12pt;
-}
-*/
 
 /* List view properties */
 
@@ -38,7 +22,6 @@
 }
 
 .list-cell {
-  -fx-font-family: base-font-family;
   -fx-background-color: white;
 }
 
@@ -105,17 +88,17 @@
 }
 
 .button:hover {
-    -fx-background-color: accent-base-colour;
+    -fx-background-color: accent-hover-colour;
     -fx-text-fill: white;
-	-fx-border-color: accent-base-colour;
+	-fx-border-color: accent-hover-colour;
     -fx-border-width: 1;
     -fx-background-radius: 1;
 }
 
 .button:pressed {
-    -fx-background-color: #00C7FF; 
+    -fx-background-color: accent-pressed-colour; 
     -fx-text-fill: black;
-    -fx-border-color: accent-base-colour;
+    -fx-border-color: accent-pressed-colour;
     -fx-border-width: 1;
     -fx-background-radius: 1;
 }
