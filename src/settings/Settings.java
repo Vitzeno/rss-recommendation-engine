@@ -11,7 +11,7 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 
 public class Settings {
-	public static String RES_LOC = "settings/";
+	public static String RES_LOC = System.getProperty("user.home") + "/AppData/Local/RSSReader/";
 	public static String FILE_TYPE = ".txt";
 	public static String CONFIG_FILE = RES_LOC + "config" + FILE_TYPE;
 	

@@ -13,7 +13,7 @@ import feed.Feed;
 import feed.FeedItem;
 
 public class DatabaseHandler {
-	private String DB_LOC = "database/";
+	private String DB_LOC = System.getProperty("user.home") + "/AppData/Local/RSSReader/";
 	private String FILE_TYPE = ".db";
 	private String DB_NAME = "RSS_DB";
 	private String url = "jdbc:sqlite:" + this.DB_LOC + this.DB_NAME + this.FILE_TYPE;

@@ -1,5 +1,7 @@
 package application;
 	
+import java.io.File;
+
 import database.DatabaseHandler;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +19,17 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+			
+			File dir = new File(System.getProperty("user.home") + "/AppData/Local/RSSReader/");
+			if(!dir.exists()) {
+				if(dir.mkdirs()) {
+					System.out.println("Created directory " + System.getProperty("user.home") + "/AppData/Local/RSSReader/");
+				} else {
+					System.out.println("Failed to create directory");
+				}
+			} else {
+				System.out.println("Directory already exists " + System.getProperty("user.home") + "/AppData/Local/RSSReader/");
+			}
 			
 			/**
 			 * First initialisation of RSSData singleton class
