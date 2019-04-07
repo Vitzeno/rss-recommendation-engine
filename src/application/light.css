@@ -3,7 +3,7 @@
    accent-base-colour: #1189dfff;
    base-font-family: Unispace;
 }
-
+/* 
 .labelHeading {
 	-fx-font-family: base-font-family;
 	-fx-font-weight: bold;
@@ -20,6 +20,7 @@
 	-fx-font-family: base-font-family;
 	-fx-font-size: 12pt;
 }
+*/
 
 /* List view properties */
 
