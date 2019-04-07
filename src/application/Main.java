@@ -43,6 +43,7 @@ public class Main extends Application {
 			primaryStage.setMinHeight(480);
 			
 			Parent content = FXMLLoader.load(getClass().getClassLoader().getResource("ReaderView.fxml"));
+		    content.setStyle("accent-base-colour: " + settings.getAccentColour());
 		    
 			Scene scene = new Scene(content);
 			
@@ -62,6 +63,7 @@ public class Main extends Application {
 			}
 			
 		    scene.getStylesheets().add(getClass().getResource(stylesheet).toExternalForm());
+
 		    
 		    primaryStage.setScene(scene);
 		    primaryStage.show();

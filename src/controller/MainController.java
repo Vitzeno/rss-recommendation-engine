@@ -27,6 +27,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -39,6 +40,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import model.RSSData;
 import recommendation.RecommendationEngine;
 import settings.Settings;
@@ -84,6 +86,9 @@ public class MainController {
     private TextField txtSearch;
     @FXML
     private RadioButton rdbLimitSearch;
+    
+    @FXML
+    private ColorPicker clrPicker;
     
     
     @FXML
@@ -367,6 +372,8 @@ public class MainController {
     		cmbOpenMode.setValue("Reader");
     	
     	cmbTheme.setValue(settings.getReaderTheme());
+    	
+    	clrPicker.setValue(Color.web(settings.getAccentColour()));
     }
     
     /**
@@ -390,6 +397,8 @@ public class MainController {
     		settings.setOpenInBrowser(false);
     	
     	settings.setReaderTheme(cmbTheme.getSelectionModel().getSelectedItem());
+    	
+    	settings.setAccentColour(ToolBox.cleanColour(clrPicker.getValue().toString()));
     	
     	Settings.writeSettingsToFile(settings);
     	

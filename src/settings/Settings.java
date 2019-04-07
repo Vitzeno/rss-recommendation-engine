@@ -25,6 +25,7 @@ public class Settings {
 	public int readerFontSize;
 	public String readerFont;
 	public String readerTheme;
+	public String accentColour;
 	
 	/**
 	 * Constructor serves to setup default values
@@ -32,11 +33,20 @@ public class Settings {
 	public Settings() {
 		this.method = calculation.COSINE;
 		this.openInBrowser = true;
-		this.readerFontSize = 25;
+		this.readerFontSize = 16;
 		this.readerFont = "System";
-		this.readerTheme = "Lapis Blue";
+		this.readerTheme = "Lapis Light";
+		this.accentColour = "#0093ff";
 	}
 	
+	public String getAccentColour() {
+		return accentColour;
+	}
+
+	public void setAccentColour(String accentColour) {
+		this.accentColour = accentColour;
+	}
+
 	public String getReaderTheme() {
 		return readerTheme;
 	}

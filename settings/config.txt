@@ -1,7 +1,8 @@
 {
   "method": "COSINE",
-  "openInBrowser": false,
+  "openInBrowser": true,
   "readerFontSize": 16,
   "readerFont": "Unispace",
-  "readerTheme": "Lapis Light"
+  "readerTheme": "Lapis Light",
+  "accentColour": "#ff8080ff"
 }

@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
@@ -167,14 +168,16 @@
                                                 <RowConstraints />
                                                 <RowConstraints />
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" />
                                             </rowConstraints>
                                              <children>
                                                 <Label prefHeight="18.0" prefWidth="90.0" text="Reader Font" GridPane.rowIndex="1" />
                                                 <ComboBox fx:id="cmbReaderFont" prefWidth="250.0" promptText="Reader Font" GridPane.rowIndex="2" />
                                                 <Label text="Reader Font Size" GridPane.rowIndex="3" />
                                                 <ComboBox fx:id="cmbReaderFontSize" prefWidth="250.0" promptText="Reader Font Size" GridPane.rowIndex="4" />
-                                                <Label text="Default Open Mode" GridPane.rowIndex="7" />
-                                                <ComboBox fx:id="cmbOpenMode" prefWidth="250.0" promptText="Open links In" GridPane.rowIndex="8" />
+                                                <Label text="Default Open Mode" GridPane.rowIndex="9" />
+                                                <ComboBox fx:id="cmbOpenMode" prefWidth="250.0" promptText="Open links In" GridPane.rowIndex="10" />
                                                 <Label text="Theme" GridPane.rowIndex="5" />
                                                 <ComboBox fx:id="cmbTheme" prefWidth="250.0" promptText="Reader Theme" GridPane.rowIndex="6" />
                                                 <Label text="* restart required before changes can take effect" textFill="#fa0000" GridPane.columnIndex="1" GridPane.rowIndex="6" />
@@ -183,7 +186,10 @@
                                                       <Font name="System Bold" size="24.0" />
                                                    </font>
                                                 </Label>
-                                                <Button fx:id="btnSave" mnemonicParsing="false" onMouseClicked="#saveSettings" text="Save" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+                                                <Button fx:id="btnSave" mnemonicParsing="false" onMouseClicked="#saveSettings" text="Save" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="11" GridPane.valignment="CENTER" />
+                                                <ColorPicker fx:id="clrPicker" GridPane.rowIndex="8" />
+                                                <Label text="Accent Colour" GridPane.rowIndex="7" />
+                                                <Label text="* restart required before changes can take effect" textFill="#fa0000" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                                              </children>
                                           </GridPane>
                                        </children>

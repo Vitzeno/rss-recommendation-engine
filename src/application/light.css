@@ -1,9 +1,25 @@
 .root {
    base-button-colour: white;
-   accent-base-colour: #0093ff;
+   accent-base-colour: #1189dfff;
+   base-font-family: Unispace;
 }
 
+.labelHeading {
+	-fx-font-family: base-font-family;
+	-fx-font-weight: bold;
+	-fx-font-size: 36pt;
+}
 
+.labelSubHeading {
+	-fx-font-family: base-font-family;
+	-fx-font-weight: bold;
+	-fx-font-size: 24pt;
+}
+
+.label {
+	-fx-font-family: base-font-family;
+	-fx-font-size: 12pt;
+}
 
 /* List view properties */
 
@@ -21,11 +37,11 @@
 }
 
 .list-cell {
+  -fx-font-family: base-font-family;
   -fx-background-color: white;
 }
 
 .list-view {
-  
   -fx-background-insets: 0;
   -fx-padding: 0;
 }

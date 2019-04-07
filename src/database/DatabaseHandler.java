@@ -262,7 +262,6 @@ public class DatabaseHandler {
     	insertIntoTopicsTable("apple");
     	insertIntoTopicsTable("facebook");
     	insertIntoTopicsTable("samsung");
-    	insertIntoTopicsTable("traffic");
     	insertIntoTopicsTable("car");
     	insertIntoTopicsTable("sale");
     	insertIntoTopicsTable("eu");
@@ -274,7 +273,6 @@ public class DatabaseHandler {
     	insertIntoFeedsTable("https://www.wired.com/feed/rss");
     	insertIntoFeedsTable("http://www.espn.com/espn/rss/news");
     	insertIntoFeedsTable("https://xkcd.com/rss.xml");
-    	insertIntoFeedsTable("https://gizmodo.com/rss");
     	insertIntoFeedsTable("http://feeds.macrumors.com/MacRumors-All");
     	insertIntoFeedsTable("https://store.steampowered.com/feeds/news.xml");
     	insertIntoFeedsTable("http://m.highwaysengland.co.uk/feeds/rss/UnplannedEvents.xml");
