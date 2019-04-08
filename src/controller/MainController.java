@@ -31,6 +31,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
@@ -99,6 +100,9 @@ public class MainController {
     private ComboBox<String> cmbOpenMode;
     @FXML
     private ComboBox<String> cmbTheme;
+    
+    @FXML
+    private MenuItem cntMenuSave;
     
     
     @FXML
@@ -186,7 +190,20 @@ public class MainController {
     	
     	if(answer.get() == ButtonType.OK) {
     		DBHandler.deleteFromFeedTable(toDelete.getUrl());
+    		initFeed();
     	}
+    }
+    
+    @FXML
+    void handleSaveFeedItem(ActionEvent event) {
+    	DatabaseHandler DBHandler = new DatabaseHandler();
+    	FeedItem toAdd = lstViewFeedItems.getSelectionModel().getSelectedItem();
+
+		DBHandler.insertIntoLikedItemsTable(toAdd.getTitle(), toAdd.getDescription(), toAdd.getLink(), toAdd.getAuthor(), toAdd.getGuid(), toAdd.getPubDate());
+    	System.out.println("Saving " + toAdd.getTitle());
+    	toAdd.setSaved(true);
+
+    	initFeed();
     }
     
     @FXML
@@ -358,7 +375,7 @@ public class MainController {
     	cmbReaderFont.getItems().addAll("System", "Serif", "Segoe UI", "Calibri", "Calibri Light", "SansSerif", "Unispace");
     	cmbReaderFontSize.getItems().addAll("12", "14", "16", "18", "20", "22", "24", "26", "28", "30", "32", "34", "36", "38", "40", "42", "44", "46", "48", "50");
     	cmbOpenMode.getItems().addAll("Browser", "Reader");
-    	cmbTheme.getItems().addAll("Modena", "Lapis Light", "Verdant Dark");
+    	cmbTheme.getItems().addAll("Modena", "Lapis Light");
     	
     	Settings settings = Settings.getSettings();
     	chkOpenInBrowse.setSelected(settings.isOpenInBrowser());

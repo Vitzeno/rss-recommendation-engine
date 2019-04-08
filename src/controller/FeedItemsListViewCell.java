@@ -25,8 +25,7 @@ public class FeedItemsListViewCell extends ListCell<FeedItem> {
     
     private FXMLLoader loader;
     
-    DatabaseHandler DBHandler = new DatabaseHandler();
-   
+    DatabaseHandler DBHandler = new DatabaseHandler();   
 
     @Override
     protected void updateItem(FeedItem item, boolean empty) {
