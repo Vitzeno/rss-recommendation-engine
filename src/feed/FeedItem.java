@@ -1,7 +1,7 @@
 package feed;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.math3.linear.RealMatrix;
 
@@ -21,6 +21,8 @@ public class FeedItem implements Comparable<FeedItem> {
     String guid = "";
     String pubDate = "";
     Boolean saved = false;
+    
+    List<String> tokens = new ArrayList<String>();
     
     //Properties of feed item to be calculated on each run
     double tfidfScore = 0;
@@ -51,18 +53,15 @@ public class FeedItem implements Comparable<FeedItem> {
 		this.reducedMatrixValue = reducedMatrixValue;
 	}
 
-	Set<String> tokens = new HashSet<String>();
-    
-
-	public Set<String> getTokens() {
+	public List<String> getTokens() {
 		return tokens;
 	}
-	
+
 	public void addToken(String token) {
 		tokens.add(token);
 	}
 
-	public void setTokens(Set<String> tokens) {
+	public void setTokens(List<String> tokens) {
 		this.tokens = tokens;
 	}
 

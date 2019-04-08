@@ -31,6 +31,7 @@ public class Main extends Application {
 				System.out.println("Directory already exists " + System.getProperty("user.home") + "/AppData/Local/RSSReader/");
 			}
 			
+			
 			/**
 			 * First initialisation of RSSData singleton class
 			 * contains data to be used by most classes in this 

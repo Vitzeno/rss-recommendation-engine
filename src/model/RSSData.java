@@ -42,10 +42,10 @@ public class RSSData {
 	private ArrayList<String> feedsURL = new ArrayList<String>();
 	
 	
-	//private List<List<String>> documents = new ArrayList<List<String>>();
-	private Set<Set<String>> documents = new HashSet<Set<String>>(); 
+	private List<List<String>> documents = new ArrayList<List<String>>();
+	//private Set<Set<String>> documents = new HashSet<Set<String>>(); 
 	
-	//All tokens in all feeds
+	//All unique tokens in all feeds
 	private Set<String> tokens = new HashSet<String>();
 	private List<FeedItem> feedItems = new ArrayList<FeedItem>();
 	
@@ -158,7 +158,7 @@ public class RSSData {
 		ToolBox.printFeeds(Feeds);
 	}
 	
-	public Set<Set<String>> getAllDocumentTokens() {
+	public List<List<String>> getAllDocumentTokens() {
 		return documents;
 	}
 	

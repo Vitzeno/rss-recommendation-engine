@@ -1,7 +1,7 @@
 package textClassification;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class serves to transform pieces of text into tokens which can then be 
@@ -36,11 +36,11 @@ public class Tokeniser {
 	 * @param doc
 	 * @return
 	 */
-	public Set<String> getTokens(String doc) {
+	public List<String> getTokens(String doc) {
 		//create an array of string by splitting by space
 		String[] rawTokens = doc.trim().split("\\s+");
 		
-		Set<String> tokens = new HashSet<String>();
+		List<String> tokens = new ArrayList<String>();
 		
 		for(String currentToken : rawTokens) {
 			String cleanedToken = currentToken.trim().toLowerCase().replaceAll("[^A-Za-z0-9]+", "");

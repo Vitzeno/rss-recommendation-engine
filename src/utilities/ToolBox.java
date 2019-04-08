@@ -41,7 +41,7 @@ public class ToolBox {
 		System.out.println("Feed size " + tokens.size());
 	}
 	
-	public static void printDocuments(Set<Set<String>> documents) {
+	public static void printDocuments(List<List<String>> documents) {
 		System.out.println(documents);
 		System.out.println("Feed size " + documents.size());
 	}
@@ -54,7 +54,7 @@ public class ToolBox {
 	}
 	
 	public static String cleanString(String toClean) {
-		toClean.replaceAll("\\s+","");
+		toClean = toClean.replaceAll("\\s+","");
 		return toClean;
 	}
 	
