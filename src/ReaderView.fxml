@@ -123,7 +123,7 @@
                                               <RowConstraints valignment="CENTER" />
                                             </rowConstraints>
                                              <children>
-                                                <Label text="Recommendation">
+                                                <Label text="Recommendation Topics">
                                                    <font>
                                                       <Font name="System Bold" size="24.0" />
                                                    </font>
@@ -169,6 +169,7 @@
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" />
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" />
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" />
                                             </rowConstraints>
                                              <children>
                                                 <Label prefHeight="18.0" prefWidth="90.0" text="Reader Font" GridPane.rowIndex="1" />
@@ -185,10 +186,12 @@
                                                       <Font name="System Bold" size="24.0" />
                                                    </font>
                                                 </Label>
-                                                <Button fx:id="btnSave" mnemonicParsing="false" onMouseClicked="#saveSettings" text="Save" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="11" GridPane.valignment="CENTER" />
+                                                <Button fx:id="btnSave" mnemonicParsing="false" onMouseClicked="#saveSettings" text="Save" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="12" GridPane.valignment="CENTER" />
                                                 <ColorPicker fx:id="clrPicker" GridPane.rowIndex="8" />
                                                 <Label text="Accent Colour" GridPane.rowIndex="7" />
                                                 <Label text="* restart required before changes can take effect" textFill="#fa0000" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                                <CheckBox fx:id="chkIncreasedCoverage" mnemonicParsing="false" text="Increase Coverage" GridPane.rowIndex="12" />
+                                                <Label text="Provides more but less accurate recommendations" GridPane.rowIndex="11" />
                                              </children>
                                           </GridPane>
                                        </children>

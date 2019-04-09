@@ -1,14 +1,13 @@
 package test;
 
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.junit.jupiter.api.Test;
-
+import javafx.scene.paint.Color;
 import utilities.ToolBox;
 
 class ToolBoxTest {
@@ -36,6 +35,7 @@ class ToolBoxTest {
 		assertEquals(0.807391122257898, ToolBox.cosineSimilarity(new double[] {4,1}, new double[] {5,6}), DELTA ,"Test 2D vector");
 		assertEquals(0.4408292859799824, ToolBox.cosineSimilarity(new double[] {62, 34, 6}, new double[] {23, 4, 56}), DELTA ,"Test 3D vector");
 		assertEquals(0.9269770925770784, ToolBox.cosineSimilarity(new double[] {46, 3, 65}, new double[] {54, 46, 89}), DELTA ,"Test 3D vector");
+		assertNotEquals(0.9269770925770784, ToolBox.cosineSimilarity(new double[] {46, 65}, new double[] {54, 46, 89}), DELTA );
 	}
 	
 	@Test
@@ -44,6 +44,7 @@ class ToolBoxTest {
 		assertEquals(5.0990195135927845, ToolBox.euclideanDistance(new double[] {4,1}, new double[] {5,6}), DELTA ,"Test 2D vector");
 		assertEquals(70.14983962918234, ToolBox.euclideanDistance(new double[] {62, 34, 6}, new double[] {23, 4, 56}), DELTA ,"Test 3D vector");
 		assertEquals(49.889878733065686, ToolBox.euclideanDistance(new double[] {46, 3, 65}, new double[] {54, 46, 89}), DELTA ,"Test 3D vector");
+		assertNotEquals(49.889878733065686, ToolBox.euclideanDistance(new double[] {46, 65}, new double[] {54, 46, 89}), DELTA);
 	}
 	
 	@Test 
@@ -62,6 +63,7 @@ class ToolBoxTest {
 		assertEquals(3, ToolBox.intToString("3"), DELTA, "Basic string");
 		assertEquals(-5, ToolBox.intToString("-5"), DELTA, "Negative string");
 		assertEquals(0, ToolBox.intToString("0"), DELTA, "Zero string");
+		assertNotEquals(5, ToolBox.intToString(" 5"), DELTA);
 	}
 	
 	@Test
@@ -100,7 +102,19 @@ class ToolBoxTest {
 		assertEquals(36.923, ToolBox.getCoverage(65, 24), DELTA);
 	}
 	
+	@Test
+	void ligthenColourRest() {
+		Color toLighten = (Color.web("#4286f4"));
+		Color lighter = toLighten.brighter();
+		assertEquals(lighter, ToolBox.lightenColour(toLighten));
+	}
 	
+	@Test
+	void darkenColourRest() {
+		Color toDarken = (Color.web("#4286f4"));
+		Color lighter = toDarken.darker();
+		assertEquals(lighter, ToolBox.darkenColour(toDarken));
+	}
 	
 	
 	

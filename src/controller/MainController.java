@@ -90,6 +90,8 @@ public class MainController {
     
     @FXML
     private ColorPicker clrPicker;
+    @FXML
+    private CheckBox chkIncreasedCoverage;
     
     
     @FXML
@@ -406,6 +408,11 @@ public class MainController {
 			clrPicker.setDisable(false);
 			break;
 		}
+    	
+    	if(settings.isIncreasedCoverage())
+    		chkIncreasedCoverage.setSelected(true);
+    		
+    		
     }
     
     /**
@@ -431,6 +438,11 @@ public class MainController {
     	settings.setReaderTheme(cmbTheme.getSelectionModel().getSelectedItem());
     	
     	settings.setAccentColour(ToolBox.cleanColour(clrPicker.getValue().toString()));
+    	
+    	if(chkIncreasedCoverage.isSelected())
+    		settings.setIncreasedCoverage(true);
+    	else
+    		settings.setIncreasedCoverage(false);
     	
     	Settings.writeSettingsToFile(settings);
     	
@@ -458,7 +470,6 @@ public class MainController {
     		lstViewFeedItems.getItems().add(item);
     	}
     	
-    	
     }
     
     /**
@@ -468,6 +479,7 @@ public class MainController {
     @SuppressWarnings("deprecation")
 	public void initFeed() {
     	DatabaseHandler DBHandler = new DatabaseHandler();
+    	Settings settings = Settings.getSettings();
     	//add user topics to singleton class
     	UserTopics topics = UserTopics.getInstance();
     	topics.clearTerms();
@@ -493,6 +505,11 @@ public class MainController {
     	/* init rec engine class */
     	if(recEngine == null)
     		initRecEngine();  		
+    	
+    	if(settings.isIncreasedCoverage())
+    		RSSDataModel.coverageScale = 0.75;
+    	else
+    		RSSDataModel.coverageScale = 0.5;
     	
 		/* parse all feeds  */
     	RSSFeedList = RSSDataModel.parseRSSFeeds();

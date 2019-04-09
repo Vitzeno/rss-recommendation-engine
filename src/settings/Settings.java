@@ -26,6 +26,7 @@ public class Settings {
 	public String readerFont;
 	public String readerTheme;
 	public String accentColour;
+	public boolean increasedCoverage;
 	
 	/**
 	 * Constructor serves to setup default values
@@ -36,9 +37,20 @@ public class Settings {
 		this.readerFontSize = 16;
 		this.readerFont = "System";
 		this.readerTheme = "Lapis Light";
-		this.accentColour = "#ff8080ff";
+		this.accentColour = "#669966ff";
+		this.increasedCoverage = false;
 	}
 	
+	
+	
+	public boolean isIncreasedCoverage() {
+		return increasedCoverage;
+	}
+
+	public void setIncreasedCoverage(boolean increasedCoverage) {
+		this.increasedCoverage = increasedCoverage;
+	}
+
 	public String getAccentColour() {
 		return accentColour;
 	}

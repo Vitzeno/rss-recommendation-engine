@@ -52,6 +52,7 @@ public class RSSData {
 	private boolean feedsParsed = false;
 	private boolean feedsTokenised = false;
 	
+	public double coverageScale = 0.5;
 	private int numOfSimilarRecommendations;
 	
 	
@@ -198,7 +199,7 @@ public class RSSData {
 	 */
 	public Feed getRecommendations() {
 		Feed recFeed = new Feed();
-		numOfSimilarRecommendations = Feeds.size() / 2;
+		numOfSimilarRecommendations = (int) (Feeds.size() * coverageScale);
 		if(feedsParsed && feedsTokenised) {
 			feedsMatrix = new FeedsMatrix();
 			feedsMatrix.printMatrixData();

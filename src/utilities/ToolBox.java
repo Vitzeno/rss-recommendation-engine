@@ -190,10 +190,9 @@ public class ToolBox {
 	
 	public static double getIntraListSimilarity(Feed feed) {
 		double average = 0;
-		
-		Feed curr = feed;
-		
+
 		for(FeedItem item1 : feed.getMessages()) {
+			Feed curr = feed;
 			for(FeedItem item2 : curr.getMessages()) {
 				average += euclideanDistance(item1.getReducedMatrixValue().getRow(0), item2.getReducedMatrixValue().getRow(0));
 			}
