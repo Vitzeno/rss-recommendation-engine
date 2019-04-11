@@ -1,0 +1,8 @@
+{
+  "method": "COSINE",
+  "openInBrowser": false,
+  "readerFontSize": 24,
+  "readerFont": "Segoe UI",
+  "readerTheme": "Lapis Light",
+  "accentColour": "#ff6666ff"
+}

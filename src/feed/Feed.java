@@ -1,7 +1,7 @@
 package feed;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 /**
  * This class servers as a collection of feed items, each feed has a set of attributes which are
@@ -17,8 +17,12 @@ public class Feed {
     final String language;
     final String copyright;
     final String pubDate;
+    
+    final String url;
 
-    final List<FeedItem> items = new ArrayList<FeedItem>();
+    
+
+	final TreeSet<FeedItem> items = new TreeSet<FeedItem>();
 
     /**
      * The constructor takes a set of feed attributes and sets them up
@@ -29,20 +33,36 @@ public class Feed {
      * @param copyright
      * @param pubDate
      */
-    public Feed(String title, String link, String description, String language, String copyright, String pubDate) {
+    public Feed(String title, String link, String description, String language, String copyright, String pubDate, String url) {
         this.title = title;
         this.link = link;
         this.description = description;
         this.language = language;
         this.copyright = copyright;
         this.pubDate = pubDate;
+        this.url = url;
     }
+    
+    public Feed() {
+    	this.title = "";
+        this.link = "";
+        this.description = "";
+        this.language = "";
+        this.copyright = "";
+        this.pubDate = "";
+        
+        this.url = "";
+    }
+    
+    public String getUrl() {
+		return url;
+	}
     
     /**
      * This method returns an ArrayList of feed items
      * @return List of feed items
      */
-    public List<FeedItem> getMessages() {
+    public TreeSet<FeedItem> getMessages() {
         return items;
     }
     
@@ -52,7 +72,28 @@ public class Feed {
      * @param feedItem
      */
     public void addToFeed(FeedItem feedItem) {
-    	items.add(feedItem);
+    	this.items.add(feedItem);
+    }
+    
+    /**
+     * This method adds a list of feed items in the form
+     * of a feed object to the feed
+     * @param feed
+     */
+    public void addToFeed(Feed feed) {
+    	for(FeedItem item : feed.getMessages()) {
+    		this.items.add(item);
+    	}
+    }
+    
+    /**
+     * Adds a list of feed items to the feed
+     * @param items
+     */
+    public void addToFeed(List<FeedItem> items) {
+    	for(FeedItem item : items) {
+    		this.items.add(item);
+    	}
     }
     
     /** 
@@ -111,5 +152,5 @@ public class Feed {
         //return "Feed [copyright=" + copyright + ", description=" + description + ", language=" + language + ", link=" + link + ", pubDate=" + pubDate + ", title=" + title + "]";
     	return title;
     }
-
+    
 }
