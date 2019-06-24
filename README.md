@@ -44,7 +44,7 @@ The most accurate recommendations will be those which are most similar to items 
 enjoys. Therefore, we need to find items which are “closest” to those provided by the last step in the
 pipeline. An interesting approach would be to assign each feed item with a position in n dimensional
 space and then use the cosine similarity distance formula to determine how close items are.
-However, we need to determine a way to mathematically represent the features of an item in a mathmatrically
+However, we need to determine a way to mathematically represent the features of an item in a
 quantifiable manner and translate those into points in n dimensional space, before we can calculate
 how close they are.
 
@@ -59,7 +59,7 @@ produce a user interface design process which adheres to three main principles.
 3. Minimising required interaction
 
 
-There are two sets of data the program needs to save in storage for it to function, the RSS data and
+For long term storage there are two sets of data the program needs to save for it to function, the RSS data and
 the program configurations.
 
 The program configuration consists of basic key-values pairs and can be store as a JSON file once
