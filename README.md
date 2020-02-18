@@ -1,3 +1,5 @@
+# Main Design
+
 There are three main components which make up the system, the RSS parser, the recommendation
 algorithm and the UI.
 
@@ -71,3 +73,5 @@ However, the RSS data has meaningful structure which needs to be preserved and i
 stored in a relational database.
 
 Note: For the Windows operating system all data is stored in “User/AppData/Local/RSSReader/”.
+
+![](Demo Video.mp4)
