@@ -74,4 +74,4 @@ stored in a relational database.
 
 Note: For the Windows operating system all data is stored in “User/AppData/Local/RSSReader/”.
 
-![](Demo Video.mp4)
+![](/DemoVideo.mp4)
